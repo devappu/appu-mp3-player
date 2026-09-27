@@ -1,104 +1,122 @@
 /* ========================================================
    APPU.UK - MP3 MUSIC PLAYER
-   ROOT THEME + RESPONSIVE VIEWPORT
-   ======================================================== */
-
-
-/* ========================================================
-   ROOT - LIGHT THEME
+   ROOT THEME
+   TEXT CONTRAST TARGET: >= 6:1
    ======================================================== */
 
 :root {
+  /* ---------- LIGHT THEME ---------- */
 
   --amp-bg: #f3f7fb;
-
   --amp-surface: #ffffff;
-
   --amp-surface2: #e8eef5;
 
-  --amp-text: #172033;
+  /* Main text
+     Contrast against:
+     --amp-bg      > 6:1
+     --amp-surface > 6:1
+  */
+  --amp-text: #111827;
 
-  --amp-muted: #465365;
+  /* Secondary / muted text
+     Still >= 6:1 against bg and surface
+  */
+  --amp-muted: #374151;
 
-  --amp-line: #b8c4d1;
+  /* Borders */
+  --amp-line: #9ca3af;
 
+  /* Accent */
   --amp-accent: #006b63;
 
+  /* Text placed directly on accent */
   --amp-accent-text: #ffffff;
 
-  --amp-danger: #b91c1c;
+  /* Danger text */
+  --amp-danger: #991b1b;
 
-  --amp-danger-bg: rgba(220,38,38,.10);
+  /* Danger background */
+  --amp-danger-bg: rgba(153, 27, 27, 0.10);
 
-  --amp-overlay: rgba(15,23,42,.68);
+  /* Overlay */
+  --amp-overlay: rgba(15, 23, 42, 0.68);
 
+  /* Shadows */
   --amp-shadow:
-    0 10px 30px rgba(15,23,42,.10);
+    0 10px 30px rgba(15, 23, 42, 0.10);
 
   --amp-cover-shadow:
-    0 16px 35px rgba(15,23,42,.18);
+    0 16px 35px rgba(15, 23, 42, 0.18);
 
   --amp-play-shadow:
-    0 7px 18px rgba(15,23,42,.16);
+    0 7px 18px rgba(15, 23, 42, 0.16);
 
   --amp-modal-shadow:
-    0 20px 60px rgba(15,23,42,.25);
+    0 20px 60px rgba(15, 23, 42, 0.25);
 
-  --amp-gradient-start:
-    var(--amp-accent);
-
-  --amp-gradient-end:
-    #164e63;
-
+  /* Gradients */
+  --amp-gradient-start: var(--amp-accent);
+  --amp-gradient-end: #164e63;
 }
 
 
 /* ========================================================
-   ROOT - DARK THEME
+   DARK THEME
    ======================================================== */
 
 html[data-theme='dark'] {
 
+  /* ---------- DARK THEME ---------- */
+
   --amp-bg: #15191f;
-
   --amp-surface: #20252d;
-
   --amp-surface2: #2d343e;
 
-  --amp-text: #f5f7fa;
+  /* Main text
+     Very high contrast against bg/surface
+  */
+  --amp-text: #f9fafb;
 
-  --amp-muted: #c2cad3;
+  /* Secondary / muted text
+     Kept bright enough for >= 6:1
+     against both dark backgrounds
+  */
+  --amp-muted: #d1d5db;
 
-  --amp-line: #505a66;
+  /* Borders */
+  --amp-line: #667085;
 
-  --amp-accent: #2bb7a9;
+  /* Accent */
+  --amp-accent: #5eead4;
 
-  --amp-accent-text: #071312;
+  /* Dark text on accent */
+  --amp-accent-text: #042f2e;
 
-  --amp-danger: #f87171;
+  /* Danger text */
+  --amp-danger: #fca5a5;
 
-  --amp-danger-bg: rgba(248,113,113,.14);
+  /* Danger background */
+  --amp-danger-bg: rgba(248, 113, 113, 0.14);
 
-  --amp-overlay: rgba(0,0,0,.74);
+  /* Overlay */
+  --amp-overlay: rgba(0, 0, 0, 0.74);
 
+  /* Shadows */
   --amp-shadow:
-    0 10px 30px rgba(0,0,0,.35);
+    0 10px 30px rgba(0, 0, 0, 0.35);
 
   --amp-cover-shadow:
-    0 16px 35px rgba(0,0,0,.40);
+    0 16px 35px rgba(0, 0, 0, 0.40);
 
   --amp-play-shadow:
-    0 7px 18px rgba(0,0,0,.35);
+    0 7px 18px rgba(0, 0, 0, 0.35);
 
   --amp-modal-shadow:
-    0 20px 60px rgba(0,0,0,.55);
+    0 20px 60px rgba(0, 0, 0, 0.55);
 
-  --amp-gradient-start:
-    var(--amp-accent);
-
-  --amp-gradient-end:
-    #164e63;
-
+  /* Gradients */
+  --amp-gradient-start: var(--amp-accent);
+  --amp-gradient-end: #164e63;
 }
 
 
