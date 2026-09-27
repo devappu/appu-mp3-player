@@ -56,110 +56,6 @@
 
 }
 
-.appu-mp3-theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 40px;
-  height: 40px;
-
-  padding: 0;
-  margin: 0;
-
-  border: 1px solid var(--amp-line);
-  border-radius: 10px;
-
-  background: var(--amp-surface);
-  color: var(--amp-text);
-
-  cursor: pointer;
-
-  font: inherit;
-  line-height: 1;
-
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.15s ease;
-}
-
-.appu-mp3-theme-toggle:hover {
-  background: var(--amp-surface2);
-}
-
-.appu-mp3-theme-toggle:active {
-  transform: scale(0.95);
-}
-
-.appu-mp3-theme-toggle:focus-visible {
-  outline: 2px solid var(--amp-accent);
-  outline-offset: 2px;
-}
-
-.appu-mp3-theme-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 20px;
-  height: 20px;
-
-  color: var(--amp-text);
-
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.appu-mp3-title {
-
-  display: block;
-
-  max-width: 100%;
-
-  margin: 0;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
-  white-space: nowrap;
-
-  color:
-    var(--amp-text);
-
-  font-size: 18px;
-
-  font-weight: 700;
-
-  line-height: 1.3;
-
-}
-
-.appu-mp3-subtitle {
-
-  display: block;
-
-  max-width: 100%;
-
-  margin-top: 3px;
-
-  overflow: hidden;
-
-  text-overflow: ellipsis;
-
-  white-space: nowrap;
-
-  color:
-    var(--amp-muted);
-
-  font-size: 12px;
-
-  line-height: 1.4;
-
-}
-
 .appu-mp3-header-actions {
 
   display: flex;
@@ -182,6 +78,12 @@
   align-items: center;
 
   gap: 7px;
+
+}
+
+.appu-mp3-header-right {
+
+  margin-left: auto;
 
 }
 
@@ -234,6 +136,149 @@
 
   color:
     var(--amp-accent-text);
+
+}
+
+.appu-mp3-header-right .appu-mp3-theme-toggle {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex: 0 0 40px;
+
+  width: 40px;
+
+  min-width: 40px;
+
+  height: 40px;
+
+  min-height: 40px;
+
+  padding: 0;
+
+  margin: 0;
+
+  border:
+    1px solid
+    var(--amp-line);
+
+  border-radius: 10px;
+
+  background:
+    var(--amp-surface);
+
+  color:
+    var(--amp-text);
+
+  cursor: pointer;
+
+  font: inherit;
+
+  line-height: 1;
+
+  white-space: normal;
+
+  transition:
+    background-color .2s ease,
+    border-color .2s ease,
+    color .2s ease,
+    transform .15s ease;
+
+}
+
+.appu-mp3-header-right .appu-mp3-theme-toggle:hover {
+
+  background:
+    var(--amp-surface2);
+
+}
+
+.appu-mp3-header-right .appu-mp3-theme-toggle:active {
+
+  transform:
+    scale(.95);
+
+}
+
+.appu-mp3-header-right .appu-mp3-theme-toggle:focus-visible {
+
+  outline:
+    2px solid
+    var(--amp-accent);
+
+  outline-offset: 2px;
+
+}
+
+.appu-mp3-theme-icon {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 20px;
+
+  height: 20px;
+
+  color:
+    var(--amp-text);
+
+  font-size: 18px;
+
+  font-weight: 700;
+
+}
+
+.appu-mp3-title {
+
+  display: block;
+
+  max-width: 100%;
+
+  margin: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  color:
+    var(--amp-text);
+
+  font-size: 18px;
+
+  font-weight: 700;
+
+  line-height: 1.3;
+
+}
+
+.appu-mp3-subtitle {
+
+  display: block;
+
+  max-width: 100%;
+
+  margin-top: 3px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  color:
+    var(--amp-muted);
+
+  font-size: 12px;
+
+  line-height: 1.4;
 
 }
 
@@ -1599,6 +1644,25 @@ html[data-theme='dark'] #appu-music-player {
     font-size: 10px;
   }
 
+  .appu-mp3-header-right {
+    gap: 5px;
+  }
+
+  .appu-mp3-header-right .appu-mp3-theme-toggle {
+    flex-basis: 34px;
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
+    border-radius: 9px;
+  }
+
+  .appu-mp3-theme-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 16px;
+  }
+
   .appu-mp3-dropzone {
     margin: 12px;
     padding: 20px 12px;
@@ -1650,6 +1714,21 @@ html[data-theme='dark'] #appu-music-player {
     padding: 6px;
   }
 
+  .appu-mp3-header-right .appu-mp3-theme-toggle {
+    flex-basis: 32px;
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    min-height: 32px;
+    border-radius: 8px;
+  }
+
+  .appu-mp3-theme-icon {
+    width: 17px;
+    height: 17px;
+    font-size: 15px;
+  }
+
   .appu-mp3-control {
     width: 39px;
     height: 39px;
@@ -1683,4 +1762,4 @@ html[data-theme='dark'] #appu-music-player {
 
   }
 
-  }
+}
