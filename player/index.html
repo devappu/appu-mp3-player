@@ -1,1 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="theme-color"
+    content="#0d9488">
+
+  <meta
+  name="description"
+  content="Free MP3 music player app for playing local music and audio files directly from your device. No upload, no sign up, and no installation required.">
+
+  <title>MY MP3 Music Player</title>
+
+  <link
+    rel="manifest"
+    href="./manifest.json">
+
+  <link
+    rel="stylesheet"
+    href="./style.css">
+
+</head>
+
+<body>
+
+  <main
+    id="appu-music-player"
+    class="appu-mp3-player">
+
+
+    <!-- HEADER -->
+
+    <div class="appu-mp3-header">
+
+      <div class="appu-mp3-title">
+        My MP3 Music Player
+      </div>
+
+      <div class="appu-mp3-subtitle">
+        Play your music directly from your device
+      </div>
+
+
+      <div class="appu-mp3-header-actions">
+
+        <div class="appu-mp3-header-left">
+
+          <button
+            aria-label="Scan audio"
+            class="appu-mp3-header-button appu-primary"
+            id="appu-mp3-scan"
+            type="button">
+            Scan Audio
+          </button>
+
+        </div>
+
+        <div class="appu-mp3-header-right">
+
+          <button
+            aria-label="Equalizer"
+            class="appu-mp3-header-button"
+            id="appu-mp3-equalizer"
+            type="button">
+            Equalizer
+          </button>
+
+          <button
+            aria-label="Music bar"
+            class="appu-mp3-header-button"
+            id="appu-mp3-bar"
+            type="button">
+            Bar Music
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- FILE INPUT -->
+
+    <input
+      accept="audio/*,.mp3,.wav,.ogg,.oga,.m4a,.aac,.flac,.opus"
+      id="appu-mp3-file-input"
+      multiple
+      type="file">
+
+
+    <!-- DROP ZONE -->
+
+    <div
+      aria-label="Select audio files"
+      class="appu-mp3-dropzone"
+      id="appu-mp3-dropzone"
+      role="button"
+      tabindex="0">
+
+      <span
+        aria-hidden="true"
+        class="appu-mp3-drop-icon">
+        Music
+      </span>
+
+      <div class="appu-mp3-drop-title">
+        Add your music
+      </div>
+
+      <div class="appu-mp3-drop-text">
+        Tap here to choose audio files from your device
+      </div>
+
+    </div>
+
+
+    <!-- NOW PLAYING -->
+
+    <div class="appu-mp3-now-playing">
+
+      <div
+        aria-hidden="true"
+        class="appu-mp3-cover"
+        id="appu-mp3-cover">
+
+        <img
+          alt=""
+          class="appu-mp3-cover-image"
+          id="appu-mp3-cover-image">
+
+        <div class="appu-mp3-cover-disc"></div>
+
+      </div>
+
+
+      <div
+        aria-hidden="true"
+        class="appu-mp3-visualizer"
+        id="appu-mp3-visualizer">
+
+        <canvas
+          id="appu-mp3-visualizer-canvas">
+        </canvas>
+
+      </div>
+
+
+      <div
+        class="appu-mp3-track-name"
+        id="appu-mp3-track-name">
+        No song selected
+      </div>
+
+      <div
+        class="appu-mp3-track-info"
+        id="appu-mp3-track-info">
+        Add music to start listening
+      </div>
+
+    </div>
+
+
+    <!-- PROGRESS -->
+
+    <div class="appu-mp3-progress-area">
+
+      <input
+        aria-label="Music progress"
+        class="appu-mp3-progress"
+        id="appu-mp3-progress"
+        max="100"
+        min="0"
+        step="0.1"
+        type="range"
+        value="0">
+
+      <div class="appu-mp3-time">
+
+        <span id="appu-mp3-current-time">
+          0:00
+        </span>
+
+        <span id="appu-mp3-duration">
+          0:00
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- MAIN CONTROLS -->
+
+    <div class="appu-mp3-controls">
+
+      <button
+        aria-label="Previous song"
+        class="appu-mp3-control"
+        id="appu-mp3-prev"
+        type="button">
+        |&lt;
+      </button>
+
+      <button
+        aria-label="Back 10 seconds"
+        class="appu-mp3-control"
+        id="appu-mp3-back"
+        type="button">
+        &lt;&lt;
+      </button>
+
+      <button
+        aria-label="Play or pause"
+        class="appu-mp3-control appu-mp3-play"
+        id="appu-mp3-play"
+        type="button">
+        &gt;
+      </button>
+
+      <button
+        aria-label="Forward 10 seconds"
+        class="appu-mp3-control"
+        id="appu-mp3-forward"
+        type="button">
+        &gt;&gt;
+      </button>
+
+      <button
+        aria-label="Next song"
+        class="appu-mp3-control"
+        id="appu-mp3-next"
+        type="button">
+        &gt;|
+      </button>
+
+    </div>
+
+
+    <!-- SECONDARY CONTROLS -->
+
+    <div class="appu-mp3-small-controls">
+
+      <button
+        aria-label="Shuffle"
+        class="appu-mp3-option"
+        id="appu-mp3-shuffle"
+        type="button">
+        Shuffle
+      </button>
+
+      <button
+        aria-label="Repeat mode"
+        class="appu-mp3-option"
+        id="appu-mp3-repeat"
+        type="button">
+        Repeat: Off
+      </button>
+
+      <div class="appu-mp3-volume">
+
+        <span
+          aria-hidden="true"
+          class="appu-mp3-volume-icon"
+          id="appu-mp3-volume-icon">
+          Vol
+        </span>
+
+        <input
+          aria-label="Volume"
+          class="appu-mp3-volume-slider"
+          id="appu-mp3-volume"
+          max="1"
+          min="0"
+          step="0.01"
+          type="range"
+          value="1">
+
+      </div>
+
+    </div>
+
+
+    <!-- LIBRARY -->
+
+    <div class="appu-mp3-library">
+
+      <div
+        class="appu-mp3-library-tabs"
+        id="appu-mp3-library-tabs">
+
+        <button
+          aria-selected="true"
+          class="appu-mp3-tab appu-selected"
+          data-panel="0"
+          type="button">
+          Playlist
+        </button>
+
+        <button
+          aria-selected="false"
+          class="appu-mp3-tab"
+          data-panel="1"
+          type="button">
+          Genre
+        </button>
+
+        <button
+          aria-selected="false"
+          class="appu-mp3-tab"
+          data-panel="2"
+          type="button">
+          Albums
+        </button>
+
+        <button
+          aria-selected="false"
+          class="appu-mp3-tab"
+          data-panel="3"
+          type="button">
+          Song
+        </button>
+
+        <button
+          aria-selected="false"
+          class="appu-mp3-tab"
+          data-panel="4"
+          type="button">
+          Artist
+        </button>
+
+      </div>
+
+
+      <div
+        class="appu-mp3-library-viewport"
+        id="appu-mp3-library-viewport">
+
+        <div
+          class="appu-mp3-library-track"
+          id="appu-mp3-library-track">
+
+
+          <div class="appu-mp3-library-panel">
+
+            <div
+              class="appu-mp3-playlist"
+              id="appu-mp3-playlist">
+
+              <div class="appu-mp3-empty">
+                Your selected songs will appear here.
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="appu-mp3-library-panel">
+
+            <div
+              class="appu-mp3-category-list"
+              id="appu-mp3-genre-list">
+
+              <div class="appu-mp3-empty">
+                No genre information available.
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="appu-mp3-library-panel">
+
+            <div
+              class="appu-mp3-category-list"
+              id="appu-mp3-album-list">
+
+              <div class="appu-mp3-empty">
+                No album information available.
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="appu-mp3-library-panel">
+
+            <div
+              class="appu-mp3-playlist"
+              id="appu-mp3-song-list">
+
+              <div class="appu-mp3-empty">
+                No songs available.
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="appu-mp3-library-panel">
+
+            <div
+              class="appu-mp3-category-list"
+              id="appu-mp3-artist-list">
+
+              <div class="appu-mp3-empty">
+                No artist information available.
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- STATUS -->
+
+    <div
+      aria-live="polite"
+      class="appu-mp3-status"
+      id="appu-mp3-status">
+      Music stays on your device. Nothing is uploaded.
+    </div>
+
+
+    <!-- AUDIO -->
+
+    <audio
+      id="appu-mp3-audio"
+      preload="metadata">
+    </audio>
+
+
+  </main>
+
+
+  <!-- SCAN AUDIO MODAL -->
+
+  <div
+    aria-labelledby="appu-mp3-scan-title"
+    aria-modal="true"
+    class="appu-mp3-modal"
+    id="appu-mp3-scan-modal"
+    role="dialog">
+
+    <div class="appu-mp3-modal-header">
+
+      <div
+        class="appu-mp3-modal-title"
+        id="appu-mp3-scan-title">
+        Scan Audio
+      </div>
+
+      <button
+        aria-label="Close"
+        class="appu-mp3-modal-close"
+        data-close-modal="scan"
+        type="button">
+        x
+      </button>
+
+    </div>
+
+    <div class="appu-mp3-modal-body">
+
+      <div class="appu-mp3-modal-description">
+        Select the type of audio you want to add.
+        Files remain on your device and are not uploaded.
+      </div>
+
+
+      <button
+        class="appu-mp3-scan-option"
+        data-scan-min="0"
+        data-scan-max="60"
+        type="button">
+
+        <div>
+          <strong>Ringtone</strong>
+          <span>Audio shorter than 1 minute</span>
+        </div>
+
+      </button>
+
+
+      <button
+        class="appu-mp3-scan-option"
+        data-scan-min="0"
+        data-scan-max="120"
+        type="button">
+
+        <div>
+          <strong>Short Audio</strong>
+          <span>Audio shorter than 2 minutes</span>
+        </div>
+
+      </button>
+
+
+      <button
+        class="appu-mp3-scan-option"
+        data-scan-min="180"
+        data-scan-max="0"
+        type="button">
+
+        <div>
+          <strong>Music</strong>
+          <span>Audio longer than 3 minutes</span>
+        </div>
+
+      </button>
+
+
+      <button
+        class="appu-mp3-scan-option"
+        data-scan-min="0"
+        data-scan-max="0"
+        type="button">
+
+        <div>
+          <strong>All Audio</strong>
+          <span>Add all supported audio files</span>
+        </div>
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- EQUALIZER MODAL -->
+
+  <div
+    aria-labelledby="appu-mp3-eq-title"
+    aria-modal="true"
+    class="appu-mp3-modal"
+    id="appu-mp3-eq-modal"
+    role="dialog">
+
+    <div class="appu-mp3-modal-header">
+
+      <div
+        class="appu-mp3-modal-title"
+        id="appu-mp3-eq-title">
+        Equalizer
+      </div>
+
+      <button
+        aria-label="Close"
+        class="appu-mp3-modal-close"
+        data-close-modal="eq"
+        type="button">
+        x
+      </button>
+
+    </div>
+
+    <div class="appu-mp3-modal-body">
+
+      <div class="appu-mp3-modal-description">
+        Choose an equalizer preset for your music.
+      </div>
+
+      <div
+        class="appu-mp3-eq-grid"
+        id="appu-mp3-eq-grid">
+
+        <button
+          class="appu-mp3-eq-option appu-selected"
+          data-eq="Flat"
+          type="button">
+          Flat
+        </button>
+
+        <button
+          class="appu-mp3-eq-option"
+          data-eq="Bass Boost"
+          type="button">
+          Bass Boost
+        </button>
+
+        <button
+          class="appu-mp3-eq-option"
+          data-eq="Treble Boost"
+          type="button">
+          Treble Boost
+        </button>
+
+        <button
+          class="appu-mp3-eq-option"
+          data-eq="Vocal"
+          type="button">
+          Vocal
+        </button>
+
+        <button
+          class="appu-mp3-eq-option"
+          data-eq="Rock"
+          type="button">
+          Rock
+        </button>
+
+        <button
+          class="appu-mp3-eq-option"
+          data-eq="Pop"
+          type="button">
+          Pop
+        </button>
+
+        <button
+          class="appu-mp3-eq-option"
+          data-eq="Jazz"
+          type="button">
+          Jazz
+        </button>
+
+        <button
+          class="appu-mp3-eq-option"
+          data-eq="Classical"
+          type="button">
+          Classical
+        </button>
+
+        <button
+          class="appu-mp3-eq-option"
+          data-eq="Electronic"
+          type="button">
+          Electronic
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script src="./app.js" defer></script>
+
+</body>
+</html>
