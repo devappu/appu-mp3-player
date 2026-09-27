@@ -1,1 +1,19 @@
-
+{
+  "name": "Appu.uk - My MP3 Player",
+  "short_name": "MY MP3 Player",
+  "id": "/player/",
+  "start_url": "/player/",
+  "scope": "/player/",
+  "display": "fullscreen",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "description": "Free MP3 music player app for playing local music and audio files directly from your device. No upload, no sign up, and no installation required.",
+  "icons": [
+    {
+      "src": "/player/icons/icon-512.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "maskable"
+    }
+  ]
+}
