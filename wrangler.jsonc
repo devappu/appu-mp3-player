@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "appu-mp3-player",
+  "compatibility_date": "2026-09-28",
+  "assets": {
+    "directory": "./"
+  },
+  "routes": [
+    {
+      "pattern": "www.mp3.appu.uk",
+      "custom_domain": true
+    }
+  ],
+  "workers_dev": false
+}
