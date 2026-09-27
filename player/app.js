@@ -264,8 +264,8 @@
 
       themeIcon.textContent =
         theme === 'dark'
-          ? 'light'
-          : 'dark';
+          ? '☀️'
+          : '🌛';
 
     }
 
@@ -4253,6 +4253,18 @@
       meta
     );
 
+    item.appendChild(
+      number
+    );
+
+    item.appendChild(
+      icon
+    );
+
+    item.appendChild(
+      info
+    );
+
     var remove =
       document.createElement(
         'button'
@@ -4287,18 +4299,6 @@
         );
 
       }
-    );
-
-    item.appendChild(
-      number
-    );
-
-    item.appendChild(
-      icon
-    );
-
-    item.appendChild(
-      info
     );
 
     item.appendChild(
