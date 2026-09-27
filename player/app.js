@@ -332,8 +332,8 @@
 
     var newTheme =
       currentTheme === 'dark'
-        ? 'light'
-        : 'dark';
+        ? '☀️'
+        : '🌛';
 
     applyTheme(
       newTheme
