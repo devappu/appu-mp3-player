@@ -189,6 +189,16 @@
       'appu-mp3-eq-modal'
     );
 
+  var themeToggle =
+    document.getElementById(
+      'appu-mp3-theme-toggle'
+    );
+
+  var themeIcon =
+    document.getElementById(
+      'appu-mp3-theme-icon'
+    );
+
   var tracks = [];
 
   var currentIndex = -1;
@@ -219,6 +229,9 @@
 
   var audioGraphReady = false;
 
+  var THEME_STORAGE_KEY =
+    'appu-mp3-player-theme';
+
   var eqBands = [
     60,
     170,
@@ -230,6 +243,123 @@
     12000,
     14000
   ];
+
+  function applyTheme(theme) {
+
+    if (
+      theme !== 'light' &&
+      theme !== 'dark'
+    ) {
+
+      theme = 'dark';
+
+    }
+
+    document.documentElement.setAttribute(
+      'data-theme',
+      theme
+    );
+
+    if (themeIcon) {
+
+      themeIcon.textContent =
+        theme === 'dark'
+          ? 'Light'
+          : 'Dark';
+
+    }
+
+    if (themeToggle) {
+
+      themeToggle.setAttribute(
+        'aria-label',
+        theme === 'dark'
+          ? 'Change to light theme'
+          : 'Change to dark theme'
+      );
+
+      themeToggle.setAttribute(
+        'title',
+        theme === 'dark'
+          ? 'Change to light theme'
+          : 'Change to dark theme'
+      );
+
+    }
+
+  }
+
+  function loadTheme() {
+
+    var savedTheme = null;
+
+    try {
+
+      savedTheme =
+        localStorage.getItem(
+          THEME_STORAGE_KEY
+        );
+
+    } catch (error) {
+
+      savedTheme =
+        null;
+
+    }
+
+    if (
+      savedTheme !== 'light' &&
+      savedTheme !== 'dark'
+    ) {
+
+      savedTheme =
+        'dark';
+
+    }
+
+    applyTheme(
+      savedTheme
+    );
+
+  }
+
+  function toggleTheme() {
+
+    var currentTheme =
+      document.documentElement.getAttribute(
+        'data-theme'
+      );
+
+    var newTheme =
+      currentTheme === 'dark'
+        ? 'light'
+        : 'dark';
+
+    applyTheme(
+      newTheme
+    );
+
+    try {
+
+      localStorage.setItem(
+        THEME_STORAGE_KEY,
+        newTheme
+      );
+
+    } catch (error) {}
+
+  }
+
+  if (themeToggle) {
+
+    themeToggle.addEventListener(
+      'click',
+      toggleTheme
+    );
+
+  }
+
+  loadTheme();
 
   function formatTime(seconds) {
 
@@ -5236,7 +5366,9 @@
 
   }
 
-    if ('serviceWorker' in navigator) {
+  if (
+    'serviceWorker' in navigator
+  ) {
 
     window.addEventListener(
       'load',
@@ -5252,6 +5384,6 @@
       }
     );
 
-    }
+  }
 
 })();
