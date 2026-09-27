@@ -7,7 +7,7 @@
   },
   "routes": [
     {
-      "pattern": "https://www.mp3.appu.uk/",
+      "pattern": "www.mp3.appu.uk/",
       "custom_domain": true
     }
   ],
