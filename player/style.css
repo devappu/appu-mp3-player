@@ -1,33 +1,186 @@
-#appu-music-player {
+/* ========================================================
+   APPU.UK - MP3 MUSIC PLAYER
+   ROOT THEME + RESPONSIVE VIEWPORT
+   ======================================================== */
+
+
+/* ========================================================
+   ROOT - LIGHT THEME
+   ======================================================== */
+
+:root {
 
   --amp-bg: #f3f7fb;
-  --amp-surface: #000000;
+
+  --amp-surface: #ffffff;
+
   --amp-surface2: #e8eef5;
+
   --amp-text: #172033;
+
   --amp-muted: #465365;
+
   --amp-line: #b8c4d1;
+
   --amp-accent: #006b63;
+
   --amp-accent-text: #ffffff;
 
-  width: 100%;
-  max-width: 760px;
-  margin: 0 auto;
+  --amp-danger: #b91c1c;
 
-  color: var(--amp-text);
-  font-family: inherit;
+  --amp-danger-bg: rgba(220,38,38,.10);
+
+  --amp-overlay: rgba(15,23,42,.68);
+
+  --amp-shadow:
+    0 10px 30px rgba(15,23,42,.10);
+
+  --amp-cover-shadow:
+    0 16px 35px rgba(15,23,42,.18);
+
+  --amp-play-shadow:
+    0 7px 18px rgba(15,23,42,.16);
+
+  --amp-modal-shadow:
+    0 20px 60px rgba(15,23,42,.25);
+
+  --amp-gradient-start:
+    var(--amp-accent);
+
+  --amp-gradient-end:
+    #164e63;
+
+}
+
+
+/* ========================================================
+   ROOT - DARK THEME
+   ======================================================== */
+
+html[data-theme='dark'] {
+
+  --amp-bg: #15191f;
+
+  --amp-surface: #20252d;
+
+  --amp-surface2: #2d343e;
+
+  --amp-text: #f5f7fa;
+
+  --amp-muted: #c2cad3;
+
+  --amp-line: #505a66;
+
+  --amp-accent: #2bb7a9;
+
+  --amp-accent-text: #071312;
+
+  --amp-danger: #f87171;
+
+  --amp-danger-bg: rgba(248,113,113,.14);
+
+  --amp-overlay: rgba(0,0,0,.74);
+
+  --amp-shadow:
+    0 10px 30px rgba(0,0,0,.35);
+
+  --amp-cover-shadow:
+    0 16px 35px rgba(0,0,0,.40);
+
+  --amp-play-shadow:
+    0 7px 18px rgba(0,0,0,.35);
+
+  --amp-modal-shadow:
+    0 20px 60px rgba(0,0,0,.55);
+
+  --amp-gradient-start:
+    var(--amp-accent);
+
+  --amp-gradient-end:
+    #164e63;
+
+}
+
+
+/* ========================================================
+   PLAYER ROOT
+   ======================================================== */
+
+#appu-music-player {
+
+  width: 100%;
+
+  min-width: 0;
+
+  height: 100dvh;
+
+  min-height: 100dvh;
+
+  max-width: none;
+
+  margin: 0;
+
+  padding: 0;
+
+  overflow: hidden;
+
+  background:
+    var(--amp-bg);
+
+  color:
+    var(--amp-text);
+
+  font-family:
+    inherit;
+
+  font-size: 16px;
+
+  line-height: 1.4;
+
+  color-scheme: light;
 
   box-sizing: border-box;
+
 }
+
+
+/* ========================================================
+   DARK COLOR SCHEME
+   ======================================================== */
+
+html[data-theme='dark'] #appu-music-player {
+
+  color-scheme: dark;
+
+}
+
+
+/* ========================================================
+   GLOBAL BOX SIZING
+   ======================================================== */
 
 #appu-music-player *,
 #appu-music-player *::before,
 #appu-music-player *::after {
+
   box-sizing: border-box;
+
 }
+
+
+/* ========================================================
+   MAIN PLAYER
+   ======================================================== */
 
 .appu-mp3-player {
 
   width: 100%;
+
+  min-width: 0;
+
+  height: 100%;
+
+  min-height: 100%;
 
   overflow: hidden;
 
@@ -40,10 +193,18 @@
   background:
     var(--amp-surface);
 
+  color:
+    var(--amp-text);
+
   box-shadow:
-    0 10px 30px rgba(15,23,42,.10);
+    var(--amp-shadow);
 
 }
+
+
+/* ========================================================
+   HEADER
+   ======================================================== */
 
 .appu-mp3-header {
 
@@ -53,6 +214,9 @@
   border-bottom:
     1px solid
     var(--amp-line);
+
+  background:
+    var(--amp-surface);
 
 }
 
@@ -87,6 +251,11 @@
 
 }
 
+
+/* ========================================================
+   HEADER BUTTON
+   ======================================================== */
+
 .appu-mp3-header-button {
 
   display: inline-flex;
@@ -95,9 +264,10 @@
 
   justify-content: center;
 
-  min-height: 36px;
+  min-height: 38px;
 
-  padding: 7px 11px;
+  padding:
+    7px 11px;
 
   border: 0;
 
@@ -111,9 +281,11 @@
 
   font: inherit;
 
-  font-size: 11px;
+  font-size: 12px;
 
   font-weight: 600;
+
+  line-height: 1.2;
 
   cursor: pointer;
 
@@ -138,6 +310,11 @@
     var(--amp-accent-text);
 
 }
+
+
+/* ========================================================
+   THEME TOGGLE
+   ======================================================== */
 
 .appu-mp3-header-right .appu-mp3-theme-toggle {
 
@@ -234,6 +411,11 @@
 
 }
 
+
+/* ========================================================
+   TITLE
+   ======================================================== */
+
 .appu-mp3-title {
 
   display: block;
@@ -251,7 +433,7 @@
   color:
     var(--amp-text);
 
-  font-size: 18px;
+  font-size: 19px;
 
   font-weight: 700;
 
@@ -276,93 +458,16 @@
   color:
     var(--amp-muted);
 
-  font-size: 12px;
+  font-size: 13px;
 
   line-height: 1.4;
 
 }
 
-.appu-mp3-dropzone {
 
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-
-  margin: 16px;
-
-  padding: 22px 15px;
-
-  border:
-    2px dashed
-    var(--amp-line);
-
-  border-radius: 14px;
-
-  text-align: center;
-
-  cursor: pointer;
-
-  transition:
-    border-color .2s ease,
-    background .2s ease,
-    transform .2s ease;
-
-}
-
-.appu-mp3-dropzone:hover,
-.appu-mp3-dropzone.appu-drag-active {
-
-  border-color:
-    var(--amp-accent);
-
-  background:
-    var(--amp-surface2);
-
-}
-
-.appu-mp3-dropzone:active {
-
-  transform:
-    scale(.99);
-
-}
-
-.appu-mp3-drop-icon {
-
-  display: block;
-
-  margin-bottom: 8px;
-
-  font-size: 28px;
-
-  line-height: 1;
-
-}
-
-.appu-mp3-drop-title {
-
-  font-size: 14px;
-
-  font-weight: 700;
-
-}
-
-.appu-mp3-drop-text {
-
-  margin-top: 5px;
-
-  color:
-    var(--amp-muted);
-
-  font-size: 12px;
-
-}
+/* ========================================================
+   NOW PLAYING
+   ======================================================== */
 
 .appu-mp3-now-playing {
 
@@ -400,12 +505,12 @@
     ),
     linear-gradient(
       135deg,
-      var(--amp-accent),
-      #164e63
+      var(--amp-gradient-start),
+      var(--amp-gradient-end)
     );
 
   box-shadow:
-    0 16px 35px rgba(15,23,42,.18);
+    var(--amp-cover-shadow);
 
 }
 
@@ -522,6 +627,11 @@
 
 }
 
+
+/* ========================================================
+   VISUALIZER
+   ======================================================== */
+
 .appu-mp3-visualizer {
 
   display: none;
@@ -542,12 +652,12 @@
   background:
     linear-gradient(
       135deg,
-      var(--amp-accent),
-      #164e63
+      var(--amp-gradient-start),
+      var(--amp-gradient-end)
     );
 
   box-shadow:
-    0 16px 35px rgba(15,23,42,.18);
+    var(--amp-cover-shadow);
 
 }
 
@@ -567,6 +677,11 @@
 
 }
 
+
+/* ========================================================
+   TRACK INFO
+   ======================================================== */
+
 .appu-mp3-track-name {
 
   max-width: 100%;
@@ -580,9 +695,11 @@
   color:
     var(--amp-text);
 
-  font-size: 19px;
+  font-size: 20px;
 
   font-weight: 700;
+
+  line-height: 1.3;
 
 }
 
@@ -601,9 +718,14 @@
   color:
     var(--amp-muted);
 
-  font-size: 12px;
+  font-size: 13px;
 
 }
+
+
+/* ========================================================
+   PROGRESS
+   ======================================================== */
 
 .appu-mp3-progress-area {
 
@@ -616,7 +738,7 @@
 
   width: 100%;
 
-  height: 5px;
+  height: 6px;
 
   margin: 0;
 
@@ -639,9 +761,9 @@
 
 .appu-mp3-progress::-webkit-slider-thumb {
 
-  width: 15px;
+  width: 16px;
 
-  height: 15px;
+  height: 16px;
 
   appearance: none;
 
@@ -660,9 +782,9 @@
 
 .appu-mp3-progress::-moz-range-thumb {
 
-  width: 15px;
+  width: 16px;
 
-  height: 15px;
+  height: 16px;
 
   border: 0;
 
@@ -686,9 +808,14 @@
   color:
     var(--amp-muted);
 
-  font-size: 11px;
+  font-size: 12px;
 
 }
+
+
+/* ========================================================
+   MAIN CONTROLS
+   ======================================================== */
 
 .appu-mp3-controls {
 
@@ -713,9 +840,9 @@
 
   justify-content: center;
 
-  width: 43px;
+  width: 46px;
 
-  height: 43px;
+  height: 46px;
 
   padding: 0;
 
@@ -730,7 +857,7 @@
 
   font: inherit;
 
-  font-size: 17px;
+  font-size: 18px;
 
   cursor: pointer;
 
@@ -752,9 +879,9 @@
 
 .appu-mp3-play {
 
-  width: 58px;
+  width: 60px;
 
-  height: 58px;
+  height: 60px;
 
   background:
     var(--amp-accent);
@@ -762,10 +889,10 @@
   color:
     var(--amp-accent-text);
 
-  font-size: 23px;
+  font-size: 24px;
 
   box-shadow:
-    0 7px 18px rgba(15,23,42,.16);
+    var(--amp-play-shadow);
 
 }
 
@@ -778,6 +905,11 @@
     brightness(.95);
 
 }
+
+
+/* ========================================================
+   SMALL CONTROLS
+   ======================================================== */
 
 .appu-mp3-small-controls {
 
@@ -802,9 +934,9 @@
 
   justify-content: center;
 
-  min-width: 42px;
+  min-width: 44px;
 
-  height: 36px;
+  min-height: 38px;
 
   padding:
     5px 10px;
@@ -820,7 +952,7 @@
 
   font: inherit;
 
-  font-size: 11px;
+  font-size: 12px;
 
   cursor: pointer;
 
@@ -842,6 +974,11 @@
 
 }
 
+
+/* ========================================================
+   VOLUME
+   ======================================================== */
+
 .appu-mp3-volume {
 
   display: flex;
@@ -858,7 +995,7 @@
 
   flex: 0 0 auto;
 
-  font-size: 11px;
+  font-size: 13px;
 
   cursor: pointer;
 
@@ -868,7 +1005,7 @@
 
   width: 90px;
 
-  height: 4px;
+  height: 5px;
 
   appearance: none;
 
@@ -885,9 +1022,9 @@
 
 .appu-mp3-volume-slider::-webkit-slider-thumb {
 
-  width: 13px;
+  width: 14px;
 
-  height: 13px;
+  height: 14px;
 
   appearance: none;
 
@@ -904,9 +1041,9 @@
 
 .appu-mp3-volume-slider::-moz-range-thumb {
 
-  width: 13px;
+  width: 14px;
 
-  height: 13px;
+  height: 14px;
 
   border: 0;
 
@@ -917,11 +1054,19 @@
 
 }
 
+
+/* ========================================================
+   LIBRARY
+   ======================================================== */
+
 .appu-mp3-library {
 
   border-top:
     1px solid
     var(--amp-line);
+
+  background:
+    var(--amp-surface);
 
 }
 
@@ -960,7 +1105,7 @@
 
   flex: 0 0 auto;
 
-  min-height: 34px;
+  min-height: 36px;
 
   padding:
     6px 11px;
@@ -976,7 +1121,7 @@
 
   font: inherit;
 
-  font-size: 11px;
+  font-size: 12px;
 
   cursor: pointer;
 
@@ -1000,6 +1145,11 @@
     var(--amp-accent-text);
 
 }
+
+
+/* ========================================================
+   LIBRARY VIEWPORT
+   ======================================================== */
 
 .appu-mp3-library-viewport {
 
@@ -1036,6 +1186,11 @@
 
 }
 
+
+/* ========================================================
+   PLAYLIST / CATEGORY
+   ======================================================== */
+
 .appu-mp3-playlist,
 .appu-mp3-category-list {
 
@@ -1055,9 +1210,14 @@
 
   text-align: center;
 
-  font-size: 12px;
+  font-size: 13px;
 
 }
+
+
+/* ========================================================
+   PLAYLIST ITEM
+   ======================================================== */
 
 .appu-mp3-item {
 
@@ -1075,6 +1235,9 @@
   border-bottom:
     1px solid
     var(--amp-line);
+
+  background:
+    var(--amp-surface);
 
   cursor: pointer;
 
@@ -1097,7 +1260,7 @@
 
   text-align: center;
 
-  font-size: 11px;
+  font-size: 12px;
 
 }
 
@@ -1125,7 +1288,7 @@
   color:
     var(--amp-accent-text);
 
-  font-size: 10px;
+  font-size: 11px;
 
 }
 
@@ -1158,7 +1321,7 @@
   color:
     var(--amp-text);
 
-  font-size: 13px;
+  font-size: 14px;
 
   font-weight: 600;
 
@@ -1177,7 +1340,7 @@
   color:
     var(--amp-muted);
 
-  font-size: 10px;
+  font-size: 11px;
 
 }
 
@@ -1185,9 +1348,9 @@
 
   flex: 0 0 auto;
 
-  width: 32px;
+  width: 34px;
 
-  height: 32px;
+  height: 34px;
 
   border: 0;
 
@@ -1198,7 +1361,7 @@
   color:
     var(--amp-muted);
 
-  font-size: 15px;
+  font-size: 16px;
 
   cursor: pointer;
 
@@ -1207,12 +1370,17 @@
 .appu-mp3-item-remove:hover {
 
   background:
-    rgba(220,38,38,.10);
+    var(--amp-danger-bg);
 
   color:
-    #b91c1c;
+    var(--amp-danger);
 
 }
+
+
+/* ========================================================
+   CATEGORY
+   ======================================================== */
 
 .appu-mp3-category-item {
 
@@ -1228,6 +1396,9 @@
   border-bottom:
     1px solid
     var(--amp-line);
+
+  background:
+    var(--amp-surface);
 
   cursor: pointer;
 
@@ -1262,7 +1433,7 @@
   color:
     var(--amp-text);
 
-  font-size: 9px;
+  font-size: 10px;
 
 }
 
@@ -1285,7 +1456,7 @@
   color:
     var(--amp-text);
 
-  font-size: 13px;
+  font-size: 14px;
 
   font-weight: 600;
 
@@ -1298,9 +1469,14 @@
   color:
     var(--amp-muted);
 
-  font-size: 10px;
+  font-size: 11px;
 
 }
+
+
+/* ========================================================
+   STATUS
+   ======================================================== */
 
 .appu-mp3-status {
 
@@ -1314,15 +1490,25 @@
 
   text-align: center;
 
-  font-size: 10px;
+  font-size: 11px;
 
 }
+
+
+/* ========================================================
+   FILE INPUT
+   ======================================================== */
 
 #appu-mp3-file-input {
 
   display: none;
 
 }
+
+
+/* ========================================================
+   MODAL
+   ======================================================== */
 
 .appu-mp3-modal {
 
@@ -1341,7 +1527,7 @@
   padding: 18px;
 
   background:
-    rgba(15,23,42,.68);
+    var(--amp-overlay);
 
   backdrop-filter:
     blur(5px);
@@ -1363,7 +1549,7 @@
 
   max-width: 430px;
 
-  max-height: 90vh;
+  max-height: 90dvh;
 
   overflow-y: auto;
 
@@ -1380,7 +1566,7 @@
     var(--amp-text);
 
   box-shadow:
-    0 20px 60px rgba(15,23,42,.25);
+    var(--amp-modal-shadow);
 
   animation:
     appuModalIn .22s ease;
@@ -1390,20 +1576,31 @@
 @keyframes appuModalIn {
 
   from {
+
     opacity: 0;
+
     transform:
       translateY(15px)
       scale(.97);
+
   }
 
   to {
+
     opacity: 1;
+
     transform:
       translateY(0)
       scale(1);
+
   }
 
 }
+
+
+/* ========================================================
+   MODAL HEADER
+   ======================================================== */
 
 .appu-mp3-modal-header {
 
@@ -1426,7 +1623,7 @@
 
 .appu-mp3-modal-title {
 
-  font-size: 16px;
+  font-size: 17px;
 
   font-weight: 700;
 
@@ -1434,9 +1631,9 @@
 
 .appu-mp3-modal-close {
 
-  width: 34px;
+  width: 36px;
 
-  height: 34px;
+  height: 36px;
 
   border: 0;
 
@@ -1448,11 +1645,16 @@
   color:
     var(--amp-text);
 
-  font-size: 17px;
+  font-size: 18px;
 
   cursor: pointer;
 
 }
+
+
+/* ========================================================
+   MODAL BODY
+   ======================================================== */
 
 .appu-mp3-modal-body {
 
@@ -1468,11 +1670,16 @@
   color:
     var(--amp-muted);
 
-  font-size: 12px;
+  font-size: 13px;
 
   line-height: 1.5;
 
 }
+
+
+/* ========================================================
+   SCAN OPTIONS
+   ======================================================== */
 
 .appu-mp3-scan-option {
 
@@ -1522,7 +1729,7 @@
 
   display: block;
 
-  font-size: 12px;
+  font-size: 13px;
 
 }
 
@@ -1535,9 +1742,14 @@
   color:
     var(--amp-muted);
 
-  font-size: 10px;
+  font-size: 11px;
 
 }
+
+
+/* ========================================================
+   EQUALIZER
+   ======================================================== */
 
 .appu-mp3-eq-grid {
 
@@ -1570,7 +1782,7 @@
 
   font: inherit;
 
-  font-size: 11px;
+  font-size: 12px;
 
   cursor: pointer;
 
@@ -1594,9 +1806,13 @@
 
 }
 
+
+/* ========================================================
+   ACCESSIBILITY
+   ======================================================== */
+
 #appu-music-player button:focus-visible,
-#appu-music-player input:focus-visible,
-#appu-mp3-dropzone:focus-visible {
+#appu-music-player input:focus-visible {
 
   outline:
     2px solid
@@ -1606,144 +1822,376 @@
 
 }
 
-html[data-theme='dark'] #appu-music-player {
 
-  --amp-bg: #15191f;
-  --amp-surface: #20252d;
-  --amp-surface2: #2d343e;
-  --amp-text: #f5f7fa;
-  --amp-muted: #c2cad3;
-  --amp-line: #505a66;
-  --amp-accent: #2bb7a9;
-  --amp-accent-text: #071312;
+/* ========================================================
+   MOBILE - MAX 768px
+   ======================================================== */
 
-}
+@media (max-width:768px) {
 
-@media (max-width:600px) {
+  #appu-music-player {
+
+    width: 100%;
+
+    max-width: 100%;
+
+    height: 100dvh;
+
+    min-height: 100dvh;
+
+  }
 
   .appu-mp3-player {
+
+    width: 100%;
+
+    height: 100%;
+
+    min-height: 100%;
+
     border-radius: 14px;
+
   }
 
   .appu-mp3-header {
+
     padding:
       14px 14px 11px;
+
   }
 
   .appu-mp3-title {
-    font-size: 16px;
+
+    font-size: 17px;
+
+  }
+
+  .appu-mp3-subtitle {
+
+    font-size: 12px;
+
   }
 
   .appu-mp3-header-actions {
+
     gap: 5px;
+
   }
 
   .appu-mp3-header-button {
-    min-height: 34px;
-    padding: 6px 8px;
-    font-size: 10px;
+
+    min-height: 36px;
+
+    padding:
+      6px 8px;
+
+    font-size: 11px;
+
   }
 
   .appu-mp3-header-right {
+
     gap: 5px;
+
   }
 
   .appu-mp3-header-right .appu-mp3-theme-toggle {
-    flex-basis: 34px;
-    width: 34px;
-    min-width: 34px;
-    height: 34px;
-    min-height: 34px;
+
+    flex-basis: 36px;
+
+    width: 36px;
+
+    min-width: 36px;
+
+    height: 36px;
+
+    min-height: 36px;
+
     border-radius: 9px;
+
   }
 
   .appu-mp3-theme-icon {
-    width: 18px;
-    height: 18px;
-    font-size: 16px;
-  }
 
-  .appu-mp3-dropzone {
-    margin: 12px;
-    padding: 20px 12px;
+    width: 18px;
+
+    height: 18px;
+
+    font-size: 16px;
+
   }
 
   .appu-mp3-now-playing {
-    padding-top: 15px;
+
+    padding:
+      15px 14px 12px;
+
   }
 
   .appu-mp3-cover {
+
     width:
       min(210px,62vw);
+
   }
 
   .appu-mp3-visualizer {
+
     height: 210px;
+
+  }
+
+  .appu-mp3-track-name {
+
+    font-size: 19px;
+
+  }
+
+  .appu-mp3-track-info {
+
+    font-size: 12px;
+
   }
 
   .appu-mp3-controls {
+
     gap: 7px;
+
+  }
+
+  .appu-mp3-control {
+
+    width: 43px;
+
+    height: 43px;
+
+    font-size: 17px;
+
+  }
+
+  .appu-mp3-play {
+
+    width: 58px;
+
+    height: 58px;
+
+    font-size: 23px;
+
   }
 
   .appu-mp3-volume {
+
     min-width: 0;
+
   }
 
   .appu-mp3-volume-slider {
+
     width: 70px;
+
   }
 
   .appu-mp3-small-controls {
+
     flex-wrap: wrap;
+
+  }
+
+  .appu-mp3-option {
+
+    min-height: 36px;
+
+    font-size: 11px;
+
+  }
+
+  .appu-mp3-tab {
+
+    min-height: 36px;
+
+    font-size: 11px;
+
+  }
+
+  .appu-mp3-item-name {
+
+    font-size: 13px;
+
+  }
+
+  .appu-mp3-item-meta {
+
+    font-size: 11px;
+
+  }
+
+  .appu-mp3-category-name {
+
+    font-size: 13px;
+
+  }
+
+  .appu-mp3-category-count {
+
+    font-size: 11px;
+
   }
 
 }
+
+
+/* ========================================================
+   SMALL MOBILE - MAX 390px
+   ======================================================== */
 
 @media (max-width:390px) {
 
   .appu-mp3-header-actions {
+
     align-items: stretch;
+
   }
 
   .appu-mp3-header-left,
   .appu-mp3-header-right {
+
     gap: 4px;
+
   }
 
   .appu-mp3-header-button {
-    padding: 6px;
+
+    padding:
+      6px;
+
+    font-size: 10px;
+
   }
 
   .appu-mp3-header-right .appu-mp3-theme-toggle {
-    flex-basis: 32px;
-    width: 32px;
-    min-width: 32px;
-    height: 32px;
-    min-height: 32px;
+
+    flex-basis: 34px;
+
+    width: 34px;
+
+    min-width: 34px;
+
+    height: 34px;
+
+    min-height: 34px;
+
     border-radius: 8px;
+
   }
 
   .appu-mp3-theme-icon {
+
     width: 17px;
+
     height: 17px;
+
     font-size: 15px;
+
   }
 
   .appu-mp3-control {
-    width: 39px;
-    height: 39px;
+
+    width: 40px;
+
+    height: 40px;
+
+    font-size: 16px;
+
   }
 
   .appu-mp3-play {
+
     width: 54px;
+
     height: 54px;
+
+    font-size: 22px;
+
   }
 
   .appu-mp3-volume-slider {
+
     width: 55px;
+
+  }
+
+  .appu-mp3-track-name {
+
+    font-size: 18px;
+
   }
 
 }
+
+
+/* ========================================================
+   TABLET / DESKTOP - MIN 769px
+   ======================================================== */
+
+@media (min-width:769px) {
+
+  #appu-music-player {
+
+    width: 100%;
+
+    max-width: none;
+
+    height: 100dvh;
+
+    min-height: 100dvh;
+
+  }
+
+  .appu-mp3-player {
+
+    width: 100%;
+
+    height: 100%;
+
+    min-height: 100%;
+
+    border-radius: 18px;
+
+  }
+
+}
+
+
+/* ========================================================
+   LARGE DESKTOP
+   ======================================================== */
+
+@media (min-width:769px) and (min-height:900px) {
+
+  .appu-mp3-title {
+
+    font-size: 20px;
+
+  }
+
+  .appu-mp3-track-name {
+
+    font-size: 21px;
+
+  }
+
+  .appu-mp3-subtitle {
+
+    font-size: 13px;
+
+  }
+
+}
+
+
+/* ========================================================
+   REDUCED MOTION
+   ======================================================== */
 
 @media (prefers-reduced-motion:reduce) {
 
