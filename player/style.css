@@ -1,2231 +1,1079 @@
-/* ========================================================
-   APPU.UK - MP3 MUSIC PLAYER
-   ROOT THEME
-   TEXT CONTRAST TARGET: >= 6:1
-   ======================================================== */
-
 :root {
-  /* ---------- LIGHT THEME ---------- */
-
-  --amp-bg: #f3f7fb;
+  --amp-bg: #f8fafc;
   --amp-surface: #ffffff;
-  --amp-surface2: #e8eef5;
-
-  /* Main text
-     Contrast against:
-     --amp-bg      > 6:1
-     --amp-surface > 6:1
-  */
+  --amp-surface2: #e2e8f0;
   --amp-text: #111827;
-
-  /* Secondary / muted text
-     Still >= 6:1 against bg and surface
-  */
   --amp-muted: #374151;
-
-  /* Borders */
-  --amp-line: #9ca3af;
-
-  /* Accent */
-  --amp-accent: #006b63;
-
-  /* Text placed directly on accent */
+  --amp-line: #94a3b8;
+  --amp-accent: #00695c;
   --amp-accent-text: #ffffff;
-
-  /* Danger text */
   --amp-danger: #991b1b;
-
-  /* Danger background */
-  --amp-danger-bg: rgba(153, 27, 27, 0.10);
-
-  /* Overlay */
-  --amp-overlay: rgba(15, 23, 42, 0.68);
-
-  /* Shadows */
-  --amp-shadow:
-    0 10px 30px rgba(15, 23, 42, 0.10);
-
-  --amp-cover-shadow:
-    0 16px 35px rgba(15, 23, 42, 0.18);
-
-  --amp-play-shadow:
-    0 7px 18px rgba(15, 23, 42, 0.16);
-
-  --amp-modal-shadow:
-    0 20px 60px rgba(15, 23, 42, 0.25);
-
-  /* Gradients */
-  --amp-gradient-start: var(--amp-accent);
+  --amp-danger-bg: rgba(153,27,27,.10);
+  --amp-overlay: rgba(15,23,42,.72);
+  --amp-shadow: 0 10px 30px rgba(15,23,42,.10);
+  --amp-cover-shadow: 0 16px 35px rgba(15,23,42,.18);
+  --amp-play-shadow: 0 7px 18px rgba(15,23,42,.16);
+  --amp-modal-shadow: 0 20px 60px rgba(15,23,42,.25);
+  --amp-gradient-start: #00695c;
   --amp-gradient-end: #164e63;
 }
-
-
-/* ========================================================
-   DARK THEME
-   ======================================================== */
 
 html[data-theme='dark'] {
-
-  /* ---------- DARK THEME ---------- */
-
-  --amp-bg: #15191f;
-  --amp-surface: #20252d;
-  --amp-surface2: #2d343e;
-
-  /* Main text
-     Very high contrast against bg/surface
-  */
-  --amp-text: #f9fafb;
-
-  /* Secondary / muted text
-     Kept bright enough for >= 6:1
-     against both dark backgrounds
-  */
-  --amp-muted: #d1d5db;
-
-  /* Borders */
-  --amp-line: #667085;
-
-  /* Accent */
+  --amp-bg: #0f172a;
+  --amp-surface: #1e293b;
+  --amp-surface2: #334155;
+  --amp-text: #f8fafc;
+  --amp-muted: #e2e8f0;
+  --amp-line: #64748b;
   --amp-accent: #5eead4;
-
-  /* Dark text on accent */
   --amp-accent-text: #042f2e;
-
-  /* Danger text */
   --amp-danger: #fca5a5;
-
-  /* Danger background */
-  --amp-danger-bg: rgba(248, 113, 113, 0.14);
-
-  /* Overlay */
-  --amp-overlay: rgba(0, 0, 0, 0.74);
-
-  /* Shadows */
-  --amp-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.35);
-
-  --amp-cover-shadow:
-    0 16px 35px rgba(0, 0, 0, 0.40);
-
-  --amp-play-shadow:
-    0 7px 18px rgba(0, 0, 0, 0.35);
-
-  --amp-modal-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.55);
-
-  /* Gradients */
-  --amp-gradient-start: var(--amp-accent);
+  --amp-danger-bg: rgba(252,165,165,.14);
+  --amp-overlay: rgba(0,0,0,.78);
+  --amp-shadow: 0 10px 30px rgba(0,0,0,.38);
+  --amp-cover-shadow: 0 16px 35px rgba(0,0,0,.45);
+  --amp-play-shadow: 0 7px 18px rgba(0,0,0,.40);
+  --amp-modal-shadow: 0 20px 60px rgba(0,0,0,.60);
+  --amp-gradient-start: #0f766e;
   --amp-gradient-end: #164e63;
 }
 
-
-/* ========================================================
-   PLAYER ROOT
-   ======================================================== */
-
 #appu-music-player {
-
   width: 100%;
-
   min-width: 0;
-
   height: 100dvh;
-
   min-height: 100dvh;
-
   max-width: none;
-
   margin: 0;
-
   padding: 0;
-
   overflow: hidden;
-
-  background:
-    var(--amp-bg);
-
-  color:
-    var(--amp-text);
-
-  font-family:
-    inherit;
-
+  background: var(--amp-bg);
+  color: var(--amp-text);
+  font-family: inherit;
   font-size: 16px;
-
   line-height: 1.4;
-
   color-scheme: light;
-
   box-sizing: border-box;
-
 }
-
-
-/* ========================================================
-   DARK COLOR SCHEME
-   ======================================================== */
 
 html[data-theme='dark'] #appu-music-player {
-
   color-scheme: dark;
-
 }
-
-
-/* ========================================================
-   GLOBAL BOX SIZING
-   ======================================================== */
 
 #appu-music-player *,
 #appu-music-player *::before,
 #appu-music-player *::after {
-
   box-sizing: border-box;
-
 }
-
-
-/* ========================================================
-   MAIN PLAYER
-   ======================================================== */
 
 .appu-mp3-player {
-
   width: 100%;
-
   min-width: 0;
-
   height: 100%;
-
   min-height: 100%;
-
   overflow: hidden;
-
-  border:
-    1px solid
-    var(--amp-line);
-
+  border: 1px solid var(--amp-line);
   border-radius: 18px;
-
-  background:
-    var(--amp-surface);
-
-  color:
-    var(--amp-text);
-
-  box-shadow:
-    var(--amp-shadow);
-
+  background: var(--amp-surface);
+  color: var(--amp-text);
+  box-shadow: var(--amp-shadow);
 }
 
-
-/* ========================================================
-   HEADER
-   ======================================================== */
-
 .appu-mp3-header {
-
-  padding:
-    14px 18px 12px;
-
-  border-bottom:
-    1px solid
-    var(--amp-line);
-
-  background:
-    var(--amp-surface);
-
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid var(--amp-line);
+  background: var(--amp-surface);
 }
 
 .appu-mp3-header-actions {
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   gap: 8px;
-
   margin-top: 9px;
-
 }
 
 .appu-mp3-header-left,
 .appu-mp3-header-right {
-
   display: flex;
-
   align-items: center;
-
   gap: 7px;
-
 }
 
 .appu-mp3-header-right {
-
   margin-left: auto;
-
 }
 
-
-/* ========================================================
-   HEADER BUTTON
-   ======================================================== */
-
 .appu-mp3-header-button {
-
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
-
   min-height: 38px;
-
-  padding:
-    7px 11px;
-
+  padding: 7px 11px;
   border: 0;
-
   border-radius: 9px;
-
-  background:
-    var(--amp-surface2);
-
-  color:
-    var(--amp-text);
-
+  background: var(--amp-surface2);
+  color: var(--amp-text);
   font: inherit;
-
   font-size: 12px;
-
   font-weight: 600;
-
   line-height: 1.2;
-
   cursor: pointer;
-
   white-space: nowrap;
-
 }
 
 .appu-mp3-header-button:hover {
-
-  background:
-    var(--amp-line);
-
+  background: var(--amp-line);
 }
 
 .appu-mp3-header-button.appu-primary,
 .appu-mp3-header-button.appu-active {
-
-  background:
-    var(--amp-accent);
-
-  color:
-    var(--amp-accent-text);
-
+  background: var(--amp-accent);
+  color: var(--amp-accent-text);
 }
 
-
-/* ========================================================
-   THEME TOGGLE
-   ======================================================== */
-
 .appu-mp3-header-right .appu-mp3-theme-toggle {
-
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
-
   flex: 0 0 40px;
-
   width: 40px;
-
   min-width: 40px;
-
   height: 40px;
-
   min-height: 40px;
-
   padding: 0;
-
   margin: 0;
-
-  border:
-    1px solid
-    var(--amp-line);
-
+  border: 1px solid var(--amp-line);
   border-radius: 10px;
-
-  background:
-    var(--amp-surface);
-
-  color:
-    var(--amp-text);
-
+  background: var(--amp-surface);
+  color: var(--amp-text);
   cursor: pointer;
-
   font: inherit;
-
   line-height: 1;
-
   white-space: normal;
-
-  transition:
-    background-color .2s ease,
-    border-color .2s ease,
-    color .2s ease,
-    transform .15s ease;
-
+  transition: background-color .2s ease,border-color .2s ease,color .2s ease,transform .15s ease;
 }
 
 .appu-mp3-header-right .appu-mp3-theme-toggle:hover {
-
-  background:
-    var(--amp-surface2);
-
+  background: var(--amp-surface2);
 }
 
 .appu-mp3-header-right .appu-mp3-theme-toggle:active {
-
-  transform:
-    scale(.95);
-
+  transform: scale(.95);
 }
 
 .appu-mp3-header-right .appu-mp3-theme-toggle:focus-visible {
-
-  outline:
-    2px solid
-    var(--amp-accent);
-
+  outline: 2px solid var(--amp-accent);
   outline-offset: 2px;
-
 }
 
 .appu-mp3-theme-icon {
-
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
-
   width: 20px;
-
   height: 20px;
-
-  color:
-    var(--amp-text);
-
+  color: var(--amp-text);
   font-size: 18px;
-
   font-weight: 700;
-
 }
 
-
-/* ========================================================
-   TITLE
-   ======================================================== */
-
 .appu-mp3-title {
-
   display: block;
-
   max-width: 100%;
-
   margin: 0;
-
   overflow: hidden;
-
   text-overflow: ellipsis;
-
   white-space: nowrap;
-
-  color:
-    var(--amp-text);
-
+  color: var(--amp-text);
   font-size: 19px;
-
   font-weight: 700;
-
   line-height: 1.3;
-
 }
 
 .appu-mp3-subtitle {
-
   display: block;
-
   max-width: 100%;
-
   margin-top: 3px;
-
   overflow: hidden;
-
   text-overflow: ellipsis;
-
   white-space: nowrap;
-
-  color:
-    var(--amp-muted);
-
+  color: var(--amp-muted);
   font-size: 13px;
-
   line-height: 1.4;
-
 }
 
-
-/* ========================================================
-   NOW PLAYING
-   ======================================================== */
-
 .appu-mp3-now-playing {
-
-  padding:
-    20px 18px 14px;
-
+  padding: 20px 18px 14px;
   text-align: center;
-
 }
 
 .appu-mp3-cover {
-
   position: relative;
-
-  width:
-    min(230px,65vw);
-
-  aspect-ratio:
-    1 / 1;
-
-  margin:
-    0 auto 18px;
-
-  overflow:
-    hidden;
-
-  border-radius:
-    18px;
-
+  width: min(230px,65vw);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto 18px;
+  overflow: hidden;
+  border-radius: 18px;
   background:
-    radial-gradient(
-      circle at 35% 30%,
-      rgba(255,255,255,.20),
-      transparent 28%
-    ),
-    linear-gradient(
-      135deg,
-      var(--amp-gradient-start),
-      var(--amp-gradient-end)
-    );
-
-  box-shadow:
-    var(--amp-cover-shadow);
-
+    radial-gradient(circle at 35% 30%,rgba(255,255,255,.20),transparent 28%),
+    linear-gradient(135deg,var(--amp-gradient-start),var(--amp-gradient-end));
+  box-shadow: var(--amp-cover-shadow);
 }
 
 .appu-mp3-cover-image {
-
   display: none;
-
   position: absolute;
-
   inset: 0;
-
   width: 100%;
-
   height: 100%;
-
   object-fit: cover;
-
 }
 
-.appu-mp3-cover.appu-has-artwork
-.appu-mp3-cover-image {
-
+.appu-mp3-cover.appu-has-artwork .appu-mp3-cover-image {
   display: block;
-
 }
 
-.appu-mp3-cover.appu-has-artwork
-.appu-mp3-cover-disc {
-
+.appu-mp3-cover.appu-has-artwork .appu-mp3-cover-disc {
   display: none;
-
 }
 
 .appu-mp3-cover::before,
 .appu-mp3-cover::after {
-
   content: "";
-
   position: absolute;
-
   border-radius: 50%;
-
-  border:
-    1px solid
-    rgba(255,255,255,.14);
-
+  border: 1px solid rgba(255,255,255,.14);
   pointer-events: none;
-
 }
 
 .appu-mp3-cover::before {
-
   inset: 15%;
-
 }
 
 .appu-mp3-cover::after {
-
   inset: 29%;
-
 }
 
 .appu-mp3-cover-image + .appu-mp3-cover-disc {
-
   position: absolute;
-
   inset: 0;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
 }
 
 .appu-mp3-cover-disc::before {
-
   content: "";
-
   width: 21%;
-
   aspect-ratio: 1;
-
   border-radius: 50%;
-
-  background:
-    rgba(255,255,255,.9);
-
+  background: rgba(255,255,255,.9);
   box-shadow:
     0 0 0 7px rgba(255,255,255,.10),
     0 0 0 16px rgba(255,255,255,.06);
-
 }
 
 .appu-mp3-playing .appu-mp3-cover-disc {
-
-  animation:
-    appuMp3Rotate 8s linear infinite;
-
+  animation: appuMp3Rotate 8s linear infinite;
 }
 
 @keyframes appuMp3Rotate {
-
   from {
-    transform:
-      rotate(0deg);
+    transform: rotate(0deg);
   }
-
   to {
-    transform:
-      rotate(360deg);
+    transform: rotate(360deg);
   }
-
 }
 
-
-/* ========================================================
-   VISUALIZER
-   ======================================================== */
-
 .appu-mp3-visualizer {
-
   display: none;
-
   position: relative;
-
   width: 100%;
-
   height: 230px;
-
-  margin:
-    0 auto 18px;
-
+  margin: 0 auto 18px;
   overflow: hidden;
-
   border-radius: 18px;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--amp-gradient-start),
-      var(--amp-gradient-end)
-    );
-
-  box-shadow:
-    var(--amp-cover-shadow);
-
+  background: linear-gradient(135deg,var(--amp-gradient-start),var(--amp-gradient-end));
+  box-shadow: var(--amp-cover-shadow);
 }
 
 .appu-mp3-visualizer.appu-visible {
-
   display: block;
-
 }
 
 .appu-mp3-visualizer canvas {
-
   display: block;
-
   width: 100%;
-
   height: 100%;
-
 }
 
-
-/* ========================================================
-   TRACK INFO
-   ======================================================== */
-
 .appu-mp3-track-name {
-
   max-width: 100%;
-
   overflow: hidden;
-
   text-overflow: ellipsis;
-
   white-space: nowrap;
-
-  color:
-    var(--amp-text);
-
+  color: var(--amp-text);
   font-size: 20px;
-
   font-weight: 700;
-
   line-height: 1.3;
-
 }
 
 .appu-mp3-track-info {
-
   margin-top: 5px;
-
   min-height: 18px;
-
   overflow: hidden;
-
   text-overflow: ellipsis;
-
   white-space: nowrap;
-
-  color:
-    var(--amp-muted);
-
+  color: var(--amp-muted);
   font-size: 13px;
-
 }
 
-
-/* ========================================================
-   PROGRESS
-   ======================================================== */
-
 .appu-mp3-progress-area {
-
-  padding:
-    0 18px;
-
+  padding: 0 18px;
 }
 
 .appu-mp3-progress {
-
   width: 100%;
-
   height: 6px;
-
   margin: 0;
-
   padding: 0;
-
   appearance: none;
-
   -webkit-appearance: none;
-
   border: 0;
-
   border-radius: 999px;
-
-  background:
-    var(--amp-line);
-
+  background: var(--amp-line);
   cursor: pointer;
-
 }
 
 .appu-mp3-progress::-webkit-slider-thumb {
-
   width: 16px;
-
   height: 16px;
-
   appearance: none;
-
   -webkit-appearance: none;
-
   border: 0;
-
   border-radius: 50%;
-
-  background:
-    var(--amp-accent);
-
+  background: var(--amp-accent);
   cursor: pointer;
-
 }
 
 .appu-mp3-progress::-moz-range-thumb {
-
   width: 16px;
-
   height: 16px;
-
   border: 0;
-
   border-radius: 50%;
-
-  background:
-    var(--amp-accent);
-
+  background: var(--amp-accent);
   cursor: pointer;
-
 }
 
 .appu-mp3-time {
-
   display: flex;
-
   justify-content: space-between;
-
   margin-top: 7px;
-
-  color:
-    var(--amp-muted);
-
+  color: var(--amp-muted);
   font-size: 12px;
-
 }
 
-
-/* ========================================================
-   MAIN CONTROLS
-   ======================================================== */
-
 .appu-mp3-controls {
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   gap: 14px;
-
-  padding:
-    18px 15px 14px;
-
+  padding: 18px 15px 14px;
 }
 
 .appu-mp3-control {
-
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
-
   width: 46px;
-
   height: 46px;
-
   padding: 0;
-
   border: 0;
-
   border-radius: 50%;
-
   background: transparent;
-
-  color:
-    var(--amp-text);
-
+  color: var(--amp-text);
   font: inherit;
-
   font-size: 18px;
-
   cursor: pointer;
-
 }
 
 .appu-mp3-control:hover {
-
-  background:
-    var(--amp-surface2);
-
+  background: var(--amp-surface2);
 }
 
 .appu-mp3-control:active {
-
-  transform:
-    scale(.94);
-
+  transform: scale(.94);
 }
 
 .appu-mp3-play {
-
   width: 60px;
-
   height: 60px;
-
-  background:
-    var(--amp-accent);
-
-  color:
-    var(--amp-accent-text);
-
+  background: var(--amp-accent);
+  color: var(--amp-accent-text);
   font-size: 24px;
-
-  box-shadow:
-    var(--amp-play-shadow);
-
+  box-shadow: var(--amp-play-shadow);
 }
 
 .appu-mp3-play:hover {
-
-  background:
-    var(--amp-accent);
-
-  filter:
-    brightness(.95);
-
+  background: var(--amp-accent);
+  filter: brightness(.95);
 }
 
-
-/* ========================================================
-   SMALL CONTROLS
-   ======================================================== */
-
 .appu-mp3-small-controls {
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   gap: 12px;
-
-  padding:
-    0 18px 15px;
-
+  padding: 0 18px 15px;
 }
 
 .appu-mp3-option {
-
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
-
   min-width: 44px;
-
   min-height: 38px;
-
-  padding:
-    5px 10px;
-
+  padding: 5px 10px;
   border: 0;
-
   border-radius: 9px;
-
   background: transparent;
-
-  color:
-    var(--amp-muted);
-
+  color: var(--amp-muted);
   font: inherit;
-
   font-size: 12px;
-
   cursor: pointer;
-
 }
 
 .appu-mp3-option:hover {
-
-  background:
-    var(--amp-surface2);
-
+  background: var(--amp-surface2);
 }
 
 .appu-mp3-option.appu-active {
-
-  color:
-    var(--amp-accent);
-
+  color: var(--amp-accent);
   font-weight: 700;
-
 }
 
-
-/* ========================================================
-   VOLUME
-   ======================================================== */
-
 .appu-mp3-volume {
-
   display: flex;
-
   align-items: center;
-
   gap: 8px;
-
   min-width: 130px;
-
 }
 
 .appu-mp3-volume-icon {
-
   flex: 0 0 auto;
-
   font-size: 13px;
-
   cursor: pointer;
-
 }
 
 .appu-mp3-volume-slider {
-
   width: 90px;
-
   height: 5px;
-
   appearance: none;
-
   -webkit-appearance: none;
-
   border-radius: 999px;
-
-  background:
-    var(--amp-line);
-
+  background: var(--amp-line);
   cursor: pointer;
-
 }
 
 .appu-mp3-volume-slider::-webkit-slider-thumb {
-
   width: 14px;
-
   height: 14px;
-
   appearance: none;
-
   -webkit-appearance: none;
-
   border: 0;
-
   border-radius: 50%;
-
-  background:
-    var(--amp-accent);
-
+  background: var(--amp-accent);
 }
 
 .appu-mp3-volume-slider::-moz-range-thumb {
-
   width: 14px;
-
   height: 14px;
-
   border: 0;
-
   border-radius: 50%;
-
-  background:
-    var(--amp-accent);
-
+  background: var(--amp-accent);
 }
 
-
-/* ========================================================
-   LIBRARY
-   ======================================================== */
-
 .appu-mp3-library {
-
-  border-top:
-    1px solid
-    var(--amp-line);
-
-  background:
-    var(--amp-surface);
-
+  border-top: 1px solid var(--amp-line);
+  background: var(--amp-surface);
 }
 
 .appu-mp3-library-tabs {
-
   display: flex;
-
   align-items: center;
-
   gap: 4px;
-
   overflow-x: auto;
-
   overscroll-behavior-x: contain;
-
   scrollbar-width: none;
-
-  padding:
-    10px 12px;
-
-  border-bottom:
-    1px solid
-    var(--amp-line);
-
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--amp-line);
   scroll-behavior: smooth;
-
 }
 
 .appu-mp3-library-tabs::-webkit-scrollbar {
-
   display: none;
-
 }
 
 .appu-mp3-tab {
-
   flex: 0 0 auto;
-
   min-height: 36px;
-
-  padding:
-    6px 11px;
-
+  padding: 6px 11px;
   border: 0;
-
   border-radius: 9px;
-
   background: transparent;
-
-  color:
-    var(--amp-muted);
-
+  color: var(--amp-muted);
   font: inherit;
-
   font-size: 12px;
-
   cursor: pointer;
-
   white-space: nowrap;
-
 }
 
 .appu-mp3-tab:hover {
-
-  background:
-    var(--amp-surface2);
-
+  background: var(--amp-surface2);
 }
 
 .appu-mp3-tab.appu-selected {
-
-  background:
-    var(--amp-accent);
-
-  color:
-    var(--amp-accent-text);
-
+  background: var(--amp-accent);
+  color: var(--amp-accent-text);
 }
 
-
-/* ========================================================
-   LIBRARY VIEWPORT
-   ======================================================== */
-
 .appu-mp3-library-viewport {
-
   overflow: hidden;
-
-  touch-action:
-    pan-y pinch-zoom;
-
+  touch-action: pan-y pinch-zoom;
 }
 
 .appu-mp3-library-track {
-
   display: flex;
-
   width: 500%;
-
-  transform:
-    translateX(0);
-
-  transition:
-    transform 1s
-    cubic-bezier(.22,.61,.36,1);
-
+  transform: translateX(0);
+  transition: transform 1s cubic-bezier(.22,.61,.36,1);
 }
 
 .appu-mp3-library-panel {
-
-  flex:
-    0 0 20%;
-
+  flex: 0 0 20%;
   width: 20%;
-
   min-width: 0;
-
 }
-
-
-/* ========================================================
-   PLAYLIST / CATEGORY
-   ======================================================== */
 
 .appu-mp3-playlist,
 .appu-mp3-category-list {
-
   max-height: 330px;
-
   overflow-y: auto;
-
 }
 
 .appu-mp3-empty {
-
-  padding:
-    28px 18px;
-
-  color:
-    var(--amp-muted);
-
+  padding: 28px 18px;
+  color: var(--amp-muted);
   text-align: center;
-
   font-size: 13px;
-
 }
 
-
-/* ========================================================
-   PLAYLIST ITEM
-   ======================================================== */
-
 .appu-mp3-item {
-
   display: flex;
-
   align-items: center;
-
   gap: 11px;
-
   min-width: 0;
-
-  padding:
-    11px 14px;
-
-  border-bottom:
-    1px solid
-    var(--amp-line);
-
-  background:
-    var(--amp-surface);
-
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--amp-line);
+  background: var(--amp-surface);
   cursor: pointer;
-
 }
 
 .appu-mp3-item:hover,
 .appu-mp3-item.appu-current {
-
-  background:
-    var(--amp-surface2);
-
+  background: var(--amp-surface2);
 }
 
 .appu-mp3-item-number {
-
   flex: 0 0 28px;
-
-  color:
-    var(--amp-muted);
-
+  color: var(--amp-muted);
   text-align: center;
-
   font-size: 12px;
-
 }
 
 .appu-mp3-item-icon {
-
   flex: 0 0 34px;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   width: 34px;
-
   height: 34px;
-
   overflow: hidden;
-
   border-radius: 9px;
-
-  background:
-    var(--amp-accent);
-
-  color:
-    var(--amp-accent-text);
-
+  background: var(--amp-accent);
+  color: var(--amp-accent-text);
   font-size: 11px;
-
 }
 
 .appu-mp3-item-icon img {
-
   width: 100%;
-
   height: 100%;
-
   object-fit: cover;
-
 }
 
 .appu-mp3-item-info {
-
   flex: 1 1 auto;
-
   min-width: 0;
-
 }
 
 .appu-mp3-item-name {
-
   overflow: hidden;
-
   text-overflow: ellipsis;
-
   white-space: nowrap;
-
-  color:
-    var(--amp-text);
-
+  color: var(--amp-text);
   font-size: 14px;
-
   font-weight: 600;
-
 }
 
 .appu-mp3-item-meta {
-
   margin-top: 2px;
-
   overflow: hidden;
-
   text-overflow: ellipsis;
-
   white-space: nowrap;
-
-  color:
-    var(--amp-muted);
-
+  color: var(--amp-muted);
   font-size: 11px;
-
 }
 
 .appu-mp3-item-remove {
-
   flex: 0 0 auto;
-
   width: 34px;
-
   height: 34px;
-
   border: 0;
-
   border-radius: 8px;
-
   background: transparent;
-
-  color:
-    var(--amp-muted);
-
+  color: var(--amp-muted);
   font-size: 16px;
-
   cursor: pointer;
-
 }
 
 .appu-mp3-item-remove:hover {
-
-  background:
-    var(--amp-danger-bg);
-
-  color:
-    var(--amp-danger);
-
+  background: var(--amp-danger-bg);
+  color: var(--amp-danger);
 }
 
-
-/* ========================================================
-   CATEGORY
-   ======================================================== */
-
 .appu-mp3-category-item {
-
   display: flex;
-
   align-items: center;
-
   gap: 12px;
-
-  padding:
-    12px 15px;
-
-  border-bottom:
-    1px solid
-    var(--amp-line);
-
-  background:
-    var(--amp-surface);
-
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--amp-line);
+  background: var(--amp-surface);
   cursor: pointer;
-
 }
 
 .appu-mp3-category-item:hover {
-
-  background:
-    var(--amp-surface2);
-
+  background: var(--amp-surface2);
 }
 
 .appu-mp3-category-icon {
-
   flex: 0 0 34px;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   width: 34px;
-
   height: 34px;
-
   border-radius: 9px;
-
-  background:
-    var(--amp-surface2);
-
-  color:
-    var(--amp-text);
-
+  background: var(--amp-surface2);
+  color: var(--amp-text);
   font-size: 10px;
-
 }
 
 .appu-mp3-category-info {
-
   flex: 1;
-
   min-width: 0;
-
 }
 
 .appu-mp3-category-name {
-
   overflow: hidden;
-
   text-overflow: ellipsis;
-
   white-space: nowrap;
-
-  color:
-    var(--amp-text);
-
+  color: var(--amp-text);
   font-size: 14px;
-
   font-weight: 600;
-
 }
 
 .appu-mp3-category-count {
-
   margin-top: 2px;
-
-  color:
-    var(--amp-muted);
-
+  color: var(--amp-muted);
   font-size: 11px;
-
 }
-
-
-/* ========================================================
-   STATUS
-   ======================================================== */
 
 .appu-mp3-status {
-
   min-height: 20px;
-
-  padding:
-    8px 18px 15px;
-
-  color:
-    var(--amp-muted);
-
+  padding: 8px 18px 15px;
+  color: var(--amp-muted);
   text-align: center;
-
   font-size: 11px;
-
 }
-
-
-/* ========================================================
-   FILE INPUT
-   ======================================================== */
 
 #appu-mp3-file-input {
-
   display: none;
-
 }
 
-
-/* ========================================================
-   MODAL
-   ======================================================== */
-
 .appu-mp3-modal {
-
   position: fixed;
-
   inset: 0;
-
   z-index: 999999;
-
   display: none;
-
   align-items: center;
-
   justify-content: center;
-
   padding: 18px;
-
-  background:
-    var(--amp-overlay);
-
-  backdrop-filter:
-    blur(5px);
-
-  -webkit-backdrop-filter:
-    blur(5px);
-
+  background: var(--amp-overlay);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .appu-mp3-modal.appu-open {
-
   display: flex;
-
 }
 
 .appu-mp3-modal-box {
-
   width: 100%;
-
   max-width: 430px;
-
   max-height: 90dvh;
-
   overflow-y: auto;
-
-  border:
-    1px solid
-    var(--amp-line);
-
+  border: 1px solid var(--amp-line);
   border-radius: 17px;
-
-  background:
-    var(--amp-surface);
-
-  color:
-    var(--amp-text);
-
-  box-shadow:
-    var(--amp-modal-shadow);
-
-  animation:
-    appuModalIn .22s ease;
-
+  background: var(--amp-surface);
+  color: var(--amp-text);
+  box-shadow: var(--amp-modal-shadow);
+  animation: appuModalIn .22s ease;
 }
 
 @keyframes appuModalIn {
-
   from {
-
     opacity: 0;
-
-    transform:
-      translateY(15px)
-      scale(.97);
-
+    transform: translateY(15px) scale(.97);
   }
-
   to {
-
     opacity: 1;
-
-    transform:
-      translateY(0)
-      scale(1);
-
+    transform: translateY(0) scale(1);
   }
-
 }
 
-
-/* ========================================================
-   MODAL HEADER
-   ======================================================== */
-
 .appu-mp3-modal-header {
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   gap: 10px;
-
-  padding:
-    16px 17px;
-
-  border-bottom:
-    1px solid
-    var(--amp-line);
-
+  padding: 16px 17px;
+  border-bottom: 1px solid var(--amp-line);
 }
 
 .appu-mp3-modal-title {
-
   font-size: 17px;
-
   font-weight: 700;
-
 }
 
 .appu-mp3-modal-close {
-
   width: 36px;
-
   height: 36px;
-
   border: 0;
-
   border-radius: 9px;
-
-  background:
-    var(--amp-surface2);
-
-  color:
-    var(--amp-text);
-
+  background: var(--amp-surface2);
+  color: var(--amp-text);
   font-size: 18px;
-
   cursor: pointer;
-
 }
 
-
-/* ========================================================
-   MODAL BODY
-   ======================================================== */
-
 .appu-mp3-modal-body {
-
-  padding:
-    15px 17px 17px;
-
+  padding: 15px 17px 17px;
 }
 
 .appu-mp3-modal-description {
-
   margin-bottom: 12px;
-
-  color:
-    var(--amp-muted);
-
+  color: var(--amp-muted);
   font-size: 13px;
-
   line-height: 1.5;
-
 }
 
-
-/* ========================================================
-   SCAN OPTIONS
-   ======================================================== */
-
 .appu-mp3-scan-option {
-
   display: flex;
-
   align-items: center;
-
   gap: 11px;
-
   width: 100%;
-
   margin-bottom: 8px;
-
   padding: 12px;
-
-  border:
-    1px solid
-    var(--amp-line);
-
+  border: 1px solid var(--amp-line);
   border-radius: 11px;
-
-  background:
-    var(--amp-surface);
-
-  color:
-    var(--amp-text);
-
+  background: var(--amp-surface);
+  color: var(--amp-text);
   text-align: left;
-
   font: inherit;
-
   cursor: pointer;
-
 }
 
 .appu-mp3-scan-option:hover {
-
-  border-color:
-    var(--amp-accent);
-
-  background:
-    var(--amp-surface2);
-
+  border-color: var(--amp-accent);
+  background: var(--amp-surface2);
 }
 
 .appu-mp3-scan-option strong {
-
   display: block;
-
   font-size: 13px;
-
 }
 
 .appu-mp3-scan-option span {
-
   display: block;
-
   margin-top: 2px;
-
-  color:
-    var(--amp-muted);
-
+  color: var(--amp-muted);
   font-size: 11px;
-
 }
 
-
-/* ========================================================
-   EQUALIZER
-   ======================================================== */
-
 .appu-mp3-eq-grid {
-
   display: grid;
-
-  grid-template-columns:
-    repeat(2,1fr);
-
+  grid-template-columns: repeat(2,1fr);
   gap: 8px;
-
 }
 
 .appu-mp3-eq-option {
-
   min-height: 48px;
-
   padding: 8px;
-
-  border:
-    1px solid
-    var(--amp-line);
-
+  border: 1px solid var(--amp-line);
   border-radius: 10px;
-
-  background:
-    var(--amp-surface);
-
-  color:
-    var(--amp-text);
-
+  background: var(--amp-surface);
+  color: var(--amp-text);
   font: inherit;
-
   font-size: 12px;
-
   cursor: pointer;
-
 }
 
 .appu-mp3-eq-option:hover,
 .appu-mp3-eq-option.appu-selected {
-
-  border-color:
-    var(--amp-accent);
-
+  border-color: var(--amp-accent);
 }
 
 .appu-mp3-eq-option.appu-selected {
-
-  background:
-    var(--amp-accent);
-
-  color:
-    var(--amp-accent-text);
-
+  background: var(--amp-accent);
+  color: var(--amp-accent-text);
 }
-
-
-/* ========================================================
-   ACCESSIBILITY
-   ======================================================== */
 
 #appu-music-player button:focus-visible,
 #appu-music-player input:focus-visible {
-
-  outline:
-    2px solid
-    var(--amp-accent);
-
+  outline: 2px solid var(--amp-accent);
   outline-offset: 2px;
-
 }
 
-
-/* ========================================================
-   MOBILE - MAX 768px
-   ======================================================== */
-
 @media (max-width:768px) {
-
   #appu-music-player {
-
     width: 100%;
-
     max-width: 100%;
-
     height: 100dvh;
-
     min-height: 100dvh;
-
   }
 
   .appu-mp3-player {
-
     width: 100%;
-
     height: 100%;
-
     min-height: 100%;
-
     border-radius: 14px;
-
   }
 
   .appu-mp3-header {
-
-    padding:
-      14px 14px 11px;
-
+    padding: 14px 14px 11px;
   }
 
   .appu-mp3-title {
-
     font-size: 17px;
-
   }
 
   .appu-mp3-subtitle {
-
     font-size: 12px;
-
   }
 
   .appu-mp3-header-actions {
-
     gap: 5px;
-
   }
 
   .appu-mp3-header-button {
-
     min-height: 36px;
-
-    padding:
-      6px 8px;
-
+    padding: 6px 8px;
     font-size: 11px;
-
   }
 
   .appu-mp3-header-right {
-
     gap: 5px;
-
   }
 
   .appu-mp3-header-right .appu-mp3-theme-toggle {
-
     flex-basis: 36px;
-
     width: 36px;
-
     min-width: 36px;
-
     height: 36px;
-
     min-height: 36px;
-
     border-radius: 9px;
-
   }
 
   .appu-mp3-theme-icon {
-
     width: 18px;
-
     height: 18px;
-
     font-size: 16px;
-
   }
 
   .appu-mp3-now-playing {
-
-    padding:
-      15px 14px 12px;
-
+    padding: 15px 14px 12px;
   }
 
   .appu-mp3-cover {
-
-    width:
-      min(210px,62vw);
-
+    width: min(210px,62vw);
   }
 
   .appu-mp3-visualizer {
-
     height: 210px;
-
   }
 
   .appu-mp3-track-name {
-
     font-size: 19px;
-
   }
 
   .appu-mp3-track-info {
-
     font-size: 12px;
-
   }
 
   .appu-mp3-controls {
-
     gap: 7px;
-
   }
 
   .appu-mp3-control {
-
     width: 43px;
-
     height: 43px;
-
     font-size: 17px;
-
   }
 
   .appu-mp3-play {
-
     width: 58px;
-
     height: 58px;
-
     font-size: 23px;
-
   }
 
   .appu-mp3-volume {
-
     min-width: 0;
-
   }
 
   .appu-mp3-volume-slider {
-
     width: 70px;
-
   }
 
   .appu-mp3-small-controls {
-
     flex-wrap: wrap;
-
   }
 
   .appu-mp3-option {
-
     min-height: 36px;
-
     font-size: 11px;
-
   }
 
   .appu-mp3-tab {
-
     min-height: 36px;
-
     font-size: 11px;
-
   }
 
   .appu-mp3-item-name {
-
     font-size: 13px;
-
   }
 
   .appu-mp3-item-meta {
-
     font-size: 11px;
-
   }
 
   .appu-mp3-category-name {
-
     font-size: 13px;
-
   }
 
   .appu-mp3-category-count {
-
     font-size: 11px;
-
   }
-
 }
 
-
-/* ========================================================
-   SMALL MOBILE - MAX 390px
-   ======================================================== */
-
 @media (max-width:390px) {
-
   .appu-mp3-header-actions {
-
     align-items: stretch;
-
   }
 
   .appu-mp3-header-left,
   .appu-mp3-header-right {
-
     gap: 4px;
-
   }
 
   .appu-mp3-header-button {
-
-    padding:
-      6px;
-
+    padding: 6px;
     font-size: 10px;
-
   }
 
   .appu-mp3-header-right .appu-mp3-theme-toggle {
-
     flex-basis: 34px;
-
     width: 34px;
-
     min-width: 34px;
-
     height: 34px;
-
     min-height: 34px;
-
     border-radius: 8px;
-
   }
 
   .appu-mp3-theme-icon {
-
     width: 17px;
-
     height: 17px;
-
     font-size: 15px;
-
   }
 
   .appu-mp3-control {
-
     width: 40px;
-
     height: 40px;
-
     font-size: 16px;
-
   }
 
   .appu-mp3-play {
-
     width: 54px;
-
     height: 54px;
-
     font-size: 22px;
-
   }
 
   .appu-mp3-volume-slider {
-
     width: 55px;
-
   }
 
   .appu-mp3-track-name {
-
     font-size: 18px;
-
   }
-
 }
 
-
-/* ========================================================
-   TABLET / DESKTOP - MIN 769px
-   ======================================================== */
-
 @media (min-width:769px) {
-
   #appu-music-player {
-
     width: 100%;
-
     max-width: none;
-
     height: 100dvh;
-
     min-height: 100dvh;
-
   }
 
   .appu-mp3-player {
-
     width: 100%;
-
     height: 100%;
-
     min-height: 100%;
-
     border-radius: 18px;
-
   }
-
 }
 
-
-/* ========================================================
-   LARGE DESKTOP
-   ======================================================== */
-
 @media (min-width:769px) and (min-height:900px) {
-
   .appu-mp3-title {
-
     font-size: 20px;
-
   }
 
   .appu-mp3-track-name {
-
     font-size: 21px;
-
   }
 
   .appu-mp3-subtitle {
-
     font-size: 13px;
-
   }
-
 }
 
-
-/* ========================================================
-   REDUCED MOTION
-   ======================================================== */
-
 @media (prefers-reduced-motion:reduce) {
-
   #appu-music-player *,
   #appu-music-player *::before,
   #appu-music-player *::after {
-
-    animation-duration:
-      .01ms !important;
-
-    animation-iteration-count:
-      1 !important;
-
-    transition-duration:
-      .01ms !important;
-
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
   }
-
 }
