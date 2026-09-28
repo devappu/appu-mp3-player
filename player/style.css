@@ -8,8 +8,7 @@ body {
 
 #appu-music-player {
   width: 100%;
-  height: 100dvh;
-  min-height: 100dvh;
+  height: auto;
   margin: 0;
   padding: 0;
 }
@@ -112,6 +111,8 @@ html[data-theme='dark'] #appu-music-player {
   white-space: nowrap;
   color: var(--amp-text);
   font-size: 19px;
+  text-align:center;
+  text-transform:uppercase;
   font-weight: 700;
   line-height: 1.3;
 }
@@ -125,6 +126,8 @@ html[data-theme='dark'] #appu-music-player {
   white-space: nowrap;
   color: var(--amp-muted);
   font-size: 13px;
+  text-align:center;
+  text-transform:uppercase;
   line-height: 1.4;
 }
 
@@ -1179,9 +1182,7 @@ html[data-theme='dark'] #appu-music-player {
 
   .appu-mp3-player {
     width: 100%;
-    height: 100%;
-    min-height: 100%;
-    border-radius: 14px;
+    height: auto;
   }
 
   .appu-mp3-header {
@@ -1348,7 +1349,7 @@ html[data-theme='dark'] #appu-music-player {
   }
 }
 
-@media (max-width:390px) {
+@media (max-width:480px) {
   .appu-mp3-header-actions {
     align-items: stretch;
   }
