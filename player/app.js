@@ -264,8 +264,8 @@
 
       themeIcon.textContent =
         theme === 'dark'
-          ? 'Light'
-          : 'Dark';
+          ? 'light'
+          : 'dark';
 
     }
 
@@ -332,8 +332,8 @@
 
     var newTheme =
       currentTheme === 'dark'
-        ? '☀️'
-        : '🌛';
+        ? 'light'
+        : 'dark';
 
     applyTheme(
       newTheme
