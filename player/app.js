@@ -264,8 +264,8 @@
 
       themeIcon.textContent =
         theme === 'dark'
-          ? 'light'
-          : 'dark';
+          ? '\u2600\uFE0F'
+          : '\uD83C\uDF1B';
 
     }
 
