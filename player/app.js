@@ -5391,3 +5391,193 @@ loadTheme();
   }
 
 })();
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const navItems = document.querySelectorAll(".appu-nav-item");
+
+
+  /* ==============================
+     PARENT MENU
+     ============================== */
+
+  navItems.forEach(function (item) {
+
+    const button =
+      item.querySelector(".appu-nav-button[data-menu]");
+
+    if (!button) return;
+
+    button.addEventListener("click", function (event) {
+
+      event.stopPropagation();
+
+      const isOpen =
+        item.classList.contains("active");
+
+
+      /* Tutup semua menu */
+
+      navItems.forEach(function (otherItem) {
+
+        otherItem.classList.remove("active");
+
+        const otherButton =
+          otherItem.querySelector(
+            ".appu-nav-button[data-menu]"
+          );
+
+        if (otherButton) {
+
+          otherButton.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+        }
+
+      });
+
+
+      /* Buka menu yang diklik */
+
+      if (!isOpen) {
+
+        item.classList.add("active");
+
+        button.setAttribute(
+          "aria-expanded",
+          "true"
+        );
+
+      }
+
+    });
+
+  });
+
+
+  /* ==============================
+     SUB MENU
+     ============================== */
+
+  document
+    .querySelectorAll(".appu-menu-section")
+    .forEach(function (section) {
+
+      const toggle =
+        section.querySelector(".appu-menu-toggle");
+
+      if (!toggle) return;
+
+      toggle.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+        const parent =
+          section.parentElement;
+
+
+        /* Tutup kategori lain */
+
+        parent
+          .querySelectorAll(".appu-menu-section")
+          .forEach(function (otherSection) {
+
+            if (otherSection !== section) {
+
+              otherSection.classList.remove("open");
+
+            }
+
+          });
+
+
+        /* Toggle kategori yang diklik */
+
+        section.classList.toggle("open");
+
+      });
+
+    });
+
+
+  /* ==============================
+     DROPUP CLICK
+     ============================== */
+
+  document
+    .querySelectorAll(".appu-dropup")
+    .forEach(function (dropup) {
+
+      dropup.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+      });
+
+    });
+
+
+  /* ==============================
+     CLICK OUTSIDE
+     ============================== */
+
+  document.addEventListener("click", function () {
+
+    navItems.forEach(function (item) {
+
+      item.classList.remove("active");
+
+      const button =
+        item.querySelector(
+          ".appu-nav-button[data-menu]"
+        );
+
+      if (button) {
+
+        button.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+      }
+
+    });
+
+  });
+
+
+  /* ==============================
+     ESCAPE
+     ============================== */
+
+  document.addEventListener("keydown", function (event) {
+
+    if (event.key === "Escape") {
+
+      navItems.forEach(function (item) {
+
+        item.classList.remove("active");
+
+        const button =
+          item.querySelector(
+            ".appu-nav-button[data-menu]"
+          );
+
+        if (button) {
+
+          button.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+        }
+
+      });
+
+    }
+
+  });
+
+});
