@@ -1,3 +1,15 @@
+html {
+  margin: 0;
+  padding: 0;
+  background: var(--amp-bg);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--amp-bg);
+}
+
 :root {
   --amp-bg: #f3f7fb;
   --amp-surface: #ffffff;
@@ -197,7 +209,7 @@ html[data-theme='dark'] #appu-music-player {
 }
 
 .appu-mp3-header-right .appu-mp3-theme-toggle:hover {
-  background: va--amp-accent);
+  background: var(--amp-accent);
 }
 
 .appu-mp3-header-right .appu-mp3-theme-toggle:active {
