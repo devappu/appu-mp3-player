@@ -264,8 +264,8 @@
 
       themeIcon.textContent =
         theme === 'dark'
-          ? '☀️'
-          : '🌛';
+          ? 'Light'
+          : 'Dark';
 
     }
 
