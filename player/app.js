@@ -228,619 +228,142 @@
   var visualizerAnimation = null;
 
   var audioGraphReady = false;
+  
+var THEME_STORAGE_KEY =
+  'appu-mp3-player-theme';
 
-  /*
-   * ====================================================
-   * INDEXEDDB LOCAL MUSIC LIBRARY
-   * ====================================================
-   *
-   * The selected audio File objects are stored locally
-   * in the browser. They are not uploaded to the server.
-   *
-   */
+var themeToggle =
+  document.getElementById(
+    'appu-mp3-theme-toggle'
+  );
 
-  var MUSIC_DB_NAME =
-    'AppuMP3Player';
+var themeIcon =
+  document.getElementById(
+    'appu-mp3-theme-icon'
+  );
 
-  var MUSIC_DB_VERSION =
-    1;
+var eqBands = [
+  60,
+  170,
+  310,
+  600,
+  1000,
+  3000,
+  6000,
+  12000,
+  14000
+];
 
-  var MUSIC_STORE_NAME =
-    'tracks';
+function applyTheme(theme) {
 
-  var musicDB =
-    null;
-
-  var musicDBReady =
-    false;
-
-  var musicDBQueue =
-    [];
-
-  function openMusicDatabase() {
-
-    if (
-      !('indexedDB' in window)
-    ) {
-
-      return;
-
-    }
-
-    var request =
-      indexedDB.open(
-        MUSIC_DB_NAME,
-        MUSIC_DB_VERSION
-      );
-
-    request.onupgradeneeded =
-      function (event) {
-
-        var database =
-          event.target.result;
-
-        if (
-          !database.objectStoreNames.contains(
-            MUSIC_STORE_NAME
-          )
-        ) {
-
-          database.createObjectStore(
-            MUSIC_STORE_NAME,
-            {
-              keyPath: 'id'
-            }
-          );
-
-        }
-
-      };
-
-    request.onsuccess =
-      function (event) {
-
-        musicDB =
-          event.target.result;
-
-        musicDBReady =
-          true;
-
-        musicDB.onversionchange =
-          function () {
-
-            musicDB.close();
-
-          };
-
-        while (
-          musicDBQueue.length
-        ) {
-
-          var queuedTrack =
-            musicDBQueue.shift();
-
-          saveTrackToDatabase(
-            queuedTrack
-          );
-
-        }
-
-        loadTracksFromDatabase();
-
-      };
-
-    request.onerror =
-      function () {
-
-        musicDB =
-          null;
-
-        musicDBReady =
-          false;
-
-      };
-
-  }
-
-  function saveTrackToDatabase(
-    track
+  if (
+    theme !== 'light' &&
+    theme !== 'dark'
   ) {
 
-    if (
-      !track ||
-      !track.file
-    ) {
-
-      return;
-
-    }
-
-    if (!musicDBReady || !musicDB) {
-
-      musicDBQueue.push(
-        track
-      );
-
-      return;
-
-    }
-
-    var record = {
-
-      id:
-        track.id,
-
-      file:
-        track.file,
-
-      name:
-        track.name,
-
-      title:
-        track.title || '',
-
-      artist:
-        track.artist || '',
-
-      album:
-        track.album || '',
-
-      albumArtist:
-        track.albumArtist || '',
-
-      genre:
-        track.genre || '',
-
-      year:
-        track.year || '',
-
-      track:
-        track.track || '',
-
-      disc:
-        track.disc || '',
-
-      composer:
-        track.composer || '',
-
-      comment:
-        track.comment || '',
-
-      duration:
-        track.duration || 0,
-
-      fileName:
-        track.file.name,
-
-      fileType:
-        track.file.type || '',
-
-      fileSize:
-        track.file.size || 0,
-
-      lastModified:
-        track.file.lastModified || 0
-
-    };
-
-    try {
-
-      var transaction =
-        musicDB.transaction(
-          MUSIC_STORE_NAME,
-          'readwrite'
-        );
-
-      transaction
-        .objectStore(
-          MUSIC_STORE_NAME
-        )
-        .put(record);
-
-    } catch (error) {}
+    theme = 'dark';
 
   }
 
-  function deleteTrackFromDatabase(
-    id
-  ) {
-
-    if (
-      !id ||
-      !musicDBReady ||
-      !musicDB
-    ) {
-
-      return;
-
-    }
-
-    try {
-
-      var transaction =
-        musicDB.transaction(
-          MUSIC_STORE_NAME,
-          'readwrite'
-        );
-
-      transaction
-        .objectStore(
-          MUSIC_STORE_NAME
-        )
-        .delete(id);
-
-    } catch (error) {}
-
-  }
-
-  function loadTracksFromDatabase() {
-
-    if (
-      !musicDBReady ||
-      !musicDB
-    ) {
-
-      return;
-
-    }
-
-    try {
-
-      var transaction =
-        musicDB.transaction(
-          MUSIC_STORE_NAME,
-          'readonly'
-        );
-
-      var request =
-        transaction
-          .objectStore(
-            MUSIC_STORE_NAME
-          )
-          .getAll();
-
-      request.onsuccess =
-        function () {
-
-          var records =
-            request.result || [];
-
-          if (!records.length) {
-
-            return;
-
-          }
-
-          var restoredTracks =
-            [];
-
-          for (
-            var i = 0;
-            i < records.length;
-            i++
-          ) {
-
-            var record =
-              records[i];
-
-            if (!record.file) {
-
-              continue;
-
-            }
-
-            var restoredTrack = {
-
-              id:
-                record.id ||
-                (
-                  typeof crypto !== 'undefined' &&
-                  crypto.randomUUID
-                    ? crypto.randomUUID()
-                    : String(Date.now()) +
-                      '-' +
-                      i
-                ),
-
-              file:
-                record.file,
-
-              name:
-                record.name ||
-                cleanFileName(
-                  record.file.name
-                ),
-
-              title:
-                record.title || '',
-
-              artist:
-                record.artist || '',
-
-              album:
-                record.album || '',
-
-              albumArtist:
-                record.albumArtist || '',
-
-              genre:
-                record.genre || '',
-
-              year:
-                record.year || '',
-
-              track:
-                record.track || '',
-
-              disc:
-                record.disc || '',
-
-              composer:
-                record.composer || '',
-
-              comment:
-                record.comment || '',
-
-              url:
-                null,
-
-              duration:
-                Number(
-                  record.duration
-                ) || 0,
-
-              artworkUrl:
-                null,
-
-              artworkType:
-                '',
-
-              metadataLoaded:
-                false
-
-            };
-
-            restoredTracks.push(
-              restoredTrack
-            );
-
-          }
-
-          if (!restoredTracks.length) {
-
-            return;
-
-          }
-
-          /*
-           * Do not duplicate records if the database
-           * becomes ready after files were added.
-           */
-
-          for (
-            var j = 0;
-            j < restoredTracks.length;
-            j++
-          ) {
-
-            var exists =
-              false;
-
-            for (
-              var k = 0;
-              k < tracks.length;
-              k++
-            ) {
-
-              if (
-                tracks[k].id ===
-                restoredTracks[j].id
-              ) {
-
-                exists =
-                  true;
-
-                break;
-
-              }
-
-            }
-
-            if (!exists) {
-
-              tracks.push(
-                restoredTracks[j]
-              );
-
-            }
-
-          }
-
-          renderAllLibraries();
-
-          if (
-            currentIndex === -1 &&
-            tracks.length
-          ) {
-
-            loadTrack(
-              0,
-              false
-            );
-
-          }
-
-          setStatus(
-            tracks.length +
-            (
-              tracks.length === 1
-                ? ' saved audio file restored.'
-                : ' saved audio files restored.'
-            )
-          );
-
-          enrichTrackQueue(
-            restoredTracks,
-            0
-          );
-
-        };
-
-    } catch (error) {}
-
-  }
-
-  function persistTrackLibrary() {
-
-    for (
-      var i = 0;
-      i < tracks.length;
-      i++
-    ) {
-
-      saveTrackToDatabase(
-        tracks[i]
-      );
-
-    }
-
-  }
-
-  var THEME_STORAGE_KEY =
-    'appu-mp3-player-theme';
-
-  var themeToggle =
-    document.getElementById(
-      'appu-mp3-theme-toggle'
-    );
-
-  var themeIcon =
-    document.getElementById(
-      'appu-mp3-theme-icon'
-    );
-
-  var eqBands = [
-    60,
-    170,
-    310,
-    600,
-    1000,
-    3000,
-    6000,
-    12000,
-    14000
-  ];
-
-  function applyTheme(theme) {
-
-    if (
-      theme !== 'light' &&
-      theme !== 'dark'
-    ) {
-
-      theme = 'dark';
-
-    }
-
-    document.documentElement.setAttribute(
-      'data-theme',
-      theme
-    );
-
-    if (themeIcon) {
-
-      themeIcon.textContent =
-        theme === 'dark'
-          ? '\u2600\uFE0F'
-          : '\uD83C\uDF1B';
-
-    }
-
-    if (themeToggle) {
-
-      themeToggle.setAttribute(
-        'aria-label',
-        theme === 'dark'
-          ? 'Change to light theme'
-          : 'Change to dark theme'
-      );
-
-      themeToggle.setAttribute(
-        'title',
-        theme === 'dark'
-          ? 'Change to light theme'
-          : 'Change to dark theme'
-      );
-
-    }
-
-  }
-
-  function loadTheme() {
-
-    var savedTheme = null;
-
-    try {
-
-      savedTheme =
-        localStorage.getItem(
-          THEME_STORAGE_KEY
-        );
-
-    } catch (error) {
-
-      savedTheme = null;
-
-    }
-
-    if (
-      savedTheme !== 'light' &&
-      savedTheme !== 'dark'
-    ) {
-
-      savedTheme = 'dark';
-
-    }
-
-    applyTheme(savedTheme);
-
-  }
-
-  function toggleTheme() {
-
-    var currentTheme =
-      document.documentElement.getAttribute(
-        'data-theme'
-      );
-
-    var newTheme =
-      currentTheme === 'dark'
-        ? 'light'
-        : 'dark';
-
-    applyTheme(newTheme);
-
-    try {
-
-      localStorage.setItem(
-        THEME_STORAGE_KEY,
-        newTheme
-      );
-
-    } catch (error) {}
+  document.documentElement.setAttribute(
+    'data-theme',
+    theme
+  );
+
+  if (themeIcon) {
+
+    themeIcon.textContent =
+      theme === 'dark'
+        ? '\u2600\uFE0F'
+        : '\uD83C\uDF1B';
 
   }
 
   if (themeToggle) {
 
-    themeToggle.addEventListener(
-      'click',
-      toggleTheme
+    themeToggle.setAttribute(
+      'aria-label',
+      theme === 'dark'
+        ? 'Change to light theme'
+        : 'Change to dark theme'
+    );
+
+    themeToggle.setAttribute(
+      'title',
+      theme === 'dark'
+        ? 'Change to light theme'
+        : 'Change to dark theme'
     );
 
   }
 
-  loadTheme();
+}
+
+function loadTheme() {
+
+  var savedTheme = null;
+
+  try {
+
+    savedTheme =
+      localStorage.getItem(
+        THEME_STORAGE_KEY
+      );
+
+  } catch (error) {
+
+    savedTheme = null;
+
+  }
+
+  if (
+    savedTheme !== 'light' &&
+    savedTheme !== 'dark'
+  ) {
+
+    savedTheme = 'dark';
+
+  }
+
+  applyTheme(savedTheme);
+
+}
+
+function toggleTheme() {
+
+  var currentTheme =
+    document.documentElement.getAttribute(
+      'data-theme'
+    );
+
+  var newTheme =
+    currentTheme === 'dark'
+      ? 'light'
+      : 'dark';
+
+  applyTheme(newTheme);
+
+  try {
+
+    localStorage.setItem(
+      THEME_STORAGE_KEY,
+      newTheme
+    );
+
+  } catch (error) {}
+
+}
+
+if (themeToggle) {
+
+  themeToggle.addEventListener(
+    'click',
+    toggleTheme
+  );
+
+}
+
+loadTheme();
 
   function formatTime(seconds) {
 
@@ -998,324 +521,41 @@
 
   }
 
-  function createTrackUrl(
-    track
-  ) {
-
-    if (!track) {
-      return '';
-    }
-
-    if (
-      track.url
-    ) {
-
-      return track.url;
-
-    }
-
-    if (
-      !track.file
-    ) {
-
-      return '';
-
-    }
-
-    try {
-
-      track.url =
-        URL.createObjectURL(
-          track.file
-        );
-
-      return track.url;
-
-    } catch (error) {
-
-      return '';
-
-    }
-
-  }
-
-  function revokeTrackUrl(
-    track
-  ) {
-
-    if (
-      track &&
-      track.url
-    ) {
-
-      try {
-
-        URL.revokeObjectURL(
-          track.url
-        );
-
-      } catch (error) {}
-
-      track.url =
-        null;
-
-    }
-
-  }
-
-  function getTrackDisplayTitle(
-    track
-  ) {
-
-    if (!track) {
-      return 'Unknown Song';
-    }
+  function uint32BE(bytes, offset) {
 
     return (
-      trimText(
-        track.title
-      ) ||
-      trimText(
-        track.name
-      ) ||
-      'Unknown Song'
-    );
+      ((bytes[offset] || 0) << 24) |
+      ((bytes[offset + 1] || 0) << 16) |
+      ((bytes[offset + 2] || 0) << 8) |
+      (bytes[offset + 3] || 0)
+    ) >>> 0;
 
   }
 
-  function getTrackDisplayArtist(
-    track
-  ) {
-
-    if (!track) {
-      return 'Unknown Artist';
-    }
+  function uint24BE(bytes, offset) {
 
     return (
-      trimText(
-        track.artist
-      ) ||
-      'Unknown Artist'
-    );
+      ((bytes[offset] || 0) << 16) |
+      ((bytes[offset + 1] || 0) << 8) |
+      (bytes[offset + 2] || 0)
+    ) >>> 0;
 
   }
 
-  function getTrackDisplayAlbum(
-    track
-  ) {
-
-    if (!track) {
-      return 'Unknown Album';
-    }
+  function syncSafe(bytes, offset) {
 
     return (
-      trimText(
-        track.album
-      ) ||
-      'Unknown Album'
+      ((bytes[offset] || 0) & 0x7f) * 2097152 +
+      ((bytes[offset + 1] || 0) & 0x7f) * 16384 +
+      ((bytes[offset + 2] || 0) & 0x7f) * 128 +
+      ((bytes[offset + 3] || 0) & 0x7f)
     );
 
   }
 
-  function getTrackSearchText(
-    track
-  ) {
+  function decodeLatin1(bytes) {
 
-    return [
-      track.title,
-      track.name,
-      track.artist,
-      track.album,
-      track.albumArtist,
-      track.genre,
-      track.year,
-      track.composer,
-      track.comment
-    ]
-      .join(' ')
-      .toLowerCase();
-
-  }
-
-  function setCurrentTrackArtwork(
-    track
-  ) {
-
-    if (!coverImage) {
-      return;
-    }
-
-    if (
-      track &&
-      track.artworkUrl
-    ) {
-
-      coverImage.src =
-        track.artworkUrl;
-
-      coverImage.style.display =
-        'block';
-
-      cover.classList.add(
-        'appu-has-artwork'
-      );
-
-      return;
-
-    }
-
-    coverImage.removeAttribute(
-      'src'
-    );
-
-    coverImage.style.display =
-      'none';
-
-    cover.classList.remove(
-      'appu-has-artwork'
-    );
-
-  }
-
-  function revokeTrackArtwork(
-    track
-  ) {
-
-    if (
-      track &&
-      track.artworkUrl
-    ) {
-
-      try {
-
-        URL.revokeObjectURL(
-          track.artworkUrl
-        );
-
-      } catch (error) {}
-
-      track.artworkUrl =
-        null;
-
-    }
-
-  }
-
-  function decodeSynchsafeInteger(
-    bytes
-  ) {
-
-    return (
-      (
-        bytes[0] & 0x7f
-      ) * 2097152 +
-      (
-        bytes[1] & 0x7f
-      ) * 16384 +
-      (
-        bytes[2] & 0x7f
-      ) * 128 +
-      (
-        bytes[3] & 0x7f
-      )
-    );
-
-  }
-
-  function readUInt32(
-    view,
-    offset
-  ) {
-
-    return view.getUint32(
-      offset,
-      false
-    );
-
-  }
-
-  function readUInt24(
-    view,
-    offset
-  ) {
-
-    return (
-      (
-        view.getUint8(
-          offset
-        ) << 16
-      ) |
-      (
-        view.getUint8(
-          offset + 1
-        ) << 8
-      ) |
-      view.getUint8(
-        offset + 2
-      )
-    );
-
-  }
-
-  function decodeText(
-    bytes,
-    encoding
-  ) {
-
-    try {
-
-      if (
-        typeof TextDecoder ===
-        'function'
-      ) {
-
-        var decoder;
-
-        if (
-          encoding === 1
-        ) {
-
-          decoder =
-            new TextDecoder(
-              'utf-16'
-            );
-
-        } else if (
-          encoding === 2
-        ) {
-
-          decoder =
-            new TextDecoder(
-              'utf-16be'
-            );
-
-        } else {
-
-          decoder =
-            new TextDecoder(
-              'utf-8'
-            );
-
-        }
-
-        return decoder
-          .decode(bytes)
-          .replace(
-            /^\uFEFF/,
-            ''
-          )
-          .replace(
-            /\u0000+$/g,
-            ''
-          )
-          .trim();
-
-      }
-
-    } catch (error) {}
-
-    var output =
-      '';
+    var result = '';
 
     for (
       var i = 0;
@@ -1323,130 +563,398 @@
       i++
     ) {
 
-      if (
-        bytes[i] !== 0
-      ) {
-
-        output +=
-          String.fromCharCode(
-            bytes[i]
-          );
-
-      }
-
-    }
-
-    return output.trim();
-
-  }
-
-  function decodeLatin1(
-    bytes
-  ) {
-
-    var output =
-      '';
-
-    for (
-      var i = 0;
-      i < bytes.length;
-      i++
-    ) {
-
-      output +=
+      result +=
         String.fromCharCode(
           bytes[i]
         );
 
     }
 
-    return output;
+    return result;
 
   }
 
-  function parseID3TextFrame(
-    bytes
+  function decodeUTF16BE(bytes) {
+
+    var result = '';
+
+    for (
+      var i = 0;
+      i + 1 < bytes.length;
+      i += 2
+    ) {
+
+      result +=
+        String.fromCharCode(
+          (bytes[i] << 8) |
+          bytes[i + 1]
+        );
+
+    }
+
+    return result;
+
+  }
+
+  function decodeID3Text(
+    bytes,
+    encoding
   ) {
 
     if (!bytes || !bytes.length) {
       return '';
     }
 
-    var encoding =
-      bytes[0];
+    var data =
+      bytes;
 
-    return decodeText(
-      bytes.slice(1),
-      encoding
+    if (
+      encoding === 1 &&
+      data.length >= 2
+    ) {
+
+      if (
+        data[0] === 0xFF &&
+        data[1] === 0xFE
+      ) {
+
+        data =
+          data.slice(2);
+
+        try {
+
+          return new TextDecoder(
+            'utf-16le'
+          ).decode(
+            data
+          );
+
+        } catch (error) {
+
+          return decodeLatin1(
+            data
+          );
+
+        }
+
+      }
+
+      if (
+        data[0] === 0xFE &&
+        data[1] === 0xFF
+      ) {
+
+        data =
+          data.slice(2);
+
+        return decodeUTF16BE(
+          data
+        );
+
+      }
+
+    }
+
+    if (encoding === 2) {
+
+      return decodeUTF16BE(
+        data
+      );
+
+    }
+
+    try {
+
+      if (
+        encoding === 3 &&
+        typeof TextDecoder !==
+          'undefined'
+      ) {
+
+        return new TextDecoder(
+          'utf-8'
+        ).decode(
+          data
+        );
+
+      }
+
+      if (
+        typeof TextDecoder !==
+          'undefined'
+      ) {
+
+        return new TextDecoder(
+          'iso-8859-1'
+        ).decode(
+          data
+        );
+
+      }
+
+    } catch (error) {}
+
+    return decodeLatin1(
+      data
     );
 
   }
 
-  function parseID3CommentFrame(
-    bytes
+  function findTextEnd(
+    bytes,
+    start,
+    encoding
   ) {
 
     if (
-      !bytes ||
-      bytes.length < 5
+      encoding === 0 ||
+      encoding === 3
     ) {
 
+      for (
+        var i = start;
+        i < bytes.length;
+        i++
+      ) {
+
+        if (bytes[i] === 0) {
+          return i;
+        }
+
+      }
+
+      return bytes.length;
+
+    }
+
+    for (
+      var j = start;
+      j + 1 < bytes.length;
+      j += 2
+    ) {
+
+      if (
+        bytes[j] === 0 &&
+        bytes[j + 1] === 0
+      ) {
+
+        return j;
+
+      }
+
+    }
+
+    return bytes.length;
+
+  }
+
+  var id3Genres = {
+
+    0: 'Blues',
+    1: 'Classic Rock',
+    2: 'Country',
+    3: 'Dance',
+    4: 'Disco',
+    5: 'Funk',
+    6: 'Grunge',
+    7: 'Hip-Hop',
+    8: 'Jazz',
+    9: 'Metal',
+    10: 'New Age',
+    11: 'Oldies',
+    12: 'Other',
+    13: 'Pop',
+    14: 'R&B',
+    15: 'Rap',
+    16: 'Reggae',
+    17: 'Rock',
+    18: 'Techno',
+    19: 'Industrial',
+    20: 'Alternative',
+    21: 'Ska',
+    22: 'Death Metal',
+    23: 'Pranks',
+    24: 'Soundtrack',
+    25: 'Euro-Techno',
+    26: 'Ambient',
+    27: 'Trip-Hop',
+    28: 'Vocal',
+    29: 'Jazz+Funk',
+    30: 'Fusion',
+    31: 'Trance',
+    32: 'Classical',
+    33: 'Instrumental',
+    34: 'Acid',
+    35: 'House',
+    36: 'Game',
+    37: 'Sound Clip',
+    38: 'Gospel',
+    39: 'Noise',
+    40: 'AlternRock',
+    41: 'Bass',
+    42: 'Soul',
+    43: 'Punk',
+    44: 'Space',
+    45: 'Meditative',
+    46: 'Instrumental Pop',
+    47: 'Instrumental Rock',
+    48: 'Ethnic',
+    49: 'Gothic',
+    50: 'Darkwave',
+    51: 'Techno-Industrial',
+    52: 'Electronic',
+    53: 'Pop-Folk',
+    54: 'Eurodance',
+    55: 'Dream',
+    56: 'Southern Rock',
+    57: 'Comedy',
+    58: 'Cult',
+    59: 'Gangsta',
+    60: 'Top 40',
+    61: 'Christian Rap',
+    62: 'Pop/Funk',
+    63: 'Jungle',
+    64: 'Native American',
+    65: 'Cabaret',
+    66: 'New Wave',
+    67: 'Psychadelic',
+    68: 'Rave',
+    69: 'Showtunes',
+    70: 'Trailer',
+    71: 'Lo-Fi',
+    72: 'Tribal',
+    73: 'Acid Punk',
+    74: 'Acid Jazz',
+    75: 'Polka',
+    76: 'Retro',
+    77: 'Musical',
+    78: 'Rock & Roll',
+    79: 'Hard Rock'
+  };
+
+  function normalizeGenre(value) {
+
+    value =
+      trimText(value);
+
+    if (!value) {
       return '';
+    }
+
+    var match =
+      value.match(
+        /^\((\d+)\)/
+      );
+
+    if (match) {
+
+      var number =
+        Number(
+          match[1]
+        );
+
+      if (
+        id3Genres[number]
+      ) {
+
+        return id3Genres[number];
+
+      }
 
     }
 
-    var encoding =
-      bytes[0];
-
-    var textBytes =
-      bytes.slice(4);
-
-    return decodeText(
-      textBytes,
-      encoding
-    );
+    return value;
 
   }
 
-  function parseID3PictureFrame(
-    bytes
-  ) {
+  function detectImageType(bytes) {
 
     if (
-      !bytes ||
-      bytes.length < 10
+      bytes.length >= 3 &&
+      bytes[0] === 0xFF &&
+      bytes[1] === 0xD8 &&
+      bytes[2] === 0xFF
     ) {
 
-      return null;
+      return 'image/jpeg';
 
     }
 
+    if (
+      bytes.length >= 8 &&
+      bytes[0] === 0x89 &&
+      bytes[1] === 0x50 &&
+      bytes[2] === 0x4E &&
+      bytes[3] === 0x47
+    ) {
+
+      return 'image/png';
+
+    }
+
+    if (
+      bytes.length >= 6 &&
+      bytes[0] === 0x47 &&
+      bytes[1] === 0x49 &&
+      bytes[2] === 0x46
+    ) {
+
+      return 'image/gif';
+
+    }
+
+    if (
+      bytes.length >= 12 &&
+      bytes[0] === 0x52 &&
+      bytes[1] === 0x49 &&
+      bytes[2] === 0x46 &&
+      bytes[3] === 0x46 &&
+      bytes[8] === 0x57 &&
+      bytes[9] === 0x45 &&
+      bytes[10] === 0x42 &&
+      bytes[11] === 0x50
+    ) {
+
+      return 'image/webp';
+
+    }
+
+    return '';
+
+  }
+
+  function parseAPIC(
+    frameBytes
+  ) {
+
+    if (
+      frameBytes.length < 5
+    ) {
+      return null;
+    }
+
     var encoding =
-      bytes[0];
+      frameBytes[0];
 
     var position =
       1;
-
-    var pictureType =
-      bytes[position];
-
-    position += 1;
 
     var mimeEnd =
       position;
 
     while (
-      mimeEnd < bytes.length &&
-      bytes[mimeEnd] !== 0
+      mimeEnd <
+      frameBytes.length &&
+      frameBytes[mimeEnd] !== 0
     ) {
 
       mimeEnd++;
 
     }
 
-    var mimeType =
+    var mime =
       decodeLatin1(
-        bytes.slice(
+        frameBytes.slice(
           position,
           mimeEnd
         )
@@ -1456,42 +964,40 @@
       mimeEnd + 1;
 
     if (
-      encoding === 0
+      position >=
+      frameBytes.length
+    ) {
+      return null;
+    }
+
+    position++;
+
+    var descriptionEnd =
+      findTextEnd(
+        frameBytes,
+        position,
+        encoding
+      );
+
+    position =
+      descriptionEnd;
+
+    if (
+      encoding === 0 ||
+      encoding === 3
     ) {
 
-      while (
-        position < bytes.length &&
-        bytes[position] !== 0
-      ) {
-
-        position++;
-
-      }
-
-      position += 1;
+      position++;
 
     } else {
-
-      while (
-        position + 1 < bytes.length &&
-        !(
-          bytes[position] === 0 &&
-          bytes[position + 1] === 0
-        )
-      ) {
-
-        position += 2;
-
-      }
 
       position += 2;
 
     }
 
-    position += 1;
-
     if (
-      position >= bytes.length
+      position >=
+      frameBytes.length
     ) {
 
       return null;
@@ -1499,532 +1005,1172 @@
     }
 
     var imageBytes =
-      bytes.slice(
+      frameBytes.slice(
         position
       );
 
-    if (!imageBytes.length) {
+    if (
+      !imageBytes.length
+    ) {
+
+      return null;
+
+    }
+
+    var detectedType =
+      detectImageType(
+        imageBytes
+      );
+
+    if (
+      !detectedType &&
+      mime.indexOf('image/') === 0
+    ) {
+
+      detectedType =
+        mime;
+
+    }
+
+    if (!detectedType) {
       return null;
     }
 
-    var blob =
-      new Blob(
-        [imageBytes],
-        {
-          type:
-            mimeType ||
-            'image/jpeg'
-        }
-      );
-
     return {
-      blob:
-        blob,
 
-      mime:
-        mimeType ||
-        'image/jpeg',
+      type:
+        detectedType,
 
-      pictureType:
-        pictureType
+      bytes:
+        imageBytes
+
     };
 
   }
 
-  function parseID3(
-    file
+  function parsePIC(
+    frameBytes
   ) {
 
-    return file.arrayBuffer()
-      .then(
-        function (buffer) {
+    if (
+      frameBytes.length < 6
+    ) {
 
-          var view =
-            new DataView(
-              buffer
+      return null;
+
+    }
+
+    var encoding =
+      frameBytes[0];
+
+    var format =
+      decodeLatin1(
+        frameBytes.slice(
+          1,
+          4
+        )
+      ).toLowerCase();
+
+    var position =
+      4;
+
+    position++;
+
+    var descriptionEnd =
+      findTextEnd(
+        frameBytes,
+        position,
+        encoding
+      );
+
+    position =
+      descriptionEnd;
+
+    if (
+      encoding === 0 ||
+      encoding === 3
+    ) {
+
+      position++;
+
+    } else {
+
+      position += 2;
+
+    }
+
+    var imageBytes =
+      frameBytes.slice(
+        position
+      );
+
+    if (
+      !imageBytes.length
+    ) {
+
+      return null;
+
+    }
+
+    var type =
+      detectImageType(
+        imageBytes
+      );
+
+    if (!type) {
+
+      if (
+        format === 'jpg' ||
+        format === 'jpeg'
+      ) {
+
+        type =
+          'image/jpeg';
+
+      } else if (
+        format === 'png'
+      ) {
+
+        type =
+          'image/png';
+
+      }
+
+    }
+
+    if (!type) {
+      return null;
+    }
+
+    return {
+
+      type:
+        type,
+
+      bytes:
+        imageBytes
+
+    };
+
+  }
+
+  function parseID3v2(
+    buffer
+  ) {
+
+    var bytes =
+      new Uint8Array(
+        buffer
+      );
+
+    if (
+      bytes.length < 10 ||
+      bytes[0] !== 0x49 ||
+      bytes[1] !== 0x44 ||
+      bytes[2] !== 0x33
+    ) {
+
+      return null;
+
+    }
+
+    var major =
+      bytes[3];
+
+    var flags =
+      bytes[5];
+
+    var tagSize =
+      syncSafe(
+        bytes,
+        6
+      );
+
+    var end =
+      Math.min(
+        bytes.length,
+        10 + tagSize
+      );
+
+    var tagBytes =
+      bytes.slice(
+        10,
+        end
+      );
+
+    if (
+      flags & 0x80
+    ) {
+
+      var clean = [];
+
+      for (
+        var u = 0;
+        u < tagBytes.length;
+        u++
+      ) {
+
+        if (
+          tagBytes[u] === 0xFF &&
+          tagBytes[u + 1] === 0x00
+        ) {
+
+          clean.push(
+            0xFF
+          );
+
+          u++;
+
+        } else {
+
+          clean.push(
+            tagBytes[u]
+          );
+
+        }
+
+      }
+
+      tagBytes =
+        new Uint8Array(
+          clean
+        );
+
+    }
+
+    var result = {
+
+      title: '',
+      artist: '',
+      album: '',
+      albumArtist: '',
+      genre: '',
+      year: '',
+      track: '',
+      disc: '',
+      composer: '',
+      comment: '',
+      artwork: null
+
+    };
+
+    function assignText(
+      id,
+      value
+    ) {
+
+      value =
+        trimText(value);
+
+      if (!value) {
+        return;
+      }
+
+      if (
+        id === 'TIT2' ||
+        id === 'TT2'
+      ) {
+
+        result.title =
+          value;
+
+      } else if (
+        id === 'TPE1' ||
+        id === 'TP1'
+      ) {
+
+        result.artist =
+          value;
+
+      } else if (
+        id === 'TALB' ||
+        id === 'TAL'
+      ) {
+
+        result.album =
+          value;
+
+      } else if (
+        id === 'TPE2' ||
+        id === 'TP2'
+      ) {
+
+        result.albumArtist =
+          value;
+
+      } else if (
+        id === 'TCON' ||
+        id === 'TCO'
+      ) {
+
+        result.genre =
+          normalizeGenre(
+            value
+          );
+
+      } else if (
+        id === 'TDRC' ||
+        id === 'TYER' ||
+        id === 'TYE'
+      ) {
+
+        result.year =
+          value;
+
+      } else if (
+        id === 'TRCK' ||
+        id === 'TRK'
+      ) {
+
+        result.track =
+          value;
+
+      } else if (
+        id === 'TPOS'
+      ) {
+
+        result.disc =
+          value;
+
+      } else if (
+        id === 'TCOM' ||
+        id === 'TCM'
+      ) {
+
+        result.composer =
+          value;
+
+      }
+
+    }
+
+    var offset =
+      0;
+
+    if (major === 2) {
+
+      while (
+        offset + 6 <=
+        tagBytes.length
+      ) {
+
+        var id22 =
+          decodeLatin1(
+            tagBytes.slice(
+              offset,
+              offset + 3
+            )
+          );
+
+        if (
+          !/^[A-Z0-9]{3}$/.test(
+            id22
+          )
+        ) {
+
+          break;
+
+        }
+
+        var size22 =
+          uint24BE(
+            tagBytes,
+            offset + 3
+          );
+
+        if (
+          size22 <= 0 ||
+          offset + 6 + size22 >
+            tagBytes.length
+        ) {
+
+          break;
+
+        }
+
+        var frame22 =
+          tagBytes.slice(
+            offset + 6,
+            offset + 6 + size22
+          );
+
+        if (
+          id22 === 'PIC'
+        ) {
+
+          if (!result.artwork) {
+
+            result.artwork =
+              parsePIC(
+                frame22
+              );
+
+          }
+
+        } else if (
+          frame22.length
+        ) {
+
+          var enc22 =
+            frame22[0];
+
+          var value22 =
+            decodeID3Text(
+              frame22.slice(1),
+              enc22
             );
 
-          if (
-            view.byteLength < 10
-          ) {
+          assignText(
+            id22,
+            value22
+          );
 
-            return {};
+        }
+
+        offset +=
+          6 + size22;
+
+      }
+
+    } else {
+
+      offset =
+        0;
+
+      if (
+        flags & 0x40 &&
+        tagBytes.length >= 4
+      ) {
+
+        var extendedSize;
+
+        if (major === 4) {
+
+          extendedSize =
+            syncSafe(
+              tagBytes,
+              0
+            );
+
+        } else {
+
+          extendedSize =
+            uint32BE(
+              tagBytes,
+              0
+            );
+
+        }
+
+        offset =
+          Math.min(
+            tagBytes.length,
+            extendedSize + 4
+          );
+
+      }
+
+      while (
+        offset + 10 <=
+        tagBytes.length
+      ) {
+
+        var id =
+          decodeLatin1(
+            tagBytes.slice(
+              offset,
+              offset + 4
+            )
+          );
+
+        if (
+          !/^[A-Z0-9]{4}$/.test(
+            id
+          )
+        ) {
+
+          break;
+
+        }
+
+        var frameSize;
+
+        if (major === 4) {
+
+          frameSize =
+            syncSafe(
+              tagBytes,
+              offset + 4
+            );
+
+        } else {
+
+          frameSize =
+            uint32BE(
+              tagBytes,
+              offset + 4
+            );
+
+        }
+
+        if (
+          frameSize <= 0 ||
+          offset + 10 + frameSize >
+            tagBytes.length
+        ) {
+
+          break;
+
+        }
+
+        var frame =
+          tagBytes.slice(
+            offset + 10,
+            offset + 10 + frameSize
+          );
+
+        if (
+          id === 'APIC'
+        ) {
+
+          if (!result.artwork) {
+
+            result.artwork =
+              parseAPIC(
+                frame
+              );
 
           }
 
-          if (
-            view.getUint8(0) !== 0x49 ||
-            view.getUint8(1) !== 0x44 ||
-            view.getUint8(2) !== 0x33
-          ) {
-
-            return {};
-
-          }
-
-          var version =
-            view.getUint8(3);
-
-          var flags =
-            view.getUint8(5);
-
-          var size =
-            decodeSynchsafeInteger([
-              view.getUint8(6),
-              view.getUint8(7),
-              view.getUint8(8),
-              view.getUint8(9)
-            ]);
-
-          var offset =
-            10;
+        } else if (
+          id === 'COMM'
+        ) {
 
           if (
-            flags & 0x40
+            frame.length > 4
           ) {
+
+            var commentEncoding =
+              frame[0];
+
+            var commentStart =
+              4;
+
+            var commentEnd =
+              findTextEnd(
+                frame,
+                commentStart,
+                commentEncoding
+              );
+
+            var commentText =
+              decodeID3Text(
+                frame.slice(
+                  commentStart,
+                  commentEnd
+                ),
+                commentEncoding
+              );
 
             if (
-              version === 4
+              commentText
             ) {
 
-              if (
-                offset + 4 <=
-                view.byteLength
-              ) {
-
-                var extSize =
-                  decodeSynchsafeInteger([
-                    view.getUint8(
-                      offset
-                    ),
-                    view.getUint8(
-                      offset + 1
-                    ),
-                    view.getUint8(
-                      offset + 2
-                    ),
-                    view.getUint8(
-                      offset + 3
-                    )
-                  ]);
-
-                offset +=
-                  extSize;
-
-              }
-
-            } else {
-
-              if (
-                offset + 4 <=
-                view.byteLength
-              ) {
-
-                var extSizeV3 =
-                  view.getUint32(
-                    offset,
-                    false
-                  );
-
-                offset +=
-                  extSizeV3;
-
-              }
+              result.comment =
+                trimText(
+                  commentText
+                );
 
             }
 
           }
 
-          var end =
-            Math.min(
-              view.byteLength,
-              10 + size
+        } else if (
+          id.charAt(0) === 'T'
+        ) {
+
+          if (frame.length) {
+
+            var encoding =
+              frame[0];
+
+            var text =
+              decodeID3Text(
+                frame.slice(1),
+                encoding
+              );
+
+            assignText(
+              id,
+              text
             );
 
-          var result = {
+          }
 
-            title:
-              '',
+        }
 
-            artist:
-              '',
+        offset +=
+          10 + frameSize;
 
-            album:
-              '',
+      }
 
-            albumArtist:
-              '',
+    }
 
-            genre:
-              '',
+    return result;
 
-            year:
-              '',
+  }
 
-            track:
-              '',
+  function parseID3v1(
+    buffer
+  ) {
 
-            disc:
-              '',
+    var bytes =
+      new Uint8Array(
+        buffer
+      );
 
-            composer:
-              '',
+    if (
+      bytes.length < 128 ||
+      bytes[0] !== 0x54 ||
+      bytes[1] !== 0x41 ||
+      bytes[2] !== 0x47
+    ) {
 
-            comment:
-              '',
+      return null;
 
-            artwork:
-              null
+    }
+
+    function field(
+      start,
+      length
+    ) {
+
+      return trimText(
+        decodeLatin1(
+          bytes.slice(
+            start,
+            start + length
+          )
+        )
+      );
+
+    }
+
+    var result = {
+
+      title:
+        field(3,30),
+
+      artist:
+        field(33,30),
+
+      album:
+        field(63,30),
+
+      year:
+        field(93,4),
+
+      comment:
+        field(97,30),
+
+      track: '',
+
+      genre: ''
+
+    };
+
+    if (
+      bytes[125] === 0 &&
+      bytes[126]
+    ) {
+
+      result.comment =
+        field(97,28);
+
+      result.track =
+        String(
+          bytes[126]
+        );
+
+    }
+
+    if (
+      id3Genres[
+        bytes[127]
+      ]
+    ) {
+
+      result.genre =
+        id3Genres[
+          bytes[127]
+        ];
+
+    }
+
+    return result;
+
+  }
+
+  function readID3Metadata(
+    file,
+    callback
+  ) {
+
+    var firstReader =
+      new FileReader();
+
+    firstReader.onload =
+      function () {
+
+        var firstBuffer =
+          firstReader.result;
+
+        var firstBytes =
+          new Uint8Array(
+            firstBuffer
+          );
+
+        var id3Size = 0;
+
+        var hasID3 =
+          firstBytes.length >= 10 &&
+          firstBytes[0] === 0x49 &&
+          firstBytes[1] === 0x44 &&
+          firstBytes[2] === 0x33;
+
+        if (hasID3) {
+
+          id3Size =
+            syncSafe(
+              firstBytes,
+              6
+            );
+
+        }
+
+        var id3Result =
+          null;
+
+        function readID3v1Fallback() {
+
+          var start =
+            Math.max(
+              0,
+              file.size - 128
+            );
+
+          if (
+            file.size < 128
+          ) {
+
+            callback(
+              id3Result
+            );
+
+            return;
+
+          }
+
+          var v1Reader =
+            new FileReader();
+
+          v1Reader.onload =
+            function () {
+
+              var v1 =
+                parseID3v1(
+                  v1Reader.result
+                );
+
+              if (v1) {
+
+                if (!id3Result) {
+                  id3Result = {};
+                }
+
+                var keys = [
+                  'title',
+                  'artist',
+                  'album',
+                  'year',
+                  'comment',
+                  'track',
+                  'genre'
+                ];
+
+                for (
+                  var k = 0;
+                  k < keys.length;
+                  k++
+                ) {
+
+                  var key =
+                    keys[k];
+
+                  if (
+                    !id3Result[key] &&
+                    v1[key]
+                  ) {
+
+                    id3Result[key] =
+                      v1[key];
+
+                  }
+
+                }
+
+              }
+
+              callback(
+                id3Result
+              );
+
+            };
+
+          v1Reader.onerror =
+            function () {
+
+              callback(
+                id3Result
+              );
+
+            };
+
+          v1Reader.readAsArrayBuffer(
+            file.slice(
+              start
+            )
+          );
+
+        }
+
+        if (!hasID3) {
+
+          readID3v1Fallback();
+
+          return;
+
+        }
+
+        var totalSize =
+          Math.min(
+            file.size,
+            10 + id3Size
+          );
+
+        totalSize =
+          Math.min(
+            totalSize,
+            32 * 1024 * 1024
+          );
+
+        var tagReader =
+          new FileReader();
+
+        tagReader.onload =
+          function () {
+
+            id3Result =
+              parseID3v2(
+                tagReader.result
+              );
+
+            readID3v1Fallback();
 
           };
 
-          while (
-            offset < end
-          ) {
-
-            if (
-              version === 2
-            ) {
-
-              if (
-                offset + 6 > end
-              ) {
-
-                break;
-
-              }
-
-              var id2 =
-                String.fromCharCode(
-                  view.getUint8(
-                    offset
-                  ),
-                  view.getUint8(
-                    offset + 1
-                  ),
-                  view.getUint8(
-                    offset + 2
-                  )
-                );
-
-              var size2 =
-                readUInt24(
-                  view,
-                  offset + 3
-                );
-
-              if (
-                !id2.trim() ||
-                size2 <= 0
-              ) {
-
-                break;
-
-              }
-
-              var data2 =
-                new Uint8Array(
-                  buffer,
-                  offset + 6,
-                  Math.min(
-                    size2,
-                    end -
-                    (
-                      offset + 6
-                    )
-                  )
-                );
-
-              if (
-                id2 === 'TT2'
-              ) {
-
-                result.title =
-                  parseID3TextFrame(
-                    data2
-                  );
-
-              } else if (
-                id2 === 'TP1'
-              ) {
-
-                result.artist =
-                  parseID3TextFrame(
-                    data2
-                  );
-
-              } else if (
-                id2 === 'TAL'
-              ) {
-
-                result.album =
-                  parseID3TextFrame(
-                    data2
-                  );
-
-              } else if (
-                id2 === 'TCO'
-              ) {
-
-                result.genre =
-                  parseID3TextFrame(
-                    data2
-                  );
-
-              } else if (
-                id2 === 'TYE'
-              ) {
-
-                result.year =
-                  parseID3TextFrame(
-                    data2
-                  );
-
-              } else if (
-                id2 === 'TRK'
-              ) {
-
-                result.track =
-                  parseID3TextFrame(
-                    data2
-                  );
-
-              } else if (
-                id2 === 'TPA'
-              ) {
-
-                result.disc =
-                  parseID3TextFrame(
-                    data2
-                  );
-
-              } else if (
-                id2 === 'TCM'
-              ) {
-
-                result.composer =
-                  parseID3TextFrame(
-                    data2
-                  );
-
-              } else if (
-                id2 === 'COM'
-              ) {
-
-                result.comment =
-                  parseID3CommentFrame(
-                    data2
-                  );
-
-              } else if (
-                id2 === 'PIC'
-              ) {
-
-                result.artwork =
-                  parseID3PictureFrame(
-                    data2
-                  );
-
-              }
-
-              offset +=
-                6 +
-                size2;
-
-            } else {
-
-              if (
-                offset + 10 > end
-              ) {
-
-                break;
-
-              }
-
-              var id =
-                String.fromCharCode(
-                  view.getUint8(
-                    offset
-                  ),
-                  view.getUint8(
-                    offset + 1
-                  ),
-                  view.getUint8(
-                    offset + 2
-                  ),
-                  view.getUint8(
-                    offset + 3
-                  )
-                );
-
-              var frameSize;
-
-              if (
-                version === 4
-              ) {
-
-                frameSize =
-                  decodeSynchsafeInteger([
-                    view.getUint8(
-                      offset + 4
-                    ),
-                    view.getUint8(
-                      offset + 5
-                    ),
-                    view.getUint8(
-                      offset + 6
-                    ),
-                    view.getUint8(
-                      offset + 7
-                    )
-                  ]);
-
-              } else {
-
-                frameSize =
-                  readUInt32(
-                    view,
-                    offset + 4
-                  );
-
-              }
-
-              if (
-                !id.trim() ||
-                frameSize <= 0
-              ) {
-
-                break;
-
-              }
-
-              var data =
-                new Uint8Array(
-                  buffer,
-                  offset + 10,
-                  Math.min(
-                    frameSize,
-                    end -
-                    (
-                      offset + 10
-                    )
-                  )
-                );
-
-              if (
-                id === 'TIT2'
-              ) {
-
-                result.title =
-                  parseID3TextFrame(
-                    data
-                  );
-
-              } else if (
-                id === 'TPE1'
-              ) {
-
-                result.artist =
-                  parseID3TextFrame(
-                    data
-                  );
-
-              } else if (
-                id === 'TALB'
-              ) {
-
-                result.album =
-                  parseID3TextFrame(
-                    data
-                  );
-
-              } else if (
-                id === 'TPE2'
-              ) {
-
-                result.albumArtist =
-                  parseID3TextFrame(
-                    data
-                  );
-
-              } else if (
-                id === 'TCON'
-              ) {
-
-                result.genre =
-                  parseID3TextFrame(
-                    data
-                  );
-
-              } else if (
-                id === 'TYER' ||
-                id === 'TDRC'
-              ) {
-
-                result.year =
-                  parseID3TextFrame(
-                    data
-                  );
-
-              } else if (
-                id === 'TRCK'
-              ) {
-
-                result.track =
-                  parseID3TextFrame(
-                    data
-                  );
-
-              } else if (
-                id === 'TPOS'
-              ) {
-
-                result.disc =
-                  parseID3TextFrame(
-                    data
-                  );
-
-              } else if (
-                id === 'TCOM'
-              ) {
-
-                result.composer =
-                  parseID3TextFrame(
-                    data
-                  );
-
-              } else if (
-                id === 'COMM'
-              ) {
-
-                result.comment =
-                  parseID3CommentFrame(
-                    data
-                  );
-
-              } else if (
-                id === 'APIC'
-              ) {
-
-                result.artwork =
-                  parseID3PictureFrame(
-                    data
-                  );
-
-              }
-
-              offset +=
-                10 +
-                frameSize;
-
-            }
+        tagReader.onerror =
+          function () {
 
+            readID3v1Fallback();
+
+          };
+
+        tagReader.readAsArrayBuffer(
+          file.slice(
+            0,
+            totalSize
+          )
+        );
+
+      };
+
+    firstReader.onerror =
+      function () {
+
+        callback(null);
+
+      };
+
+    firstReader.readAsArrayBuffer(
+      file.slice(
+        0,
+        10
+      )
+    );
+
+  }
+
+  function applyMetadata(
+    track,
+    metadata
+  ) {
+
+    if (!metadata) {
+      return;
+    }
+
+    if (
+      metadata.title
+    ) {
+
+      track.title =
+        trimText(
+          metadata.title
+        );
+
+    }
+
+    if (
+      metadata.artist
+    ) {
+
+      track.artist =
+        trimText(
+          metadata.artist
+        );
+
+    }
+
+    if (
+      metadata.album
+    ) {
+
+      track.album =
+        trimText(
+          metadata.album
+        );
+
+    }
+
+    if (
+      metadata.albumArtist
+    ) {
+
+      track.albumArtist =
+        trimText(
+          metadata.albumArtist
+        );
+
+    }
+
+    if (
+      metadata.genre
+    ) {
+
+      track.genre =
+        normalizeGenre(
+          metadata.genre
+        );
+
+    }
+
+    if (
+      metadata.year
+    ) {
+
+      track.year =
+        trimText(
+          metadata.year
+        );
+
+    }
+
+    if (
+      metadata.track
+    ) {
+
+      track.track =
+        trimText(
+          metadata.track
+        );
+
+    }
+
+    if (
+      metadata.disc
+    ) {
+
+      track.disc =
+        trimText(
+          metadata.disc
+        );
+
+    }
+
+    if (
+      metadata.composer
+    ) {
+
+      track.composer =
+        trimText(
+          metadata.composer
+        );
+
+    }
+
+    if (
+      metadata.comment
+    ) {
+
+      track.comment =
+        trimText(
+          metadata.comment
+        );
+
+    }
+
+    if (
+      metadata.artwork
+    ) {
+
+      if (
+        track.artworkUrl
+      ) {
+
+        URL.revokeObjectURL(
+          track.artworkUrl
+        );
+
+      }
+
+      var blob =
+        new Blob(
+          [
+            metadata.artwork.bytes
+          ],
+          {
+            type:
+              metadata.artwork.type
           }
+        );
 
-          return result;
+      track.artworkUrl =
+        URL.createObjectURL(
+          blob
+        );
+
+      track.artworkType =
+        metadata.artwork.type;
+
+    }
+
+    track.name =
+      track.title ||
+      track.name;
+
+  }
+
+  function extractFilenameMetadata(
+    track
+  ) {
+
+    var parts =
+      track.name.split(
+        ' - '
+      );
+
+    if (
+      !track.artist &&
+      parts.length >= 2
+    ) {
+
+      track.artist =
+        parts[0].trim();
+
+    }
+
+    if (
+      !track.album &&
+      parts.length >= 3
+    ) {
+
+      track.album =
+        parts[1].trim();
+
+    }
+
+    if (
+      !track.title
+    ) {
+
+      if (
+        parts.length >= 3
+      ) {
+
+        track.title =
+          parts.slice(
+            2
+          ).join(
+            ' - '
+          ).trim();
+
+      } else {
+
+        track.title =
+          track.name;
+
+      }
+
+    }
+
+    if (
+      !track.genre
+    ) {
+
+      var lower =
+        track.name.toLowerCase();
+
+      var genres = [
+        'rock',
+        'pop',
+        'jazz',
+        'classical',
+        'electronic',
+        'dance',
+        'metal',
+        'country',
+        'blues',
+        'reggae',
+        'hip hop',
+        'rap',
+        'soundtrack',
+        'ambient',
+        'slow rock'
+      ];
+
+      for (
+        var i = 0;
+        i < genres.length;
+        i++
+      ) {
+
+        if (
+          lower.indexOf(
+            genres[i]
+          ) !== -1
+        ) {
+
+          track.genre =
+            genres[i];
+
+          break;
 
         }
-      );
+
+      }
+
+    }
 
   }
 
@@ -2033,932 +2179,77 @@
   ) {
 
     if (
-      !track ||
-      !track.file
+      getExtension(
+        track.file.name
+      ) !== 'mp3'
     ) {
 
-      return Promise.resolve();
-
-    }
-
-    return parseID3(
-      track.file
-    )
-      .then(
-        function (metadata) {
-
-          if (
-            metadata.title
-          ) {
-
-            track.title =
-              metadata.title;
-
-          }
-
-          if (
-            metadata.artist
-          ) {
-
-            track.artist =
-              metadata.artist;
-
-          }
-
-          if (
-            metadata.album
-          ) {
-
-            track.album =
-              metadata.album;
-
-          }
-
-          if (
-            metadata.albumArtist
-          ) {
-
-            track.albumArtist =
-              metadata.albumArtist;
-
-          }
-
-          if (
-            metadata.genre
-          ) {
-
-            track.genre =
-              metadata.genre;
-
-          }
-
-          if (
-            metadata.year
-          ) {
-
-            track.year =
-              metadata.year;
-
-          }
-
-          if (
-            metadata.track
-          ) {
-
-            track.track =
-              metadata.track;
-
-          }
-
-          if (
-            metadata.disc
-          ) {
-
-            track.disc =
-              metadata.disc;
-
-          }
-
-          if (
-            metadata.composer
-          ) {
-
-            track.composer =
-              metadata.composer;
-
-          }
-
-          if (
-            metadata.comment
-          ) {
-
-            track.comment =
-              metadata.comment;
-
-          }
-
-          if (
-            metadata.artwork
-          ) {
-
-            revokeTrackArtwork(
-              track
-            );
-
-            track.artworkUrl =
-              URL.createObjectURL(
-                metadata.artwork.blob
-              );
-
-            track.artworkType =
-              metadata.artwork.mime;
-
-          }
-
-          track.metadataLoaded =
-            true;
-
-          saveTrackToDatabase(
-            track
-          );
-
-          renderAllLibraries();
-
-          if (
-            currentIndex >= 0 &&
-            tracks[currentIndex] ===
-              track
-          ) {
-
-            updateTrackDisplay();
-
-            updateMediaSession();
-
-          }
-
-        }
-      )
-      .catch(
-        function () {
-
-          track.metadataLoaded =
-            true;
-
-          saveTrackToDatabase(
-            track
-          );
-
-        }
+      extractFilenameMetadata(
+        track
       );
 
-  }
+      track.metadataLoaded =
+        true;
 
-  function enrichTrackQueue(
-    queue,
-    index
-  ) {
-
-    if (
-      !queue ||
-      index >= queue.length
-    ) {
+      renderAllLibraries();
 
       return;
 
     }
 
-    enrichTrack(
-      queue[index]
-    )
-      .then(
-        function () {
+    readID3Metadata(
+      track.file,
+      function (metadata) {
 
-          enrichTrackQueue(
-            queue,
-            index + 1
-          );
+        extractFilenameMetadata(
+          track
+        );
 
-        }
-      );
+        applyMetadata(
+          track,
+          metadata
+        );
 
-  }
+        track.title =
+          track.title ||
+          track.name;
 
-  function getAudioDuration(
-    track
-  ) {
+        track.artist =
+          track.artist ||
+          'Unknown Artist';
 
-    return new Promise(
-      function (resolve) {
+        track.album =
+          track.album ||
+          'Unknown Album';
+
+        track.genre =
+          track.genre ||
+          'Unknown';
+
+        track.metadataLoaded =
+          true;
+
+        renderAllLibraries();
 
         if (
-          !track ||
-          !track.file
+          currentIndex >= 0 &&
+          tracks[currentIndex] === track
         ) {
 
-          resolve(0);
+          updateCurrentTrackDisplay();
 
-          return;
-
-        }
-
-        var url =
-          createTrackUrl(
-            track
-          );
-
-        if (!url) {
-
-          resolve(0);
-
-          return;
+          updateMediaSession();
 
         }
 
-        var tempAudio =
-          document.createElement(
-            'audio'
-          );
-
-        tempAudio.preload =
-          'metadata';
-
-        tempAudio.onloadedmetadata =
-          function () {
-
-            var value =
-              isFinite(
-                tempAudio.duration
-              )
-                ? tempAudio.duration
-                : 0;
-
-            tempAudio.src =
-              '';
-
-            resolve(value);
-
-          };
-
-        tempAudio.onerror =
-          function () {
-
-            tempAudio.src =
-              '';
-
-            resolve(0);
-
-          };
-
-        tempAudio.src =
-          url;
-
       }
     );
-
-  }
-
-  function updateTrackDuration(
-    track
-  ) {
-
-    if (
-      !track ||
-      !track.file
-    ) {
-
-      return Promise.resolve();
-
-    }
-
-    if (
-      track.duration &&
-      isFinite(
-        track.duration
-      )
-    ) {
-
-      return Promise.resolve();
-
-    }
-
-    return getAudioDuration(
-      track
-    )
-      .then(
-        function (value) {
-
-          if (
-            value > 0
-          ) {
-
-            track.duration =
-              value;
-
-            saveTrackToDatabase(
-              track
-            );
-
-            renderAllLibraries();
-
-          }
-
-        }
-      );
-
-  }
-
-  function updateTrackDisplay() {
-
-    if (
-      currentIndex < 0 ||
-      !tracks[currentIndex]
-    ) {
-
-      trackName.textContent =
-        'No song selected';
-
-      trackInfo.textContent =
-        '';
-
-      setCurrentTrackArtwork(
-        null
-      );
-
-      return;
-
-    }
-
-    var track =
-      tracks[currentIndex];
-
-    trackName.textContent =
-      getTrackDisplayTitle(
-        track
-      );
-
-    var infoParts = [];
-
-    if (
-      track.artist
-    ) {
-
-      infoParts.push(
-        track.artist
-      );
-
-    }
-
-    if (
-      track.album
-    ) {
-
-      infoParts.push(
-        track.album
-      );
-
-    }
-
-    trackInfo.textContent =
-      infoParts.join(
-        ' • '
-      );
-
-    setCurrentTrackArtwork(
-      track
-    );
-
-  }
-
-  function updatePlayButton() {
-
-    if (!playButton) {
-      return;
-    }
-
-    var playing =
-      !audio.paused;
-
-    playButton.textContent =
-      playing
-        ? '❚❚'
-        : '▶';
-
-    playButton.setAttribute(
-      'aria-label',
-      playing
-        ? 'Pause'
-        : 'Play'
-    );
-
-    playButton.setAttribute(
-      'title',
-      playing
-        ? 'Pause'
-        : 'Play'
-    );
-
-  }
-
-  function updateVolumeIcon() {
-
-    if (!volumeIcon) {
-      return;
-    }
-
-    if (
-      audio.muted ||
-      audio.volume === 0
-    ) {
-
-      volumeIcon.textContent =
-        '🔇';
-
-    } else if (
-      audio.volume < 0.5
-    ) {
-
-      volumeIcon.textContent =
-        '🔉';
-
-    } else {
-
-      volumeIcon.textContent =
-        '🔊';
-
-    }
-
-  }
-
-  function updateProgress() {
-
-    var current =
-      audio.currentTime || 0;
-
-    var total =
-      audio.duration || 0;
-
-    currentTime.textContent =
-      formatTime(
-        current
-      );
-
-    duration.textContent =
-      formatTime(
-        total
-      );
-
-    if (
-      total > 0
-    ) {
-
-      progress.value =
-        (
-          current /
-          total
-        ) * 100;
-
-    } else {
-
-      progress.value =
-        0;
-
-    }
-
-    updateMediaPosition();
-
-  }
-
-  function updateRepeatButton() {
-
-    if (!repeatButton) {
-      return;
-    }
-
-    if (
-      repeatMode === 0
-    ) {
-
-      repeatButton.textContent =
-        '↻';
-
-      repeatButton.classList.remove(
-        'appu-active'
-      );
-
-      repeatButton.setAttribute(
-        'aria-label',
-        'Repeat off'
-      );
-
-      return;
-
-    }
-
-    if (
-      repeatMode === 1
-    ) {
-
-      repeatButton.textContent =
-        '↻';
-
-      repeatButton.classList.add(
-        'appu-active'
-      );
-
-      repeatButton.setAttribute(
-        'aria-label',
-        'Repeat all'
-      );
-
-      return;
-
-    }
-
-    repeatButton.textContent =
-      '🔂';
-
-    repeatButton.classList.add(
-      'appu-active'
-    );
-
-    repeatButton.setAttribute(
-      'aria-label',
-      'Repeat one'
-    );
-
-  }
-
-  function toggleRepeat() {
-
-    repeatMode++;
-
-    if (
-      repeatMode > 2
-    ) {
-
-      repeatMode =
-        0;
-
-    }
-
-    updateRepeatButton();
-
-  }
-
-  function toggleShuffle() {
-
-    isShuffle =
-      !isShuffle;
-
-    shuffleButton.classList.toggle(
-      'appu-active',
-      isShuffle
-    );
-
-    shuffleButton.setAttribute(
-      'aria-label',
-      isShuffle
-        ? 'Shuffle on'
-        : 'Shuffle off'
-    );
-
-  }
-
-  function getNextIndex() {
-
-    if (
-      !tracks.length
-    ) {
-
-      return -1;
-
-    }
-
-    if (
-      repeatMode === 2 &&
-      currentIndex >= 0
-    ) {
-
-      return currentIndex;
-
-    }
-
-    if (isShuffle) {
-
-      if (
-        tracks.length === 1
-      ) {
-
-        return 0;
-
-      }
-
-      var next =
-        currentIndex;
-
-      while (
-        next === currentIndex
-      ) {
-
-        next =
-          Math.floor(
-            Math.random() *
-            tracks.length
-          );
-
-      }
-
-      return next;
-
-    }
-
-    if (
-      currentIndex < 0
-    ) {
-
-      return 0;
-
-    }
-
-    return (
-      currentIndex + 1
-    ) % tracks.length;
-
-  }
-
-  function getPreviousIndex() {
-
-    if (
-      !tracks.length
-    ) {
-
-      return -1;
-
-    }
-
-    if (
-      repeatMode === 2 &&
-      currentIndex >= 0
-    ) {
-
-      return currentIndex;
-
-    }
-
-    if (isShuffle) {
-
-      if (
-        tracks.length === 1
-      ) {
-
-        return 0;
-
-      }
-
-      var previous =
-        currentIndex;
-
-      while (
-        previous === currentIndex
-      ) {
-
-        previous =
-          Math.floor(
-            Math.random() *
-            tracks.length
-          );
-
-      }
-
-      return previous;
-
-    }
-
-    if (
-      currentIndex < 0
-    ) {
-
-      return 0;
-
-    }
-
-    return (
-      currentIndex -
-      1 +
-      tracks.length
-    ) % tracks.length;
-
-  }
-
-  function loadTrack(
-    index,
-    autoplay
-  ) {
-
-    if (
-      index < 0 ||
-      index >= tracks.length
-    ) {
-
-      return;
-
-    }
-
-    var track =
-      tracks[index];
-
-    var url =
-      createTrackUrl(
-        track
-      );
-
-    if (!url) {
-
-      return;
-
-    }
-
-    if (
-      currentIndex !== index
-    ) {
-
-      if (
-        currentIndex >= 0 &&
-        tracks[currentIndex]
-      ) {
-
-        revokeTrackUrl(
-          tracks[currentIndex]
-        );
-
-      }
-
-      currentIndex =
-        index;
-
-    }
-
-    audio.src =
-      url;
-
-    audio.load();
-
-    updateTrackDisplay();
-
-    updateProgress();
-
-    renderAllLibraries();
-
-    updateMediaSession();
-
-    updateTrackDuration(
-      track
-    );
-
-    if (
-      autoplay
-    ) {
-
-      initializeAudioGraph();
-
-      var promise =
-        audio.play();
-
-      if (
-        promise &&
-        typeof promise.catch ===
-          'function'
-      ) {
-
-        promise.catch(
-          function () {
-
-            setStatus(
-              'Tap Play to start audio.'
-            );
-
-          }
-        );
-
-      }
-
-    } else {
-
-      setStatus(
-        'Selected: ' +
-        getTrackDisplayTitle(
-          track
-        )
-      );
-
-    }
-
-  }
-
-  function togglePlay() {
-
-    if (
-      currentIndex < 0 &&
-      tracks.length
-    ) {
-
-      loadTrack(
-        0,
-        true
-      );
-
-      return;
-
-    }
-
-    if (
-      !tracks.length
-    ) {
-
-      setStatus(
-        'Add an audio file first.'
-      );
-
-      return;
-
-    }
-
-    initializeAudioGraph();
-
-    if (
-      audio.paused
-    ) {
-
-      var promise =
-        audio.play();
-
-      if (
-        promise &&
-        typeof promise.catch ===
-          'function'
-      ) {
-
-        promise.catch(
-          function () {}
-        );
-
-      }
-
-    } else {
-
-      audio.pause();
-
-    }
-
-  }
-
-  function previousTrack() {
-
-    var index =
-      getPreviousIndex();
-
-    if (
-      index >= 0
-    ) {
-
-      loadTrack(
-        index,
-        true
-      );
-
-    }
-
-  }
-
-  function nextTrack() {
-
-    var index =
-      getNextIndex();
-
-    if (
-      index >= 0
-    ) {
-
-      loadTrack(
-        index,
-        true
-      );
-
-    }
-
-  }
-
-  function seekBy(
-    seconds
-  ) {
-
-    if (
-      !isFinite(
-        audio.duration
-      )
-    ) {
-
-      return;
-
-    }
-
-    audio.currentTime =
-      Math.max(
-        0,
-        Math.min(
-          audio.duration,
-          audio.currentTime +
-          seconds
-        )
-      );
 
   }
 
   function initializeAudioGraph() {
 
-    if (
-      audioGraphReady
-    ) {
+    if (audioGraphReady) {
 
       if (
         audioContext &&
@@ -2966,10 +2257,7 @@
           'suspended'
       ) {
 
-        audioContext.resume()
-          .catch(
-            function () {}
-          );
+        audioContext.resume();
 
       }
 
@@ -2982,7 +2270,13 @@
       window.webkitAudioContext;
 
     if (!AudioContextClass) {
+
+      setStatus(
+        'Web Audio is not supported by this browser.'
+      );
+
       return;
+
     }
 
     try {
@@ -3001,15 +2295,15 @@
       analyser.fftSize =
         256;
 
-      var frequencies =
-        eqBands;
+      analyser.smoothingTimeConstant =
+        .78;
 
-      eqFilters =
-        [];
+      var previousNode =
+        mediaSource;
 
       for (
         var i = 0;
-        i < frequencies.length;
+        i < eqBands.length;
         i++
       ) {
 
@@ -3020,7 +2314,7 @@
           'peaking';
 
         filter.frequency.value =
-          frequencies[i];
+          eqBands[i];
 
         filter.Q.value =
           1;
@@ -3028,27 +2322,16 @@
         filter.gain.value =
           0;
 
-        eqFilters.push(
+        previousNode.connect(
           filter
         );
 
-      }
-
-      var previousNode =
-        mediaSource;
-
-      for (
-        var j = 0;
-        j < eqFilters.length;
-        j++
-      ) {
-
-        previousNode.connect(
-          eqFilters[j]
-        );
-
         previousNode =
-          eqFilters[j];
+          filter;
+
+        eqFilters.push(
+          filter
+        );
 
       }
 
@@ -3064,18 +2347,6 @@
         true;
 
       startVisualizer();
-
-      if (
-        audioContext.state ===
-        'suspended'
-      ) {
-
-        audioContext.resume()
-          .catch(
-            function () {}
-          );
-
-      }
 
     } catch (error) {
 
@@ -3094,40 +2365,164 @@
       audioGraphReady =
         false;
 
+      setStatus(
+        'Audio processing could not be initialized.'
+      );
+
     }
+
+  }
+
+  var equalizerPresets = {
+
+    'Flat': [
+      0,0,0,0,0,0,0,0,0
+    ],
+
+    'Bass Boost': [
+      7,6,5,3,1,0,0,0,0
+    ],
+
+    'Treble Boost': [
+      0,0,0,0,1,3,5,7,7
+    ],
+
+    'Vocal': [
+      -2,-1,0,3,5,4,2,0,-1
+    ],
+
+    'Rock': [
+      5,3,1,-1,-2,2,4,5,4
+    ],
+
+    'Pop': [
+      -1,2,4,4,1,-1,-2,-2,-1
+    ],
+
+    'Jazz': [
+      3,2,0,2,-1,-1,2,4,5
+    ],
+
+    'Classical': [
+      4,3,2,0,-2,-1,2,4,5
+    ],
+
+    'Electronic': [
+      6,4,1,0,-1,2,4,5,6
+    ]
+
+  };
+
+  function applyEqualizer(
+    name
+  ) {
+
+    if (!audioGraphReady) {
+      initializeAudioGraph();
+    }
+
+    var preset =
+      equalizerPresets[name];
+
+    if (!preset) {
+      return;
+    }
+
+    for (
+      var i = 0;
+      i < eqFilters.length;
+      i++
+    ) {
+
+      eqFilters[i].gain.value =
+        preset[i] || 0;
+
+    }
+
+    var options =
+      document.querySelectorAll(
+        '.appu-mp3-eq-option'
+      );
+
+    for (
+      var j = 0;
+      j < options.length;
+      j++
+    ) {
+
+      options[j].classList.toggle(
+        'appu-selected',
+        options[j].getAttribute(
+          'data-eq'
+        ) === name
+      );
+
+    }
+
+    eqButton.textContent =
+      'EQ: ' + name;
+
+    setStatus(
+      'Equalizer: ' +
+      name
+    );
+
+  }
+
+  function resizeVisualizer() {
+
+    var rect =
+      canvas.getBoundingClientRect();
+
+    var ratio =
+      window.devicePixelRatio || 1;
+
+    canvas.width =
+      Math.max(
+        1,
+        Math.floor(
+          rect.width * ratio
+        )
+      );
+
+    canvas.height =
+      Math.max(
+        1,
+        Math.floor(
+          rect.height * ratio
+        )
+      );
+
+    canvasContext.setTransform(
+      ratio,
+      0,
+      0,
+      ratio,
+      0,
+      0
+    );
 
   }
 
   function drawVisualizer() {
 
+    visualizerAnimation =
+      requestAnimationFrame(
+        drawVisualizer
+      );
+
+    var width =
+      canvas.clientWidth;
+
+    var height =
+      canvas.clientHeight;
+
     if (
-      !canvasContext ||
-      !canvas ||
-      !analyser
+      !width ||
+      !height
     ) {
 
       return;
-
-    }
-
-    var width =
-      canvas.clientWidth ||
-      canvas.width;
-
-    var height =
-      canvas.clientHeight ||
-      canvas.height;
-
-    if (
-      canvas.width !== width ||
-      canvas.height !== height
-    ) {
-
-      canvas.width =
-        width;
-
-      canvas.height =
-        height;
 
     }
 
@@ -3138,374 +2533,241 @@
       height
     );
 
-    var data =
+    if (!analyser) {
+
+      return;
+
+    }
+
+    var bufferLength =
+      analyser.frequencyBinCount;
+
+    var dataArray =
       new Uint8Array(
-        analyser.frequencyBinCount
+        bufferLength
       );
 
     analyser.getByteFrequencyData(
-      data
+      dataArray
     );
 
+    var bars =
+      Math.min(
+        42,
+        Math.max(
+          20,
+          Math.floor(
+            width / 9
+          )
+        )
+      );
+
+    var step =
+      Math.max(
+        1,
+        Math.floor(
+          bufferLength / bars
+        )
+      );
+
+    var gap =
+      3;
+
     var barWidth =
-      width /
-      data.length;
+      Math.max(
+        2,
+        (width / bars) - gap
+      );
 
     for (
       var i = 0;
-      i < data.length;
+      i < bars;
       i++
     ) {
 
+      var total = 0;
+
+      var count = 0;
+
+      for (
+        var j = 0;
+        j < step;
+        j++
+      ) {
+
+        var index =
+          i * step + j;
+
+        if (
+          index < bufferLength
+        ) {
+
+          total +=
+            dataArray[index];
+
+          count++;
+
+        }
+
+      }
+
       var value =
-        data[i] /
-        255;
+        count
+          ? total / count
+          : 0;
+
+      var normalized =
+        value / 255;
 
       var barHeight =
-        value *
-        height;
+        Math.max(
+          4,
+          normalized *
+          height *
+          .82
+        );
+
+      var x =
+        i *
+        (width / bars);
+
+      var y =
+        height -
+        barHeight;
+
+      canvasContext.fillStyle =
+        'rgba(255,255,255,.84)';
 
       canvasContext.fillRect(
-        i * barWidth,
-        height -
-          barHeight,
-        Math.max(
-          1,
-          barWidth - 1
-        ),
+        x + gap / 2,
+        y,
+        barWidth,
         barHeight
       );
 
     }
 
-    visualizerAnimation =
-      requestAnimationFrame(
-        drawVisualizer
-      );
-
   }
 
   function startVisualizer() {
 
-    if (
-      visualizerAnimation
-    ) {
-
-      cancelAnimationFrame(
-        visualizerAnimation
-      );
-
+    if (visualizerAnimation) {
+      return;
     }
+
+    resizeVisualizer();
 
     drawVisualizer();
 
   }
 
-  function stopVisualizer() {
+  window.addEventListener(
+    'resize',
+    resizeVisualizer
+  );
 
-    if (
-      visualizerAnimation
-    ) {
+  barButton.addEventListener(
+    'click',
+    function () {
 
-      cancelAnimationFrame(
-        visualizerAnimation
-      );
-
-      visualizerAnimation =
-        null;
-
-    }
-
-  }
-
-  function updateEqualizerUI() {
-
-    if (!eqModal) {
-      return;
-    }
-
-    var sliders =
-      eqModal.querySelectorAll(
-        '[data-eq-band]'
-      );
-
-    for (
-      var i = 0;
-      i < sliders.length;
-      i++
-    ) {
-
-      var band =
-        Number(
-          sliders[i].getAttribute(
-            'data-eq-band'
-          )
+      var visible =
+        visualizer.classList.toggle(
+          'appu-visible'
         );
 
-      if (
-        eqFilters[band]
-      ) {
+      cover.style.display =
+        visible
+          ? 'none'
+          : 'block';
 
-        sliders[i].value =
-          eqFilters[band].gain.value;
-
-      }
-
-    }
-
-  }
-
-  function setEqualizerBand(
-    band,
-    value
-  ) {
-
-    if (
-      eqFilters[band]
-    ) {
-
-      eqFilters[band].gain.value =
-        Number(value) || 0;
-
-    }
-
-  }
-
-  function resetEqualizer() {
-
-    for (
-      var i = 0;
-      i < eqFilters.length;
-      i++
-    ) {
-
-      eqFilters[i].gain.value =
-        0;
-
-    }
-
-    updateEqualizerUI();
-
-  }
-
-  function renderTrackItem(
-    track,
-    index
-  ) {
-
-    var item =
-      document.createElement(
-        'div'
+      barButton.classList.toggle(
+        'appu-active',
+        visible
       );
 
-    item.className =
-      'appu-mp3-track-item';
+      if (visible) {
 
-    if (
-      index === currentIndex
-    ) {
+        resizeVisualizer();
 
-      item.classList.add(
-        'appu-current'
-      );
+        initializeAudioGraph();
 
-    }
+        setStatus(
+          'Music Bar enabled.'
+        );
 
-    var title =
-      document.createElement(
-        'div'
-      );
+      } else {
 
-    title.className =
-      'appu-mp3-track-title';
-
-    title.textContent =
-      getTrackDisplayTitle(
-        track
-      );
-
-    var artist =
-      document.createElement(
-        'div'
-      );
-
-    artist.className =
-      'appu-mp3-track-artist';
-
-    artist.textContent =
-      getTrackDisplayArtist(
-        track
-      );
-
-    var removeButton =
-      document.createElement(
-        'button'
-      );
-
-    removeButton.type =
-      'button';
-
-    removeButton.className =
-      'appu-mp3-track-remove';
-
-    removeButton.textContent =
-      '×';
-
-    removeButton.setAttribute(
-      'aria-label',
-      'Remove ' +
-      getTrackDisplayTitle(
-        track
-      )
-    );
-
-    removeButton.addEventListener(
-      'click',
-      function (event) {
-
-        event.stopPropagation();
-
-        removeTrack(
-          index
+        setStatus(
+          'Music Bar disabled.'
         );
 
       }
-    );
-
-    item.appendChild(
-      title
-    );
-
-    item.appendChild(
-      artist
-    );
-
-    item.appendChild(
-      removeButton
-    );
-
-    item.addEventListener(
-      'click',
-      function () {
-
-        loadTrack(
-          index,
-          true
-        );
-
-      }
-    );
-
-    return item;
-
-  }
-
-  function renderPlaylist() {
-
-    playlistElement.innerHTML =
-      '';
-
-    for (
-      var i = 0;
-      i < tracks.length;
-      i++
-    ) {
-
-      playlistElement.appendChild(
-        renderTrackItem(
-          tracks[i],
-          i
-        )
-      );
 
     }
+  );
 
-  }
+  function updateArtwork() {
 
-  function removeTrack(
-    index
-  ) {
+    cover.classList.remove(
+      'appu-has-artwork'
+    );
+
+    coverImage.removeAttribute(
+      'src'
+    );
 
     if (
-      index < 0 ||
-      index >= tracks.length
+      currentIndex < 0 ||
+      !tracks[currentIndex]
     ) {
 
       return;
 
     }
 
-    var removed =
-      tracks[index];
-
-    deleteTrackFromDatabase(
-      removed.id
-    );
-
-    revokeTrackArtwork(
-      removed
-    );
-
-    revokeTrackUrl(
-      removed
-    );
-
-    tracks.splice(
-      index,
-      1
-    );
+    var track =
+      tracks[currentIndex];
 
     if (
-      !tracks.length
+      track.artworkUrl
     ) {
 
-      currentIndex =
-        -1;
+      coverImage.src =
+        track.artworkUrl;
 
-      audio.removeAttribute(
-        'src'
+      cover.classList.add(
+        'appu-has-artwork'
       );
-
-      audio.load();
-
-      updateTrackDisplay();
-
-      updateProgress();
-
-      renderAllLibraries();
-
-      setStatus(
-        'Library is empty.'
-      );
-
-      return;
 
     }
 
-    if (
-      currentIndex === index
-    ) {
+  }
 
-      currentIndex =
-        Math.min(
-          index,
-          tracks.length - 1
+  coverImage.addEventListener(
+    'error',
+    function () {
+
+      cover.classList.remove(
+        'appu-has-artwork'
+      );
+
+    }
+  );
+
+  function createTrackUrl(
+    track
+  ) {
+
+    if (!track.url) {
+
+      track.url =
+        URL.createObjectURL(
+          track.file
         );
 
-      loadTrack(
-        currentIndex,
-        false
-      );
-
-    } else if (
-      currentIndex > index
-    ) {
-
-      currentIndex--;
-
     }
 
-    renderAllLibraries();
+    return track.url;
 
   }
 
@@ -3513,12 +2775,16 @@
     fileList
   ) {
 
-    if (!fileList) {
+    if (
+      !fileList ||
+      !fileList.length
+    ) {
+
       return;
+
     }
 
-    var added =
-      0;
+    var addedTracks = [];
 
     for (
       var i = 0;
@@ -3529,14 +2795,8 @@
       var file =
         fileList[i];
 
-      if (
-        !isAudioFile(
-          file
-        )
-      ) {
-
+      if (!isAudioFile(file)) {
         continue;
-
       }
 
       var duplicate =
@@ -3549,7 +2809,6 @@
       ) {
 
         if (
-          tracks[j].file &&
           tracks[j].file.name ===
             file.name &&
           tracks[j].file.size ===
@@ -3568,26 +2827,10 @@
       }
 
       if (duplicate) {
-
         continue;
-
       }
 
       var track = {
-
-        id:
-          (
-            typeof crypto !== 'undefined' &&
-            crypto.randomUUID
-              ? crypto.randomUUID()
-              : String(
-                  Date.now()
-                ) +
-                '-' +
-                Math.random()
-                  .toString(36)
-                  .slice(2)
-          ),
 
         file:
           file,
@@ -3597,50 +2840,35 @@
             file.name
           ),
 
-        title:
-          '',
+        title: '',
 
-        artist:
-          '',
+        artist: '',
 
-        album:
-          '',
+        album: '',
 
-        albumArtist:
-          '',
+        albumArtist: '',
 
-        genre:
-          '',
+        genre: '',
 
-        year:
-          '',
+        year: '',
 
-        track:
-          '',
+        track: '',
 
-        disc:
-          '',
+        disc: '',
 
-        composer:
-          '',
+        composer: '',
 
-        comment:
-          '',
+        comment: '',
 
-        url:
-          null,
+        url: null,
 
-        duration:
-          0,
+        duration: 0,
 
-        artworkUrl:
-          null,
+        artworkUrl: null,
 
-        artworkType:
-          '',
+        artworkType: '',
 
-        metadataLoaded:
-          false
+        metadataLoaded: false
 
       };
 
@@ -3648,16 +2876,14 @@
         track
       );
 
-      saveTrackToDatabase(
+      addedTracks.push(
         track
       );
-
-      added++;
 
     }
 
     if (
-      added
+      addedTracks.length
     ) {
 
       renderAllLibraries();
@@ -3674,26 +2900,1551 @@
       }
 
       setStatus(
-        added +
+        addedTracks.length +
         (
-          added === 1
-            ? ' audio file added.'
-            : ' audio files added.'
+          addedTracks.length === 1
+            ? ' audio file added. Reading ID3 metadata...'
+            : ' audio files added. Reading ID3 metadata...'
         )
       );
 
       enrichTrackQueue(
-        tracks,
+        addedTracks,
         0
       );
 
     } else {
 
       setStatus(
-        'No new audio files were added.'
+        'No new supported audio files were added.'
       );
 
     }
+
+    fileInput.value =
+      '';
+
+  }
+
+  function enrichTrackQueue(
+    list,
+    index
+  ) {
+
+    if (
+      index >= list.length
+    ) {
+
+      setStatus(
+        list.length +
+        (
+          list.length === 1
+            ? ' audio file ready.'
+            : ' audio files ready.'
+        )
+      );
+
+      return;
+
+    }
+
+    enrichTrack(
+      list[index]
+    );
+
+    var wait =
+      setInterval(
+        function () {
+
+          if (
+            list[index].metadataLoaded
+          ) {
+
+            clearInterval(
+              wait
+            );
+
+            enrichTrackQueue(
+              list,
+              index + 1
+            );
+
+          }
+
+        },
+        50
+      );
+
+  }
+
+  scanButton.addEventListener(
+    'click',
+    function () {
+
+      openModal(
+        scanModal
+      );
+
+    }
+  );
+
+  var scanOptions =
+    document.querySelectorAll(
+      '.appu-mp3-scan-option'
+    );
+
+  for (
+    var s = 0;
+    s < scanOptions.length;
+    s++
+  ) {
+
+    scanOptions[s].addEventListener(
+      'click',
+      function () {
+
+        scanMin =
+          Number(
+            this.getAttribute(
+              'data-scan-min'
+            )
+          ) || 0;
+
+        scanMax =
+          Number(
+            this.getAttribute(
+              'data-scan-max'
+            )
+          ) || 0;
+
+        closeModal(
+          scanModal
+        );
+
+        fileInput.click();
+
+      }
+    );
+
+  }
+
+  fileInput.addEventListener(
+    'change',
+    function () {
+
+      if (
+        !fileInput.files.length
+      ) {
+
+        return;
+
+      }
+
+      if (
+        scanMin === 0 &&
+        scanMax === 0
+      ) {
+
+        addFiles(
+          fileInput.files
+        );
+
+        return;
+
+      }
+
+      scanFilesByDuration(
+        fileInput.files
+      );
+
+    }
+  );
+
+  function scanFilesByDuration(
+    fileList
+  ) {
+
+    var files = [];
+
+    for (
+      var i = 0;
+      i < fileList.length;
+      i++
+    ) {
+
+      if (
+        isAudioFile(
+          fileList[i]
+        )
+      ) {
+
+        files.push(
+          fileList[i]
+        );
+
+      }
+
+    }
+
+    if (!files.length) {
+
+      setStatus(
+        'No supported audio files found.'
+      );
+
+      fileInput.value =
+        '';
+
+      return;
+
+    }
+
+    var checked =
+      0;
+
+    var matches =
+      [];
+
+    setStatus(
+      'Scanning audio duration...'
+    );
+
+    for (
+      var j = 0;
+      j < files.length;
+      j++
+    ) {
+
+      inspectAudioDuration(
+        files[j],
+        function (
+          file,
+          seconds
+        ) {
+
+          checked++;
+
+          var valid =
+            true;
+
+          if (
+            scanMin > 0 &&
+            seconds <= scanMin
+          ) {
+
+            valid =
+              false;
+
+          }
+
+          if (
+            scanMax > 0 &&
+            seconds >= scanMax
+          ) {
+
+            valid =
+              false;
+
+          }
+
+          if (valid) {
+
+            matches.push(
+              file
+            );
+
+          }
+
+          if (
+            checked ===
+            files.length
+          ) {
+
+            addFiles(
+              matches
+            );
+
+            setStatus(
+              matches.length +
+              ' matching audio files found.'
+            );
+
+          }
+
+        }
+      );
+
+    }
+
+  }
+
+  function inspectAudioDuration(
+    file,
+    callback
+  ) {
+
+    var probe =
+      document.createElement(
+        'audio'
+      );
+
+    var url =
+      URL.createObjectURL(
+        file
+      );
+
+    probe.preload =
+      'metadata';
+
+    probe.src =
+      url;
+
+    probe.addEventListener(
+      'loadedmetadata',
+      function () {
+
+        var seconds =
+          isFinite(
+            probe.duration
+          )
+            ? probe.duration
+            : 0;
+
+        URL.revokeObjectURL(
+          url
+        );
+
+        callback(
+          file,
+          seconds
+        );
+
+      }
+    );
+
+    probe.addEventListener(
+      'error',
+      function () {
+
+        URL.revokeObjectURL(
+          url
+        );
+
+        callback(
+          file,
+          0
+        );
+
+      }
+    );
+
+  }
+
+  function loadTrack(
+    index,
+    autoplay
+  ) {
+
+    if (
+      !tracks.length ||
+      index < 0 ||
+      index >= tracks.length
+    ) {
+
+      return;
+
+    }
+
+    currentIndex =
+      index;
+
+    var track =
+      tracks[
+        currentIndex
+      ];
+
+    currentUrl =
+      createTrackUrl(
+        track
+      );
+
+    audio.src =
+      currentUrl;
+
+    audio.load();
+
+    updateCurrentTrackDisplay();
+
+    progress.value =
+      0;
+
+    currentTime.textContent =
+      '0:00';
+
+    duration.textContent =
+      '0:00';
+
+    renderAllLibraries();
+
+    updateMediaSession();
+
+    if (autoplay) {
+
+      initializeAudioGraph();
+
+      if (
+        audioContext &&
+        audioContext.state ===
+          'suspended'
+      ) {
+
+        audioContext.resume();
+
+      }
+
+      var promise =
+        audio.play();
+
+      if (
+        promise &&
+        typeof promise.catch ===
+          'function'
+      ) {
+
+        promise.catch(
+          function () {
+
+            updatePlayButton();
+
+          }
+        );
+
+      }
+
+    }
+
+    updatePlayButton();
+
+  }
+
+  function updateCurrentTrackDisplay() {
+
+    if (
+      currentIndex < 0 ||
+      !tracks[currentIndex]
+    ) {
+
+      trackName.textContent =
+        'No song selected';
+
+      trackInfo.textContent =
+        'Add music to start listening';
+
+      updateArtwork();
+
+      return;
+
+    }
+
+    var track =
+      tracks[currentIndex];
+
+    trackName.textContent =
+      track.title ||
+      track.name;
+
+    var parts = [];
+
+    if (
+      track.artist
+    ) {
+
+      parts.push(
+        track.artist
+      );
+
+    }
+
+    if (
+      track.album
+    ) {
+
+      parts.push(
+        track.album
+      );
+
+    }
+
+    if (
+      track.year
+    ) {
+
+      parts.push(
+        track.year
+      );
+
+    }
+
+    if (
+      !parts.length
+    ) {
+
+      parts.push(
+        'Local music'
+      );
+
+    }
+
+    trackInfo.textContent =
+      parts.join(
+        ' • '
+      ) +
+      ' • ' +
+      (
+        currentIndex + 1
+      ) +
+      ' of ' +
+      tracks.length;
+
+    updateArtwork();
+
+  }
+
+  playButton.addEventListener(
+    'click',
+    togglePlay
+  );
+
+  function togglePlay() {
+
+    if (!tracks.length) {
+
+      openModal(
+        scanModal
+      );
+
+      return;
+
+    }
+
+    initializeAudioGraph();
+
+    if (
+      audioContext &&
+      audioContext.state ===
+        'suspended'
+    ) {
+
+      audioContext.resume();
+
+    }
+
+    if (
+      currentIndex === -1
+    ) {
+
+      loadTrack(
+        0,
+        true
+      );
+
+      return;
+
+    }
+
+    if (audio.paused) {
+
+      var promise =
+        audio.play();
+
+      if (
+        promise &&
+        typeof promise.catch ===
+          'function'
+      ) {
+
+        promise.catch(
+          function () {
+
+            setStatus(
+              'The browser could not start playback.'
+            );
+
+          }
+        );
+
+      }
+
+    } else {
+
+      audio.pause();
+
+    }
+
+  }
+
+  function updatePlayButton() {
+
+    if (!audio.paused) {
+
+      playButton.textContent =
+        '||';
+
+      root.classList.add(
+        'appu-mp3-playing'
+      );
+
+    } else {
+
+      playButton.textContent =
+        '>';
+
+      root.classList.remove(
+        'appu-mp3-playing'
+      );
+
+    }
+
+  }
+
+  prevButton.addEventListener(
+    'click',
+    previousTrack
+  );
+
+  nextButton.addEventListener(
+    'click',
+    nextTrack
+  );
+
+  function nextTrack() {
+
+    if (!tracks.length) {
+      return;
+    }
+
+    var nextIndex;
+
+    if (
+      isShuffle &&
+      tracks.length > 1
+    ) {
+
+      do {
+
+        nextIndex =
+          Math.floor(
+            Math.random() *
+            tracks.length
+          );
+
+      } while (
+        nextIndex ===
+        currentIndex
+      );
+
+    } else {
+
+      nextIndex =
+        currentIndex + 1;
+
+      if (
+        nextIndex >=
+        tracks.length
+      ) {
+
+        nextIndex = 0;
+
+      }
+
+    }
+
+    loadTrack(
+      nextIndex,
+      true
+    );
+
+  }
+
+  function previousTrack() {
+
+    if (!tracks.length) {
+      return;
+    }
+
+    if (
+      audio.currentTime > 3
+    ) {
+
+      audio.currentTime =
+        0;
+
+      return;
+
+    }
+
+    var previousIndex =
+      currentIndex - 1;
+
+    if (
+      previousIndex < 0
+    ) {
+
+      previousIndex =
+        tracks.length - 1;
+
+    }
+
+    loadTrack(
+      previousIndex,
+      true
+    );
+
+  }
+
+  progress.addEventListener(
+    'input',
+    function () {
+
+      if (
+        !isFinite(
+          audio.duration
+        )
+      ) {
+
+        return;
+
+      }
+
+      audio.currentTime =
+        (
+          Number(
+            progress.value
+          ) / 100
+        ) *
+        audio.duration;
+
+    }
+  );
+
+  audio.addEventListener(
+    'timeupdate',
+    function () {
+
+      if (
+        isFinite(
+          audio.duration
+        ) &&
+        audio.duration > 0
+      ) {
+
+        progress.value =
+          (
+            audio.currentTime /
+            audio.duration
+          ) *
+          100;
+
+      }
+
+      currentTime.textContent =
+        formatTime(
+          audio.currentTime
+        );
+
+      updateMediaPosition();
+
+    }
+  );
+
+  audio.addEventListener(
+    'loadedmetadata',
+    function () {
+
+      duration.textContent =
+        formatTime(
+          audio.duration
+        );
+
+      if (
+        currentIndex >= 0 &&
+        tracks[currentIndex]
+      ) {
+
+        tracks[
+          currentIndex
+        ].duration =
+          audio.duration;
+
+      }
+
+      renderAllLibraries();
+
+      updateMediaSession();
+
+    }
+  );
+
+  backButton.addEventListener(
+    'click',
+    function () {
+
+      audio.currentTime =
+        Math.max(
+          0,
+          audio.currentTime - 10
+        );
+
+    }
+  );
+
+  forwardButton.addEventListener(
+    'click',
+    function () {
+
+      audio.currentTime =
+        Math.min(
+          audio.duration || Infinity,
+          audio.currentTime + 10
+        );
+
+    }
+  );
+
+  audio.addEventListener(
+    'ended',
+    function () {
+
+      if (
+        repeatMode === 2
+      ) {
+
+        audio.currentTime =
+          0;
+
+        var repeatPromise =
+          audio.play();
+
+        if (
+          repeatPromise &&
+          typeof repeatPromise.catch ===
+            'function'
+        ) {
+
+          repeatPromise.catch(
+            function () {}
+          );
+
+        }
+
+        return;
+
+      }
+
+      if (
+        repeatMode === 1 ||
+        currentIndex <
+          tracks.length - 1 ||
+        isShuffle
+      ) {
+
+        nextTrack();
+
+        return;
+
+      }
+
+      audio.currentTime =
+        0;
+
+      updatePlayButton();
+
+      updateMediaPlaybackState();
+
+    }
+  );
+
+  shuffleButton.addEventListener(
+    'click',
+    function () {
+
+      isShuffle =
+        !isShuffle;
+
+      shuffleButton.classList.toggle(
+        'appu-active',
+        isShuffle
+      );
+
+      shuffleButton.textContent =
+        isShuffle
+          ? 'Shuffle: On'
+          : 'Shuffle';
+
+      setStatus(
+        isShuffle
+          ? 'Shuffle enabled.'
+          : 'Shuffle disabled.'
+      );
+
+    }
+  );
+
+  repeatButton.addEventListener(
+    'click',
+    function () {
+
+      repeatMode++;
+
+      if (
+        repeatMode > 2
+      ) {
+
+        repeatMode = 0;
+
+      }
+
+      if (
+        repeatMode === 0
+      ) {
+
+        repeatButton.textContent =
+          'Repeat: Off';
+
+        repeatButton.classList.remove(
+          'appu-active'
+        );
+
+      }
+
+      if (
+        repeatMode === 1
+      ) {
+
+        repeatButton.textContent =
+          'Repeat: All';
+
+        repeatButton.classList.add(
+          'appu-active'
+        );
+
+      }
+
+      if (
+        repeatMode === 2
+      ) {
+
+        repeatButton.textContent =
+          'Repeat: This Song';
+
+        repeatButton.classList.add(
+          'appu-active'
+        );
+
+      }
+
+    }
+  );
+
+  volume.addEventListener(
+    'input',
+    function () {
+
+      audio.volume =
+        Number(
+          volume.value
+        );
+
+      if (
+        audio.volume > 0
+      ) {
+
+        volumeBeforeMute =
+          audio.volume;
+
+      }
+
+      updateVolumeIcon();
+
+    }
+  );
+
+  volumeIcon.addEventListener(
+    'click',
+    function () {
+
+      if (
+        audio.volume > 0
+      ) {
+
+        volumeBeforeMute =
+          audio.volume;
+
+        audio.volume =
+          0;
+
+        volume.value =
+          0;
+
+      } else {
+
+        audio.volume =
+          volumeBeforeMute || 1;
+
+        volume.value =
+          audio.volume;
+
+      }
+
+      updateVolumeIcon();
+
+    }
+  );
+
+  function updateVolumeIcon() {
+
+    volumeIcon.textContent =
+      audio.volume === 0
+        ? 'Mute'
+        : 'Vol';
+
+  }
+
+  eqButton.addEventListener(
+    'click',
+    function () {
+
+      openModal(
+        eqModal
+      );
+
+    }
+  );
+
+  var eqOptions =
+    document.querySelectorAll(
+      '.appu-mp3-eq-option'
+    );
+
+  for (
+    var e = 0;
+    e < eqOptions.length;
+    e++
+  ) {
+
+    eqOptions[e].addEventListener(
+      'click',
+      function () {
+
+        var name =
+          this.getAttribute(
+            'data-eq'
+          );
+
+        initializeAudioGraph();
+
+        applyEqualizer(
+          name
+        );
+
+        closeModal(
+          eqModal
+        );
+
+      }
+    );
+
+  }
+
+  var closeButtons =
+    document.querySelectorAll(
+      '[data-close-modal]'
+    );
+
+  for (
+    var c = 0;
+    c < closeButtons.length;
+    c++
+  ) {
+
+    closeButtons[c].addEventListener(
+      'click',
+      function () {
+
+        var target =
+          this.getAttribute(
+            'data-close-modal'
+          );
+
+        if (
+          target === 'scan'
+        ) {
+
+          closeModal(
+            scanModal
+          );
+
+        }
+
+        if (
+          target === 'eq'
+        ) {
+
+          closeModal(
+            eqModal
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+  scanModal.addEventListener(
+    'click',
+    function (event) {
+
+      if (
+        event.target ===
+        scanModal
+      ) {
+
+        closeModal(
+          scanModal
+        );
+
+      }
+
+    }
+  );
+
+  eqModal.addEventListener(
+    'click',
+    function (event) {
+
+      if (
+        event.target ===
+        eqModal
+      ) {
+
+        closeModal(
+          eqModal
+        );
+
+      }
+
+    }
+  );
+
+  document.addEventListener(
+    'keydown',
+    function (event) {
+
+      if (
+        event.key ===
+        'Escape'
+      ) {
+
+        closeModal(
+          scanModal
+        );
+
+        closeModal(
+          eqModal
+        );
+
+      }
+
+    }
+  );
+
+  function renderPlaylist() {
+
+    playlistElement.innerHTML =
+      '';
+
+    if (!tracks.length) {
+
+      playlistElement.innerHTML =
+        '<div class="appu-mp3-empty">' +
+        'Your selected songs will appear here.' +
+        '</div>';
+
+      return;
+
+    }
+
+    for (
+      var i = 0;
+      i < tracks.length;
+      i++
+    ) {
+
+      createTrackElement(
+        playlistElement,
+        i
+      );
+
+    }
+
+  }
+
+  function createTrackElement(
+    container,
+    index
+  ) {
+
+    var track =
+      tracks[index];
+
+    var item =
+      document.createElement(
+        'div'
+      );
+
+    item.className =
+      'appu-mp3-item';
+
+    if (
+      index === currentIndex
+    ) {
+
+      item.classList.add(
+        'appu-current'
+      );
+
+    }
+
+    var number =
+      document.createElement(
+        'div'
+      );
+
+    number.className =
+      'appu-mp3-item-number';
+
+    number.textContent =
+      index + 1;
+
+    var icon =
+      document.createElement(
+        'div'
+      );
+
+    icon.className =
+      'appu-mp3-item-icon';
+
+    if (
+      track.artworkUrl
+    ) {
+
+      var iconImage =
+        document.createElement(
+          'img'
+        );
+
+      iconImage.alt =
+        '';
+
+      iconImage.src =
+        track.artworkUrl;
+
+      icon.appendChild(
+        iconImage
+      );
+
+    } else {
+
+      icon.textContent =
+        (
+          index === currentIndex &&
+          !audio.paused
+        )
+          ? '||'
+          : 'Music';
+
+    }
+
+    var info =
+      document.createElement(
+        'div'
+      );
+
+    info.className =
+      'appu-mp3-item-info';
+
+    var name =
+      document.createElement(
+        'div'
+      );
+
+    name.className =
+      'appu-mp3-item-name';
+
+    name.textContent =
+      track.title ||
+      track.name;
+
+    var meta =
+      document.createElement(
+        'div'
+      );
+
+    meta.className =
+      'appu-mp3-item-meta';
+
+    var metaParts = [];
+
+    if (
+      track.artist
+    ) {
+
+      metaParts.push(
+        track.artist
+      );
+
+    }
+
+    if (
+      track.album
+    ) {
+
+      metaParts.push(
+        track.album
+      );
+
+    }
+
+    if (
+      track.duration &&
+      isFinite(
+        track.duration
+      )
+    ) {
+
+      metaParts.push(
+        formatTime(
+          track.duration
+        )
+      );
+
+    }
+
+    if (
+      !metaParts.length
+    ) {
+
+      metaParts.push(
+        getExtension(
+          track.file.name
+        ).toUpperCase() ||
+        'AUDIO'
+      );
+
+    }
+
+    meta.textContent =
+      metaParts.join(
+        ' • '
+      );
+
+    info.appendChild(
+      name
+    );
+
+    info.appendChild(
+      meta
+    );
+
+    item.appendChild(
+      number
+    );
+
+    item.appendChild(
+      icon
+    );
+
+    item.appendChild(
+      info
+    );
+
+    var remove =
+      document.createElement(
+        'button'
+      );
+
+    remove.className =
+      'appu-mp3-item-remove';
+
+    remove.type =
+      'button';
+
+    remove.setAttribute(
+      'aria-label',
+      'Remove ' +
+      (
+        track.title ||
+        track.name
+      )
+    );
+
+    remove.textContent =
+      'x';
+
+    remove.addEventListener(
+      'click',
+      function (event) {
+
+        event.stopPropagation();
+
+        removeTrack(
+          index
+        );
+
+      }
+    );
+
+    item.appendChild(
+      remove
+    );
+
+    item.addEventListener(
+      'click',
+      function () {
+
+        loadTrack(
+          index,
+          true
+        );
+
+      }
+    );
+
+    container.appendChild(
+      item
+    );
+
+  }
+
+  function removeTrack(
+    index
+  ) {
+
+    if (
+      index < 0 ||
+      index >= tracks.length
+    ) {
+
+      return;
+
+    }
+
+    var wasCurrent =
+      index === currentIndex;
+
+    var removed =
+      tracks[index];
+
+    if (
+      removed.url
+    ) {
+
+      URL.revokeObjectURL(
+        removed.url
+      );
+
+      removed.url =
+        null;
+
+    }
+
+    if (
+      removed.artworkUrl
+    ) {
+
+      URL.revokeObjectURL(
+        removed.artworkUrl
+      );
+
+      removed.artworkUrl =
+        null;
+
+    }
+
+    tracks.splice(
+      index,
+      1
+    );
+
+    if (!tracks.length) {
+
+      audio.pause();
+
+      audio.removeAttribute(
+        'src'
+      );
+
+      audio.load();
+
+      currentIndex =
+        -1;
+
+      currentUrl =
+        '';
+
+      trackName.textContent =
+        'No song selected';
+
+      trackInfo.textContent =
+        'Add music to start listening';
+
+      progress.value =
+        0;
+
+      currentTime.textContent =
+        '0:00';
+
+      duration.textContent =
+        '0:00';
+
+      updateArtwork();
+
+      updatePlayButton();
+
+      renderAllLibraries();
+
+      return;
+
+    }
+
+    if (
+      index < currentIndex
+    ) {
+
+      currentIndex--;
+
+    } else if (
+      wasCurrent
+    ) {
+
+      if (
+        index >= tracks.length
+      ) {
+
+        currentIndex =
+          tracks.length - 1;
+
+      }
+
+      loadTrack(
+        currentIndex,
+        false
+      );
+
+    }
+
+    renderAllLibraries();
 
   }
 
@@ -3701,23 +4452,43 @@
 
     renderPlaylist();
 
-    renderSongList();
+    renderSongs();
 
-    renderGenreList();
+    renderCategories(
+      genreList,
+      'genre',
+      'Genre'
+    );
 
-    renderAlbumList();
+    renderCategories(
+      albumList,
+      'album',
+      'Album'
+    );
 
-    renderArtistList();
+    renderCategories(
+      artistList,
+      'artist',
+      'Artist'
+    );
 
   }
 
-  function renderSongList() {
+  function renderSongs() {
 
     songList.innerHTML =
       '';
 
-    var indexes =
-      [];
+    if (!tracks.length) {
+
+      songList.innerHTML =
+        '<div class="appu-mp3-empty">' +
+        'No songs available.' +
+        '</div>';
+
+      return;
+
+    }
 
     for (
       var i = 0;
@@ -3725,21 +4496,73 @@
       i++
     ) {
 
-      indexes.push(
+      createTrackElement(
+        songList,
         i
       );
 
     }
 
-    indexes.sort(
-      function (a, b) {
+  }
 
-        return getTrackDisplayTitle(
-          tracks[a]
-        ).localeCompare(
-          getTrackDisplayTitle(
-            tracks[b]
-          )
+  function renderCategories(
+    container,
+    field,
+    label
+  ) {
+
+    container.innerHTML =
+      '';
+
+    if (!tracks.length) {
+
+      container.innerHTML =
+        '<div class="appu-mp3-empty">' +
+        'No ' +
+        label.toLowerCase() +
+        ' information available.' +
+        '</div>';
+
+      return;
+
+    }
+
+    var groups = {};
+
+    for (
+      var i = 0;
+      i < tracks.length;
+      i++
+    ) {
+
+      var value =
+        tracks[i][field] ||
+        'Unknown';
+
+      if (
+        !groups[value]
+      ) {
+
+        groups[value] = [];
+
+      }
+
+      groups[value].push(
+        i
+      );
+
+    }
+
+    var names =
+      Object.keys(
+        groups
+      );
+
+    names.sort(
+      function (a,b) {
+
+        return a.localeCompare(
+          b
         );
 
       }
@@ -3747,321 +4570,94 @@
 
     for (
       var j = 0;
-      j < indexes.length;
-      j++
-    ) {
-
-      var index =
-        indexes[j];
-
-      songList.appendChild(
-        createLibraryItem(
-          getTrackDisplayTitle(
-            tracks[index]
-          ),
-          getTrackDisplayArtist(
-            tracks[index]
-          ),
-          indexes.slice(
-            j,
-            j + 1
-          ),
-          '🎵'
-        )
-      );
-
-    }
-
-  }
-
-  function renderGenreList() {
-
-    genreList.innerHTML =
-      '';
-
-    var groups =
-      {};
-
-    for (
-      var i = 0;
-      i < tracks.length;
-      i++
-    ) {
-
-      var value =
-        trimText(
-          tracks[i].genre
-        ) ||
-        'Unknown Genre';
-
-      if (
-        !groups[value]
-      ) {
-
-        groups[value] =
-          [];
-
-      }
-
-      groups[value].push(
-        i
-      );
-
-    }
-
-    var names =
-      Object.keys(
-        groups
-      ).sort(
-        function (a, b) {
-          return a.localeCompare(
-            b
-          );
-        }
-      );
-
-    for (
-      var j = 0;
       j < names.length;
       j++
     ) {
 
-      var name =
-        names[j];
-
-      genreList.appendChild(
-        createLibraryItem(
-          name,
-          groups[name].length +
-            (
-              groups[name].length === 1
-                ? ' song'
-                : ' songs'
-            ),
-          groups[name],
-          '🎼'
-        )
+      createCategoryElement(
+        container,
+        names[j],
+        groups[
+          names[j]
+        ],
+        label
       );
 
     }
 
   }
 
-  function renderAlbumList() {
-
-    albumList.innerHTML =
-      '';
-
-    var groups =
-      {};
-
-    for (
-      var i = 0;
-      i < tracks.length;
-      i++
-    ) {
-
-      var value =
-        trimText(
-          tracks[i].album
-        ) ||
-        'Unknown Album';
-
-      if (
-        !groups[value]
-      ) {
-
-        groups[value] =
-          [];
-
-      }
-
-      groups[value].push(
-        i
-      );
-
-    }
-
-    var names =
-      Object.keys(
-        groups
-      ).sort(
-        function (a, b) {
-          return a.localeCompare(
-            b
-          );
-        }
-      );
-
-    for (
-      var j = 0;
-      j < names.length;
-      j++
-    ) {
-
-      var name =
-        names[j];
-
-      albumList.appendChild(
-        createLibraryItem(
-          name,
-          groups[name].length +
-            (
-              groups[name].length === 1
-                ? ' song'
-                : ' songs'
-            ),
-          groups[name],
-          '💿'
-        )
-      );
-
-    }
-
-  }
-
-  function renderArtistList() {
-
-    artistList.innerHTML =
-      '';
-
-    var groups =
-      {};
-
-    for (
-      var i = 0;
-      i < tracks.length;
-      i++
-    ) {
-
-      var value =
-        trimText(
-          tracks[i].artist
-        ) ||
-        'Unknown Artist';
-
-      if (
-        !groups[value]
-      ) {
-
-        groups[value] =
-          [];
-
-      }
-
-      groups[value].push(
-        i
-      );
-
-    }
-
-    var names =
-      Object.keys(
-        groups
-      ).sort(
-        function (a, b) {
-          return a.localeCompare(
-            b
-          );
-        }
-      );
-
-    for (
-      var j = 0;
-      j < names.length;
-      j++
-    ) {
-
-      var name =
-        names[j];
-
-      artistList.appendChild(
-        createLibraryItem(
-          name,
-          groups[name].length +
-            (
-              groups[name].length === 1
-                ? ' song'
-                : ' songs'
-            ),
-          groups[name],
-          '👤'
-        )
-      );
-
-    }
-
-  }
-
-  function createLibraryItem(
-    title,
-    subtitle,
+  function createCategoryElement(
+    container,
+    name,
     indexes,
-    icon
+    label
   ) {
 
     var item =
       document.createElement(
-        'button'
+        'div'
       );
-
-    item.type =
-      'button';
 
     item.className =
-      'appu-mp3-library-item';
+      'appu-mp3-category-item';
 
-    var iconElement =
+    var icon =
       document.createElement(
-        'span'
+        'div'
       );
 
-    iconElement.className =
-      'appu-mp3-library-icon';
+    icon.className =
+      'appu-mp3-category-icon';
 
-    iconElement.textContent =
-      icon;
+    icon.textContent =
+      label;
 
     var info =
       document.createElement(
-        'span'
+        'div'
       );
 
     info.className =
-      'appu-mp3-library-info';
+      'appu-mp3-category-info';
 
-    var titleElement =
+    var title =
       document.createElement(
-        'span'
+        'div'
       );
 
-    titleElement.className =
-      'appu-mp3-library-title';
+    title.className =
+      'appu-mp3-category-name';
 
-    titleElement.textContent =
-      title;
+    title.textContent =
+      name;
 
-    var subtitleElement =
+    var count =
       document.createElement(
-        'span'
+        'div'
       );
 
-    subtitleElement.className =
-      'appu-mp3-library-subtitle';
+    count.className =
+      'appu-mp3-category-count';
 
-    subtitleElement.textContent =
-      subtitle;
+    count.textContent =
+      indexes.length +
+      (
+        indexes.length === 1
+          ? ' song'
+          : ' songs'
+      );
 
     info.appendChild(
-      titleElement
+      title
     );
 
     info.appendChild(
-      subtitleElement
+      count
     );
 
     item.appendChild(
-      iconElement
+      icon
     );
 
     item.appendChild(
@@ -4090,7 +4686,9 @@
       }
     );
 
-    return item;
+    container.appendChild(
+      item
+    );
 
   }
 
@@ -4556,407 +5154,6 @@
   }
 
   audio.addEventListener(
-    'timeupdate',
-    updateProgress
-  );
-
-  audio.addEventListener(
-    'loadedmetadata',
-    updateProgress
-  );
-
-  audio.addEventListener(
-    'ended',
-    function () {
-
-      if (
-        repeatMode === 2
-      ) {
-
-        audio.currentTime =
-          0;
-
-        audio.play();
-
-        return;
-
-      }
-
-      if (
-        repeatMode === 1 ||
-        currentIndex <
-          tracks.length - 1
-      ) {
-
-        nextTrack();
-
-        return;
-
-      }
-
-      updatePlayButton();
-
-      updateMediaPlaybackState();
-
-    }
-  );
-
-  if (playButton) {
-
-    playButton.addEventListener(
-      'click',
-      togglePlay
-    );
-
-  }
-
-  if (prevButton) {
-
-    prevButton.addEventListener(
-      'click',
-      previousTrack
-    );
-
-  }
-
-  if (nextButton) {
-
-    nextButton.addEventListener(
-      'click',
-      nextTrack
-    );
-
-  }
-
-  if (backButton) {
-
-    backButton.addEventListener(
-      'click',
-      function () {
-
-        seekBy(
-          -10
-        );
-
-      }
-    );
-
-  }
-
-  if (forwardButton) {
-
-    forwardButton.addEventListener(
-      'click',
-      function () {
-
-        seekBy(
-          10
-        );
-
-      }
-    );
-
-  }
-
-  if (progress) {
-
-    progress.addEventListener(
-      'input',
-      function () {
-
-        if (
-          isFinite(
-            audio.duration
-          )
-        ) {
-
-          audio.currentTime =
-            (
-              Number(
-                progress.value
-              ) /
-              100
-            ) *
-            audio.duration;
-
-        }
-
-      }
-    );
-
-  }
-
-  if (volume) {
-
-    volume.addEventListener(
-      'input',
-      function () {
-
-        audio.volume =
-          Number(
-            volume.value
-          );
-
-        audio.muted =
-          false;
-
-        updateVolumeIcon();
-
-      }
-    );
-
-  }
-
-  if (volumeIcon) {
-
-    volumeIcon.addEventListener(
-      'click',
-      function () {
-
-        if (
-          audio.muted ||
-          audio.volume === 0
-        ) {
-
-          audio.muted =
-            false;
-
-          audio.volume =
-            volumeBeforeMute ||
-            1;
-
-          volume.value =
-            audio.volume;
-
-        } else {
-
-          volumeBeforeMute =
-            audio.volume;
-
-          audio.muted =
-            true;
-
-        }
-
-        updateVolumeIcon();
-
-      }
-    );
-
-  }
-
-  if (shuffleButton) {
-
-    shuffleButton.addEventListener(
-      'click',
-      toggleShuffle
-    );
-
-  }
-
-  if (repeatButton) {
-
-    repeatButton.addEventListener(
-      'click',
-      toggleRepeat
-    );
-
-  }
-
-  if (fileInput) {
-
-    fileInput.addEventListener(
-      'change',
-      function () {
-
-        scanMin =
-          0;
-
-        scanMax =
-          0;
-
-        addFiles(
-          fileInput.files
-        );
-
-        fileInput.value =
-          '';
-
-      }
-    );
-
-  }
-
-  if (scanButton) {
-
-    scanButton.addEventListener(
-      'click',
-      function () {
-
-        closeModal(
-          scanModal
-        );
-
-        if (fileInput) {
-
-          fileInput.click();
-
-        }
-
-      }
-    );
-
-  }
-
-  if (eqButton) {
-
-    eqButton.addEventListener(
-      'click',
-      function () {
-
-        initializeAudioGraph();
-
-        updateEqualizerUI();
-
-        openModal(
-          eqModal
-        );
-
-      }
-    );
-
-  }
-
-  if (barButton) {
-
-    barButton.addEventListener(
-      'click',
-      function () {
-
-        visualizer.classList.toggle(
-          'appu-hidden'
-        );
-
-      }
-    );
-
-  }
-
-  if (eqModal) {
-
-    var eqSliders =
-      eqModal.querySelectorAll(
-        '[data-eq-band]'
-      );
-
-    for (
-      var e = 0;
-      e < eqSliders.length;
-      e++
-    ) {
-
-      eqSliders[e].addEventListener(
-        'input',
-        function () {
-
-          initializeAudioGraph();
-
-          setEqualizerBand(
-            Number(
-              this.getAttribute(
-                'data-eq-band'
-              )
-            ),
-            this.value
-          );
-
-        }
-      );
-
-    }
-
-    var eqReset =
-      eqModal.querySelector(
-        '[data-eq-reset]'
-      );
-
-    if (eqReset) {
-
-      eqReset.addEventListener(
-        'click',
-        resetEqualizer
-      );
-
-    }
-
-  }
-
-  var closeButtons =
-    document.querySelectorAll(
-      '[data-appu-modal-close]'
-    );
-
-  for (
-    var c = 0;
-    c < closeButtons.length;
-    c++
-  ) {
-
-    closeButtons[c].addEventListener(
-      'click',
-      function () {
-
-        var targetId =
-          this.getAttribute(
-            'data-appu-modal-close'
-          );
-
-        var target =
-          document.getElementById(
-            targetId
-          );
-
-        if (target) {
-
-          closeModal(
-            target
-          );
-
-        }
-
-      }
-    );
-
-  }
-
-  document.addEventListener(
-    'click',
-    function (event) {
-
-      if (
-        event.target === scanModal
-      ) {
-
-        closeModal(
-          scanModal
-        );
-
-      }
-
-      if (
-        event.target === eqModal
-      ) {
-
-        closeModal(
-          eqModal
-        );
-
-      }
-
-    }
-  );
-
-  audio.addEventListener(
     'play',
     function () {
 
@@ -5156,12 +5353,6 @@
   updatePlayButton();
 
   renderAllLibraries();
-
-  /*
-   * Restore the local music library after the
-   * initial UI has been prepared.
-   */
-  openMusicDatabase();
 
   if (
     'mediaSession' in navigator
