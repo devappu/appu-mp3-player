@@ -119,7 +119,7 @@ html[data-theme='dark'] #appu-music-player {
 .appu-mp3-subtitle {
   display: block;
   max-width: 100%;
-  margin: 3px 0 0 16px;
+  margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
