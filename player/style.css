@@ -1,58 +1,78 @@
-/* =========================================================
-   APPU MY MP3 PLAYER
-   COMPLETE STYLESHEET
-   ========================================================= */
-
-:root {
-  --appu-mp3-bg: #f4f7fb;
-  --appu-mp3-surface: #ffffff;
-  --appu-mp3-surface-2: #f8fafc;
-  --appu-mp3-border: #dbe3ec;
-  --appu-mp3-text: #17212b;
-  --appu-mp3-muted: #6b7785;
-  --appu-mp3-accent: #3182ce;
-  --appu-mp3-accent-dark: #2563a8;
-  --appu-mp3-danger: #dc3545;
-  --appu-mp3-shadow: 0 12px 35px rgba(15, 23, 42, 0.10);
-  --appu-mp3-radius: 18px;
-  --appu-mp3-small-radius: 12px;
+html,
+body {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
 }
-
-html[data-theme="dark"] {
-  --appu-mp3-bg: #0d1117;
-  --appu-mp3-surface: #161b22;
-  --appu-mp3-surface-2: #1c222b;
-  --appu-mp3-border: #303945;
-  --appu-mp3-text: #f1f5f9;
-  --appu-mp3-muted: #9aa6b2;
-  --appu-mp3-accent: #60a5fa;
-  --appu-mp3-accent-dark: #3b82f6;
-  --appu-mp3-danger: #f87171;
-  --appu-mp3-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
-}
-
-
-/* =========================================================
-   ROOT PLAYER
-   ========================================================= */
 
 #appu-music-player {
   width: 100%;
-  max-width: 920px;
-  margin: 0 auto;
-  padding: 20px;
+  height: 100dvh;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --amp-bg: #f3f7fb;
+  --amp-surface: #ffffff;
+  --amp-surface2: #e8eef5;
+  --amp-text: #172033;
+  --amp-muted: #465365;
+  --amp-line: #b8c4d1;
+  --amp-accent: #006b63;
+  --amp-accent-text: #ffffff;
+  --amp-danger: #b91c1c;
+  --amp-danger-bg: rgba(185,28,28,.10);
+  --amp-overlay: rgba(15,23,42,.68);
+  --amp-shadow: 0 10px 30px rgba(15,23,42,.10);
+  --amp-cover-shadow: 0 16px 35px rgba(15,23,42,.18);
+  --amp-play-shadow: 0 7px 18px rgba(15,23,42,.16);
+  --amp-modal-shadow: 0 20px 60px rgba(15,23,42,.25);
+  --amp-gradient-start: #00695c;
+  --amp-gradient-end: #164e63;
+}
+
+html[data-theme='dark'] {
+  --amp-bg: #0f172a;
+  --amp-surface: #1e293b;
+  --amp-surface2: #334155;
+  --amp-text: #f8fafc;
+  --amp-muted: #cbd5e1;
+  --amp-line: #64748b;
+  --amp-accent: #5eead4;
+  --amp-accent-text: #042f2e;
+  --amp-danger: #fca5a5;
+  --amp-danger-bg: rgba(252,165,165,.14);
+  --amp-overlay: rgba(0,0,0,.78);
+  --amp-shadow: 0 10px 30px rgba(0,0,0,.38);
+  --amp-cover-shadow: 0 16px 35px rgba(0,0,0,.45);
+  --amp-play-shadow: 0 7px 18px rgba(0,0,0,.40);
+  --amp-modal-shadow: 0 20px 60px rgba(0,0,0,.60);
+  --amp-gradient-start: #0f766e;
+  --amp-gradient-end: #164e63;
+}
+
+#appu-music-player {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: var(--amp-bg);
+  color: var(--amp-text);
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.4;
+  color-scheme: light;
   box-sizing: border-box;
-  color: var(--appu-mp3-text);
-  background: var(--appu-mp3-bg);
-  border: 1px solid var(--appu-mp3-border);
-  border-radius: 22px;
-  box-shadow: var(--appu-mp3-shadow);
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+}
+
+html[data-theme='dark'] #appu-music-player {
+  color-scheme: dark;
 }
 
 #appu-music-player *,
@@ -61,166 +81,279 @@ html[data-theme="dark"] {
   box-sizing: border-box;
 }
 
-
-/* =========================================================
-   PLAYER
-   ========================================================= */
-
 .appu-mp3-player {
   width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--amp-line);
+  background: var(--amp-surface);
+  color: var(--amp-text);
+  box-shadow: var(--amp-shadow);
+  transition:
+    background-color .2s ease,
+    border-color .2s ease,
+    color .2s ease;
 }
-
-
-/* =========================================================
-   HEADER
-   ========================================================= */
 
 .appu-mp3-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  margin-bottom: 20px;
-}
-
-.appu-mp3-header-left {
-  min-width: 0;
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid var(--amp-line);
+  background: var(--amp-surface);
 }
 
 .appu-mp3-title {
+  display: block;
+  max-width: 100%;
   margin: 0;
-  font-size: 25px;
-  line-height: 1.2;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--appu-mp3-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--amp-text);
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.3;
 }
 
 .appu-mp3-subtitle {
-  margin: 5px 0 0;
-  color: var(--appu-mp3-muted);
+  display: block;
+  max-width: 100%;
+  margin-top: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--amp-muted);
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
-.appu-mp3-header-buttons {
+.appu-mp3-header-actions {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
-  flex-shrink: 0;
+  margin-top: 9px;
 }
 
-.appu-mp3-header-button,
-.appu-mp3-theme-toggle {
-  width: 42px;
-  height: 42px;
-  padding: 0;
-  border: 1px solid var(--appu-mp3-border);
-  border-radius: 12px;
-  background: var(--appu-mp3-surface);
-  color: var(--appu-mp3-text);
-  cursor: pointer;
+.appu-mp3-header-left,
+.appu-mp3-header-right {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.appu-mp3-header-right {
+  margin-left: auto;
+}
+
+.appu-mp3-header-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  min-height: 38px;
+  padding: 7px 11px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--amp-surface2);
+  color: var(--amp-text);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  white-space: nowrap;
   transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
+    background-color .2s ease,
+    color .2s ease,
+    transform .15s ease;
 }
 
-.appu-mp3-header-button:hover,
-.appu-mp3-theme-toggle:hover {
-  background: var(--appu-mp3-surface-2);
-  border-color: var(--appu-mp3-accent);
-  transform: translateY(-1px);
+.appu-mp3-header-button:hover {
+  background: var(--amp-line);
 }
 
+.appu-mp3-header-button:active {
+  transform: scale(.97);
+}
 
-/* =========================================================
-   DROPZONE
-   ========================================================= */
+.appu-mp3-header-button.appu-primary,
+.appu-mp3-header-button.appu-active {
+  background: var(--amp-accent);
+  color: var(--amp-accent-text);
+}
+
+.appu-mp3-header-right .appu-mp3-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 40px;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  min-height: 40px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid var(--amp-line);
+  border-radius: 10px;
+  background: var(--amp-surface);
+  color: var(--amp-text);
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+  transition:
+    background-color .2s ease,
+    border-color .2s ease,
+    color .2s ease,
+    transform .15s ease;
+}
+
+.appu-mp3-header-right .appu-mp3-theme-toggle:hover {
+  background: var(--amp-accent);
+}
+
+.appu-mp3-header-right .appu-mp3-theme-toggle:active {
+  transform: scale(.95);
+}
+
+.appu-mp3-theme-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: var(--amp-text);
+  font-size: 18px;
+  font-weight: 700;
+}
 
 .appu-mp3-dropzone {
-  display: none;
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
+.appu-mp3-dropzone:hover,
 .appu-mp3-dropzone.appu-drag-active {
-  border-color: var(--appu-mp3-accent);
-  background: rgba(49, 130, 206, 0.08);
+  border-color: var(--amp-accent);
+  background: var(--amp-surface2);
 }
 
+.appu-mp3-dropzone:active {
+  transform: scale(.99);
+}
 
-/* =========================================================
-   NOW PLAYING
-   ========================================================= */
+.appu-mp3-drop-icon {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--amp-accent);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.appu-mp3-drop-title {
+  color: var(--amp-text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.appu-mp3-drop-text {
+  margin-top: 5px;
+  color: var(--amp-muted);
+  font-size: 12px;
+}
 
 .appu-mp3-now-playing {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 20px 18px 14px;
   text-align: center;
-  padding: 8px 0 20px;
 }
 
 .appu-mp3-cover {
   position: relative;
-  width: 220px;
-  height: 220px;
-  margin: 0 auto 20px;
+  width: min(230px,65vw);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto 18px;
   overflow: hidden;
-  border-radius: 22px;
+  border-radius: 18px;
   background:
+    radial-gradient(
+      circle at 35% 30%,
+      rgba(255,255,255,.20),
+      transparent 28%
+    ),
     linear-gradient(
-      145deg,
-      #182333,
-      #0b111b
+      135deg,
+      var(--amp-gradient-start),
+      var(--amp-gradient-end)
     );
-  border: 1px solid var(--appu-mp3-border);
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.20);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.appu-mp3-cover::before {
-  content: "MP3";
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(255, 255, 255, 0.14);
-  font-size: 46px;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  pointer-events: none;
+  box-shadow: var(--amp-cover-shadow);
 }
 
 .appu-mp3-cover-image {
-  position: relative;
-  z-index: 2;
   display: none;
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.appu-mp3-cover.appu-has-artwork::before {
+.appu-mp3-cover.appu-has-artwork .appu-mp3-cover-image {
+  display: block;
+}
+
+.appu-mp3-cover.appu-has-artwork .appu-mp3-cover-disc {
   display: none;
 }
 
-
-/* =========================================================
-   ROTATING ARTWORK / DISC
-   ========================================================= */
-
-.appu-mp3-cover.appu-playing img {
-  animation: appuMp3ArtworkSpin 12s linear infinite;
+.appu-mp3-cover::before,
+.appu-mp3-cover::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.14);
+  pointer-events: none;
 }
 
-@keyframes appuMp3ArtworkSpin {
+.appu-mp3-cover::before {
+  inset: 15%;
+}
+
+.appu-mp3-cover::after {
+  inset: 29%;
+}
+
+.appu-mp3-cover-image + .appu-mp3-cover-disc {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.appu-mp3-cover-disc::before {
+  content: "";
+  width: 21%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(255,255,255,.9);
+  box-shadow:
+    0 0 0 7px rgba(255,255,255,.10),
+    0 0 0 16px rgba(255,255,255,.06);
+}
+
+.appu-mp3-playing .appu-mp3-cover-disc {
+  animation: appuMp3Rotate 8s linear infinite;
+}
+
+@keyframes appuMp3Rotate {
   from {
     transform: rotate(0deg);
   }
@@ -230,69 +363,56 @@ html[data-theme="dark"] {
   }
 }
 
-
-/* =========================================================
-   VISUALIZER
-   ========================================================= */
-
-#appu-mp3-visualizer {
+.appu-mp3-visualizer {
+  display: none;
+  position: relative;
   width: 100%;
-  height: 80px;
-  margin: 0 0 16px;
+  height: 230px;
+  margin: 0 auto 18px;
   overflow: hidden;
-  border-radius: 12px;
-  background: var(--appu-mp3-surface-2);
-  border: 1px solid var(--appu-mp3-border);
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      135deg,
+      var(--amp-gradient-start),
+      var(--amp-gradient-end)
+    );
+  box-shadow: var(--amp-cover-shadow);
 }
 
-#appu-mp3-visualizer-canvas {
+.appu-mp3-visualizer.appu-visible {
+  display: block;
+}
+
+.appu-mp3-visualizer canvas {
   display: block;
   width: 100%;
   height: 100%;
 }
 
-.appu-hidden {
-  display: none !important;
-}
-
-
-/* =========================================================
-   TRACK INFORMATION
-   ========================================================= */
-
 .appu-mp3-track-name {
-  width: 100%;
-  margin: 0;
-  color: var(--appu-mp3-text);
-  font-size: 20px;
-  line-height: 1.35;
-  font-weight: 800;
-  text-align: center;
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: var(--amp-text);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
 }
 
 .appu-mp3-track-info {
-  width: 100%;
-  margin: 6px 0 0;
-  color: var(--appu-mp3-muted);
-  font-size: 13px;
-  line-height: 1.5;
-  text-align: center;
+  margin-top: 5px;
+  min-height: 18px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: var(--amp-muted);
+  font-size: 13px;
 }
 
-
-/* =========================================================
-   PROGRESS
-   ========================================================= */
-
-.appu-mp3-progress-wrap {
-  width: 100%;
-  margin-top: 20px;
+.appu-mp3-progress-area {
+  padding: 0 18px;
 }
 
 .appu-mp3-progress {
@@ -302,32 +422,21 @@ html[data-theme="dark"] {
   padding: 0;
   appearance: none;
   -webkit-appearance: none;
+  border: 0;
+  border-radius: 999px;
+  background: var(--amp-line);
   cursor: pointer;
-  background: transparent;
-}
-
-.appu-mp3-progress::-webkit-slider-runnable-track {
-  height: 6px;
-  border-radius: 99px;
-  background: var(--appu-mp3-border);
 }
 
 .appu-mp3-progress::-webkit-slider-thumb {
   width: 16px;
   height: 16px;
-  margin-top: -5px;
   appearance: none;
   -webkit-appearance: none;
   border: 0;
   border-radius: 50%;
-  background: var(--appu-mp3-accent);
+  background: var(--amp-accent);
   cursor: pointer;
-}
-
-.appu-mp3-progress::-moz-range-track {
-  height: 6px;
-  border-radius: 99px;
-  background: var(--appu-mp3-border);
 }
 
 .appu-mp3-progress::-moz-range-thumb {
@@ -335,7 +444,7 @@ html[data-theme="dark"] {
   height: 16px;
   border: 0;
   border-radius: 50%;
-  background: var(--appu-mp3-accent);
+  background: var(--amp-accent);
   cursor: pointer;
 }
 
@@ -343,244 +452,194 @@ html[data-theme="dark"] {
   display: flex;
   justify-content: space-between;
   margin-top: 7px;
-  color: var(--appu-mp3-muted);
+  color: var(--amp-muted);
   font-size: 12px;
-  font-variant-numeric: tabular-nums;
 }
-
-
-/* =========================================================
-   MAIN CONTROLS
-   ========================================================= */
 
 .appu-mp3-controls {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin-top: 18px;
+  gap: 14px;
+  padding: 18px 15px 14px;
 }
 
 .appu-mp3-control {
-  width: 46px;
-  height: 46px;
-  padding: 0;
-  border: 1px solid var(--appu-mp3-border);
-  border-radius: 50%;
-  background: var(--appu-mp3-surface);
-  color: var(--appu-mp3-text);
-  cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 17px;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--amp-text);
+  font: inherit;
+  font-size: 18px;
+  cursor: pointer;
   transition:
-    transform 0.2s ease,
-    background 0.2s ease,
-    border-color 0.2s ease;
+    background-color .2s ease,
+    transform .15s ease;
 }
 
 .appu-mp3-control:hover {
-  transform: translateY(-2px);
-  border-color: var(--appu-mp3-accent);
+  background: var(--amp-surface2);
 }
 
-.appu-mp3-control.appu-active {
-  color: var(--appu-mp3-accent);
-  border-color: var(--appu-mp3-accent);
+.appu-mp3-control:active {
+  transform: scale(.94);
 }
 
-#appu-mp3-play {
-  width: 58px;
-  height: 58px;
-  border: 0;
-  background: var(--appu-mp3-accent);
-  color: #ffffff;
-  font-size: 21px;
-  box-shadow: 0 8px 20px rgba(49, 130, 206, 0.25);
+.appu-mp3-play {
+  width: 60px;
+  height: 60px;
+  background: var(--amp-accent);
+  color: var(--amp-accent-text);
+  font-size: 24px;
+  box-shadow: var(--amp-play-shadow);
 }
 
-#appu-mp3-play:hover {
-  background: var(--appu-mp3-accent-dark);
-  transform: scale(1.04);
+.appu-mp3-play:hover {
+  background: var(--amp-accent);
+  filter: brightness(.95);
 }
-
-
-/* =========================================================
-   SMALL CONTROLS
-   ========================================================= */
 
 .appu-mp3-small-controls {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 18px 15px;
+}
+
+.appu-mp3-option {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.appu-mp3-small-control {
-  min-width: 42px;
-  height: 38px;
-  padding: 0 12px;
-  border: 1px solid var(--appu-mp3-border);
-  border-radius: 10px;
-  background: var(--appu-mp3-surface);
-  color: var(--appu-mp3-text);
+  min-width: 44px;
+  min-height: 38px;
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--amp-muted);
+  font: inherit;
+  font-size: 12px;
   cursor: pointer;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease;
 }
 
-.appu-mp3-small-control:hover {
-  background: var(--appu-mp3-surface-2);
-  border-color: var(--appu-mp3-accent);
+.appu-mp3-option:hover {
+  background: var(--amp-surface2);
 }
 
+.appu-mp3-option.appu-active {
+  color: var(--amp-accent);
+  font-weight: 700;
+}
 
-/* =========================================================
-   VOLUME
-   ========================================================= */
-
-.appu-mp3-volume-wrap {
+.appu-mp3-volume {
   display: flex;
   align-items: center;
-  gap: 10px;
-  width: 100%;
-  max-width: 360px;
-  margin: 18px auto 0;
+  gap: 8px;
+  min-width: 130px;
 }
 
-#appu-mp3-volume-icon {
+.appu-mp3-volume-icon {
   flex: 0 0 auto;
-  width: 32px;
-  height: 32px;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: var(--appu-mp3-text);
+  color: var(--amp-text);
+  font-size: 13px;
   cursor: pointer;
-  font-size: 18px;
 }
 
-#appu-mp3-volume {
-  flex: 1;
-  width: 100%;
+.appu-mp3-volume-slider {
+  width: 90px;
   height: 5px;
   appearance: none;
   -webkit-appearance: none;
-  background: transparent;
+  border-radius: 999px;
+  background: var(--amp-line);
   cursor: pointer;
 }
 
-#appu-mp3-volume::-webkit-slider-runnable-track {
-  height: 5px;
-  border-radius: 99px;
-  background: var(--appu-mp3-border);
-}
-
-#appu-mp3-volume::-webkit-slider-thumb {
-  width: 15px;
-  height: 15px;
-  margin-top: -5px;
+.appu-mp3-volume-slider::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
   appearance: none;
   -webkit-appearance: none;
   border: 0;
   border-radius: 50%;
-  background: var(--appu-mp3-accent);
+  background: var(--amp-accent);
 }
 
-#appu-mp3-volume::-moz-range-track {
-  height: 5px;
-  border-radius: 99px;
-  background: var(--appu-mp3-border);
-}
-
-#appu-mp3-volume::-moz-range-thumb {
-  width: 15px;
-  height: 15px;
+.appu-mp3-volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
   border: 0;
   border-radius: 50%;
-  background: var(--appu-mp3-accent);
+  background: var(--amp-accent);
 }
-
 
 /* =========================================================
    LIBRARY
    ========================================================= */
 
 .appu-mp3-library {
-  width: 100%;
-  margin-top: 28px;
-  border-top: 1px solid var(--appu-mp3-border);
-  padding-top: 20px;
+  border-top: 1px solid var(--amp-line);
+  background: var(--amp-surface);
 }
 
 .appu-mp3-library-tabs {
   display: flex;
   align-items: center;
-  gap: 7px;
-  width: 100%;
-  margin-bottom: 14px;
+  gap: 4px;
   overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: thin;
-  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--amp-line);
+  background: var(--amp-surface);
+  scroll-behavior: smooth;
 }
 
 .appu-mp3-library-tabs::-webkit-scrollbar {
-  height: 4px;
-}
-
-.appu-mp3-library-tabs::-webkit-scrollbar-thumb {
-  background: var(--appu-mp3-border);
-  border-radius: 99px;
+  display: none;
 }
 
 .appu-mp3-tab {
   flex: 0 0 auto;
-  min-height: 38px;
-  padding: 8px 14px;
-  border: 1px solid var(--appu-mp3-border);
-  border-radius: 10px;
-  background: var(--appu-mp3-surface);
-  color: var(--appu-mp3-muted);
+  min-height: 36px;
+  padding: 6px 11px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--amp-muted);
+  font: inherit;
+  font-size: 12px;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 700;
   white-space: nowrap;
-  transition:
-    color 0.2s ease,
-    background 0.2s ease,
-    border-color 0.2s ease;
 }
 
 .appu-mp3-tab:hover {
-  color: var(--appu-mp3-text);
-  border-color: var(--appu-mp3-accent);
+  background: var(--amp-surface2);
 }
 
 .appu-mp3-tab.appu-selected {
-  color: #ffffff;
-  background: var(--appu-mp3-accent);
-  border-color: var(--appu-mp3-accent);
+  background: var(--amp-accent);
+  color: var(--amp-accent-text);
 }
-
-
-/* =========================================================
-   LIBRARY VIEWPORT / HORIZONTAL PANELS
-   ========================================================= */
 
 .appu-mp3-library-viewport {
   width: 100%;
   overflow: hidden;
-  touch-action: pan-y;
+  touch-action: pan-y pinch-zoom;
 }
 
 .appu-mp3-library-track {
   display: flex;
   width: 500%;
-  transition: transform 0.28s ease;
+  transform: translateX(0);
+  transition: transform 1s cubic-bezier(.22,.61,.36,1);
   will-change: transform;
 }
 
@@ -588,578 +647,805 @@ html[data-theme="dark"] {
   flex: 0 0 20%;
   width: 20%;
   min-width: 0;
-  padding: 0 1px;
+  overflow: hidden;
 }
-
 
 /* =========================================================
    PLAYLIST
    ========================================================= */
 
-#appu-mp3-playlist {
-  width: 100%;
-  max-height: 340px;
+.appu-mp3-playlist,
+.appu-mp3-category-list {
+  max-height: 330px;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-right: 3px;
+  overscroll-behavior: contain;
   scrollbar-width: thin;
-  scrollbar-color:
-    var(--appu-mp3-border)
-    transparent;
+  scrollbar-color: var(--amp-line) transparent;
 }
 
-#appu-mp3-playlist::-webkit-scrollbar,
-#appu-mp3-song-list::-webkit-scrollbar,
-#appu-mp3-genre-list::-webkit-scrollbar,
-#appu-mp3-album-list::-webkit-scrollbar,
-#appu-mp3-artist-list::-webkit-scrollbar {
+.appu-mp3-playlist::-webkit-scrollbar,
+.appu-mp3-category-list::-webkit-scrollbar {
   width: 6px;
 }
 
-#appu-mp3-playlist::-webkit-scrollbar-track,
-#appu-mp3-song-list::-webkit-scrollbar-track,
-#appu-mp3-genre-list::-webkit-scrollbar-track,
-#appu-mp3-album-list::-webkit-scrollbar-track,
-#appu-mp3-artist-list::-webkit-scrollbar-track {
+.appu-mp3-playlist::-webkit-scrollbar-track,
+.appu-mp3-category-list::-webkit-scrollbar-track {
   background: transparent;
 }
 
-#appu-mp3-playlist::-webkit-scrollbar-thumb,
-#appu-mp3-song-list::-webkit-scrollbar-thumb,
-#appu-mp3-genre-list::-webkit-scrollbar-thumb,
-#appu-mp3-album-list::-webkit-scrollbar-thumb,
-#appu-mp3-artist-list::-webkit-scrollbar-thumb {
-  background: var(--appu-mp3-border);
-  border-radius: 99px;
+.appu-mp3-playlist::-webkit-scrollbar-thumb,
+.appu-mp3-category-list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--amp-line);
 }
 
-
-/* =========================================================
-   PLAYLIST TRACK ITEM
-   ========================================================= */
-
-.appu-mp3-track-item {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-rows: auto auto;
-  column-gap: 12px;
-  width: 100%;
-  min-height: 64px;
-  padding: 11px 12px;
-  margin-bottom: 7px;
-  border: 1px solid var(--appu-mp3-border);
-  border-radius: 13px;
-  background: var(--appu-mp3-surface);
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.15s ease;
+.appu-mp3-playlist::-webkit-scrollbar-thumb:hover,
+.appu-mp3-category-list::-webkit-scrollbar-thumb:hover {
+  background: var(--amp-muted);
 }
 
-.appu-mp3-track-item:hover {
-  background: var(--appu-mp3-surface-2);
-  border-color: var(--appu-mp3-accent);
-  transform: translateX(2px);
-}
-
-.appu-mp3-track-item.appu-current {
-  background: rgba(49, 130, 206, 0.10);
-  border-color: var(--appu-mp3-accent);
-}
-
-.appu-mp3-track-title {
+/* Existing playlist item structure */
+.appu-mp3-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
   min-width: 0;
-  grid-column: 1;
-  grid-row: 1;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--amp-line);
+  background: var(--amp-surface);
+  color: var(--amp-text);
+  cursor: pointer;
+}
+
+.appu-mp3-item:hover,
+.appu-mp3-item.appu-current {
+  background: var(--amp-surface2);
+}
+
+.appu-mp3-item-number {
+  flex: 0 0 28px;
+  color: var(--amp-muted);
+  text-align: center;
+  font-size: 12px;
+}
+
+.appu-mp3-item-icon {
+  flex: 0 0 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: var(--amp-accent);
+  color: var(--amp-accent-text);
+  font-size: 11px;
+}
+
+.appu-mp3-item-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.appu-mp3-item-info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.appu-mp3-item-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--appu-mp3-text);
+  color: var(--amp-text);
   font-size: 14px;
-  line-height: 1.4;
-  font-weight: 750;
+  font-weight: 600;
 }
 
-.appu-mp3-track-artist {
-  min-width: 0;
-  grid-column: 1;
-  grid-row: 2;
+.appu-mp3-item-meta {
   margin-top: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--appu-mp3-muted);
-  font-size: 12px;
+  color: var(--amp-muted);
+  font-size: 11px;
+}
+
+.appu-mp3-item-remove {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--amp-muted);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.appu-mp3-item-remove:hover {
+  background: var(--amp-danger-bg);
+  color: var(--amp-danger);
+}
+
+/* =========================================================
+   JAVASCRIPT-GENERATED PLAYLIST ITEMS
+   ========================================================= */
+
+.appu-mp3-track-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--amp-line);
+  background: var(--amp-surface);
+  color: var(--amp-text);
+  cursor: pointer;
+  transition:
+    background-color .15s ease,
+    color .15s ease;
+}
+
+.appu-mp3-track-item:hover {
+  background: var(--amp-surface2);
+}
+
+.appu-mp3-track-item.appu-current {
+  background: var(--amp-surface2);
+}
+
+.appu-mp3-track-item.appu-current .appu-mp3-track-title {
+  color: var(--amp-accent);
+}
+
+.appu-mp3-track-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--amp-text);
+  font-size: 14px;
+  font-weight: 600;
   line-height: 1.35;
 }
 
+.appu-mp3-track-artist {
+  flex: 0 1 32%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--amp-muted);
+  font-size: 11px;
+  line-height: 1.35;
+  text-align: right;
+}
+
 .appu-mp3-track-remove {
-  grid-column: 2;
-  grid-row: 1 / span 2;
-  align-self: center;
+  flex: 0 0 32px;
   width: 32px;
   height: 32px;
   padding: 0;
-  border: 1px solid transparent;
-  border-radius: 9px;
+  border: 0;
+  border-radius: 8px;
   background: transparent;
-  color: var(--appu-mp3-muted);
+  color: var(--amp-muted);
+  font: inherit;
+  font-size: 16px;
   cursor: pointer;
-  font-size: 22px;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   transition:
-    color 0.2s ease,
-    background 0.2s ease,
-    border-color 0.2s ease;
+    background-color .15s ease,
+    color .15s ease,
+    transform .15s ease;
 }
 
 .appu-mp3-track-remove:hover {
-  color: var(--appu-mp3-danger);
-  background: rgba(220, 53, 69, 0.08);
-  border-color: rgba(220, 53, 69, 0.20);
+  background: var(--amp-danger-bg);
+  color: var(--amp-danger);
 }
 
-
-/* =========================================================
-   SONG / GENRE / ALBUM / ARTIST LISTS
-   ========================================================= */
-
-#appu-mp3-song-list,
-#appu-mp3-genre-list,
-#appu-mp3-album-list,
-#appu-mp3-artist-list {
-  width: 100%;
-  max-height: 340px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 3px;
+.appu-mp3-track-remove:active {
+  transform: scale(.94);
 }
 
-
 /* =========================================================
-   LIBRARY ITEM
-   Used by:
-   SONGS
-   GENRE
-   ALBUM
-   ARTIST
+   SONGS / GENRE / ALBUM / ARTIST
    ========================================================= */
 
 .appu-mp3-library-item {
   display: flex;
   align-items: center;
-  gap: 12px;
   width: 100%;
-  min-height: 64px;
-  margin-bottom: 7px;
-  padding: 10px 12px;
-  border: 1px solid var(--appu-mp3-border);
-  border-radius: 13px;
-  background: var(--appu-mp3-surface);
-  color: var(--appu-mp3-text);
+  min-width: 0;
+  gap: 12px;
+  margin: 0;
+  padding: 11px 14px;
+  border: 0;
+  border-bottom: 1px solid var(--amp-line);
+  border-radius: 0;
+  outline: 0;
+  background: var(--amp-surface);
+  color: var(--amp-text);
+  font: inherit;
   text-align: left;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
   transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.15s ease;
+    background-color .15s ease,
+    color .15s ease;
 }
 
 .appu-mp3-library-item:hover {
-  background: var(--appu-mp3-surface-2);
-  border-color: var(--appu-mp3-accent);
-  transform: translateX(2px);
+  background: var(--amp-surface2);
 }
 
 .appu-mp3-library-item:active {
-  transform: translateX(1px) scale(0.995);
+  background: var(--amp-surface2);
 }
 
-
-/* =========================================================
-   LIBRARY ICON
-   ========================================================= */
+.appu-mp3-library-item:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid var(--amp-accent);
+  outline-offset: -2px;
+}
 
 .appu-mp3-library-icon {
-  flex: 0 0 auto;
-  width: 42px;
-  height: 42px;
-  border-radius: 11px;
+  flex: 0 0 36px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--appu-mp3-surface-2);
-  border: 1px solid var(--appu-mp3-border);
-  font-size: 19px;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: var(--amp-surface2);
+  color: var(--amp-accent);
+  font-size: 17px;
+  line-height: 1;
 }
 
-
-/* =========================================================
-   LIBRARY INFO
-   ========================================================= */
-
 .appu-mp3-library-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-width: 0;
   flex: 1 1 auto;
+  min-width: 0;
+  display: block;
 }
 
 .appu-mp3-library-title {
   display: block;
   width: 100%;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--appu-mp3-text);
+  color: var(--amp-text);
   font-size: 14px;
-  line-height: 1.4;
-  font-weight: 750;
+  font-weight: 600;
+  line-height: 1.35;
 }
 
 .appu-mp3-library-subtitle {
   display: block;
   width: 100%;
-  margin-top: 3px;
+  min-width: 0;
+  margin-top: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--appu-mp3-muted);
-  font-size: 12px;
+  color: var(--amp-muted);
+  font-size: 11px;
   line-height: 1.35;
 }
 
+.appu-mp3-library-item:hover .appu-mp3-library-icon {
+  background: var(--amp-accent);
+  color: var(--amp-accent-text);
+}
 
-/* =========================================================
-   EMPTY STATE
-   ========================================================= */
-
+/* Empty library/category panels */
 .appu-mp3-empty {
-  width: 100%;
   padding: 28px 18px;
+  color: var(--amp-muted);
   text-align: center;
-  color: var(--appu-mp3-muted);
   font-size: 13px;
 }
 
-
 /* =========================================================
-   STATUS
+   CATEGORY LIST
    ========================================================= */
 
-#appu-mp3-status {
-  min-height: 20px;
-  margin-top: 16px;
-  color: var(--appu-mp3-muted);
-  font-size: 12px;
-  line-height: 1.5;
-  text-align: center;
+.appu-mp3-category-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--amp-line);
+  background: var(--amp-surface);
+  color: var(--amp-text);
+  cursor: pointer;
 }
 
+.appu-mp3-category-item:hover {
+  background: var(--amp-surface2);
+}
 
-/* =========================================================
-   SCAN MODAL
-   ========================================================= */
-
-#appu-mp3-scan-modal,
-#appu-mp3-eq-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: none;
+.appu-mp3-category-icon {
+  flex: 0 0 34px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.60);
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--amp-surface2);
+  color: var(--amp-text);
+  font-size: 10px;
 }
 
-#appu-mp3-scan-modal.appu-open,
-#appu-mp3-eq-modal.appu-open {
-  display: flex;
+.appu-mp3-category-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.appu-mp3-category-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--amp-text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.appu-mp3-category-count {
+  margin-top: 2px;
+  color: var(--amp-muted);
+  font-size: 11px;
+}
+
+.appu-mp3-status {
+  min-height: 20px;
+  padding: 8px 18px 15px;
+  color: var(--amp-muted);
+  text-align: center;
+  font-size: 11px;
+}
+
+#appu-mp3-file-input {
+  display: none;
 }
 
 .appu-mp3-modal {
-  width: 100%;
-  max-width: 520px;
-  max-height: min(720px, calc(100vh - 40px));
-  overflow-y: auto;
-  padding: 22px;
-  border: 1px solid var(--appu-mp3-border);
-  border-radius: 18px;
-  background: var(--appu-mp3-surface);
-  color: var(--appu-mp3-text);
-  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.30);
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: var(--amp-overlay);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.appu-mp3-modal.appu-open {
+  display: flex;
 }
 
 .appu-mp3-modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 18px;
+  gap: 10px;
+  width: 100%;
+  max-width: 430px;
+  padding: 16px 17px;
+  border: 1px solid var(--amp-line);
+  border-bottom: 0;
+  border-radius: 17px 17px 0 0;
+  background: var(--amp-surface);
+  color: var(--amp-text);
+  box-shadow: var(--amp-modal-shadow);
 }
 
 .appu-mp3-modal-title {
-  margin: 0;
-  color: var(--appu-mp3-text);
-  font-size: 19px;
-  font-weight: 800;
+  color: var(--amp-text);
+  font-size: 17px;
+  font-weight: 700;
 }
 
 .appu-mp3-modal-close {
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: 1px solid var(--appu-mp3-border);
-  border-radius: 9px;
-  background: var(--appu-mp3-surface-2);
-  color: var(--appu-mp3-text);
-  cursor: pointer;
-  font-size: 20px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-
-/* =========================================================
-   EQUALIZER
-   ========================================================= */
-
-.appu-mp3-eq {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 8px;
-  width: 100%;
-  min-height: 240px;
-}
-
-.appu-mp3-eq-band {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-  min-width: 0;
-  height: 220px;
-}
-
-.appu-mp3-eq-band input[type="range"] {
-  width: 150px;
-  height: 5px;
-  appearance: none;
-  -webkit-appearance: none;
-  transform: rotate(-90deg);
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: var(--amp-surface2);
+  color: var(--amp-text);
+  font-size: 18px;
   cursor: pointer;
 }
 
-.appu-mp3-eq-band input[type="range"]::-webkit-slider-runnable-track {
-  height: 5px;
-  border-radius: 99px;
-  background: var(--appu-mp3-border);
+.appu-mp3-modal-close:hover {
+  background: var(--amp-line);
 }
 
-.appu-mp3-eq-band input[type="range"]::-webkit-slider-thumb {
-  width: 15px;
-  height: 15px;
-  margin-top: -5px;
-  appearance: none;
-  -webkit-appearance: none;
-  border: 0;
-  border-radius: 50%;
-  background: var(--appu-mp3-accent);
+.appu-mp3-modal-body {
+  width: 100%;
+  max-width: 430px;
+  max-height: calc(90dvh - 70px);
+  overflow-y: auto;
+  padding: 15px 17px 17px;
+  border: 1px solid var(--amp-line);
+  border-top: 0;
+  border-radius: 0 0 17px 17px;
+  background: var(--amp-surface);
+  color: var(--amp-text);
+  box-shadow: var(--amp-modal-shadow);
 }
 
-.appu-mp3-eq-band input[type="range"]::-moz-range-track {
-  height: 5px;
-  border-radius: 99px;
-  background: var(--appu-mp3-border);
+.appu-mp3-modal-description {
+  margin-bottom: 12px;
+  color: var(--amp-muted);
+  font-size: 13px;
+  line-height: 1.5;
 }
 
-.appu-mp3-eq-band input[type="range"]::-moz-range-thumb {
-  width: 15px;
-  height: 15px;
-  border: 0;
-  border-radius: 50%;
-  background: var(--appu-mp3-accent);
+.appu-mp3-scan-option {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 12px;
+  border: 1px solid var(--amp-line);
+  border-radius: 11px;
+  background: var(--amp-surface);
+  color: var(--amp-text);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
 }
 
+.appu-mp3-scan-option:hover {
+  border-color: var(--amp-accent);
+  background: var(--amp-surface2);
+}
 
-/* =========================================================
-   BUTTONS
-   ========================================================= */
+.appu-mp3-scan-option strong {
+  display: block;
+  color: var(--amp-text);
+  font-size: 13px;
+}
 
-#appu-music-player button {
-  font-family: inherit;
+.appu-mp3-scan-option span {
+  display: block;
+  margin-top: 2px;
+  color: var(--amp-muted);
+  font-size: 11px;
+}
+
+.appu-mp3-eq-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 8px;
+}
+
+.appu-mp3-eq-option {
+  min-height: 48px;
+  padding: 8px;
+  border: 1px solid var(--amp-line);
+  border-radius: 10px;
+  background: var(--amp-surface);
+  color: var(--amp-text);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.appu-mp3-eq-option:hover {
+  border-color: var(--amp-accent);
+  background: var(--amp-surface2);
+}
+
+.appu-mp3-eq-option.appu-selected {
+  border-color: var(--amp-accent);
+  background: var(--amp-accent);
+  color: var(--amp-accent-text);
 }
 
 #appu-music-player button:focus-visible,
-#appu-music-player input:focus-visible {
-  outline: 3px solid rgba(49, 130, 206, 0.28);
+#appu-music-player input:focus-visible,
+#appu-mp3-dropzone:focus-visible {
+  outline: 2px solid var(--amp-accent);
   outline-offset: 2px;
 }
 
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 768px) {
-
+@media (max-width:768px) {
   #appu-music-player {
-    padding: 16px;
-    border-radius: 18px;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
   }
 
-  .appu-mp3-title {
-    font-size: 22px;
-  }
-
-  .appu-mp3-cover {
-    width: 190px;
-    height: 190px;
-  }
-
-  .appu-mp3-controls {
-    gap: 9px;
-  }
-
-  .appu-mp3-control {
-    width: 43px;
-    height: 43px;
-  }
-
-  #appu-mp3-play {
-    width: 54px;
-    height: 54px;
-  }
-
-  #appu-mp3-visualizer {
-    height: 70px;
-  }
-
-  .appu-mp3-library {
-    margin-top: 24px;
-  }
-
-}
-
-
-@media (max-width: 390px) {
-
-  #appu-music-player {
-    padding: 12px;
-    border-radius: 15px;
+  .appu-mp3-player {
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    border-radius: 14px;
   }
 
   .appu-mp3-header {
-    gap: 8px;
+    padding: 14px 14px 11px;
   }
 
   .appu-mp3-title {
-    font-size: 20px;
+    font-size: 17px;
   }
 
   .appu-mp3-subtitle {
     font-size: 12px;
   }
 
-  .appu-mp3-header-buttons {
+  .appu-mp3-header-actions {
     gap: 5px;
   }
 
-  .appu-mp3-header-button,
-  .appu-mp3-theme-toggle {
-    width: 38px;
-    height: 38px;
+  .appu-mp3-header-button {
+    min-height: 36px;
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+
+  .appu-mp3-header-right {
+    gap: 5px;
+  }
+
+  .appu-mp3-header-right .appu-mp3-theme-toggle {
+    flex-basis: 36px;
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+    border-radius: 9px;
+  }
+
+  .appu-mp3-theme-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 16px;
+  }
+
+  .appu-mp3-dropzone {
+    margin: 12px;
+    padding: 20px 12px;
+  }
+
+  .appu-mp3-now-playing {
+    padding: 15px 14px 12px;
   }
 
   .appu-mp3-cover {
-    width: 165px;
-    height: 165px;
-    border-radius: 18px;
+    width: min(210px,62vw);
+  }
+
+  .appu-mp3-visualizer {
+    height: 210px;
+  }
+
+  .appu-mp3-track-name {
+    font-size: 19px;
+  }
+
+  .appu-mp3-track-info {
+    font-size: 12px;
+  }
+
+  .appu-mp3-controls {
+    gap: 7px;
+  }
+
+  .appu-mp3-control {
+    width: 43px;
+    height: 43px;
+    font-size: 17px;
+  }
+
+  .appu-mp3-play {
+    width: 58px;
+    height: 58px;
+    font-size: 23px;
+  }
+
+  .appu-mp3-volume {
+    min-width: 0;
+  }
+
+  .appu-mp3-volume-slider {
+    width: 70px;
+  }
+
+  .appu-mp3-small-controls {
+    flex-wrap: wrap;
+  }
+
+  .appu-mp3-option {
+    min-height: 36px;
+    font-size: 11px;
+  }
+
+  .appu-mp3-tab {
+    min-height: 36px;
+    font-size: 11px;
+  }
+
+  .appu-mp3-item-name {
+    font-size: 13px;
+  }
+
+  .appu-mp3-item-meta {
+    font-size: 11px;
+  }
+
+  .appu-mp3-category-name {
+    font-size: 13px;
+  }
+
+  .appu-mp3-category-count {
+    font-size: 11px;
+  }
+
+  /* JavaScript-generated playlist */
+  .appu-mp3-track-item {
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .appu-mp3-track-title {
+    font-size: 13px;
+  }
+
+  .appu-mp3-track-artist {
+    flex-basis: 28%;
+    font-size: 10px;
+  }
+
+  .appu-mp3-track-remove {
+    flex-basis: 30px;
+    width: 30px;
+    height: 30px;
+    font-size: 15px;
+  }
+
+  /* Songs / Genre / Album / Artist */
+  .appu-mp3-library-item {
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .appu-mp3-library-icon {
+    flex-basis: 34px;
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+
+  .appu-mp3-library-title {
+    font-size: 13px;
+  }
+
+  .appu-mp3-library-subtitle {
+    font-size: 10px;
+  }
+}
+
+@media (max-width:390px) {
+  .appu-mp3-header-actions {
+    align-items: stretch;
+  }
+
+  .appu-mp3-header-left,
+  .appu-mp3-header-right {
+    gap: 4px;
+  }
+
+  .appu-mp3-header-button {
+    padding: 6px;
+    font-size: 10px;
+  }
+
+  .appu-mp3-header-right .appu-mp3-theme-toggle {
+    flex-basis: 34px;
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
+    border-radius: 8px;
+  }
+
+  .appu-mp3-theme-icon {
+    width: 17px;
+    height: 17px;
+    font-size: 15px;
+  }
+
+  .appu-mp3-control {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .appu-mp3-play {
+    width: 54px;
+    height: 54px;
+    font-size: 22px;
+  }
+
+  .appu-mp3-volume-slider {
+    width: 55px;
   }
 
   .appu-mp3-track-name {
     font-size: 18px;
   }
 
-  .appu-mp3-controls {
-    gap: 6px;
-  }
-
-  .appu-mp3-control {
-    width: 40px;
-    height: 40px;
-    font-size: 15px;
-  }
-
-  #appu-mp3-play {
-    width: 50px;
-    height: 50px;
-  }
-
-  .appu-mp3-small-controls {
-    gap: 5px;
-  }
-
-  .appu-mp3-small-control {
-    min-width: 38px;
-    padding: 0 8px;
-    font-size: 12px;
-  }
-
-  .appu-mp3-library-item {
-    min-height: 59px;
-    padding: 8px 9px;
-  }
-
-  .appu-mp3-library-icon {
-    width: 38px;
-    height: 38px;
-    font-size: 17px;
-  }
-
-  .appu-mp3-library-title,
-  .appu-mp3-track-title {
-    font-size: 13px;
-  }
-
-  .appu-mp3-library-subtitle,
-  .appu-mp3-track-artist {
-    font-size: 11px;
-  }
-
   .appu-mp3-track-item {
-    min-height: 59px;
+    gap: 6px;
     padding: 9px 10px;
   }
 
-}
-
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .appu-mp3-track-title {
+    font-size: 12px;
   }
 
+  .appu-mp3-track-artist {
+    flex-basis: 25%;
+    font-size: 9px;
+  }
+
+  .appu-mp3-track-remove {
+    flex-basis: 28px;
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  .appu-mp3-library-item {
+    gap: 9px;
+    padding: 9px 10px;
+  }
+
+  .appu-mp3-library-icon {
+    flex-basis: 32px;
+    width: 32px;
+    height: 32px;
+    font-size: 15px;
+  }
+
+  .appu-mp3-library-title {
+    font-size: 12px;
+  }
+
+  .appu-mp3-library-subtitle {
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  #appu-music-player *,
+  #appu-music-player *::before,
+  #appu-music-player *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
 }
