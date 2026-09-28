@@ -58,6 +58,7 @@ html[data-theme='dark'] {
   min-width: 0;
   max-width: none;
   height: auto;
+  min-height: 100dvh;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -84,7 +85,6 @@ html[data-theme='dark'] #appu-music-player {
   width: 100%;
   min-width: 0;
   height: auto;
-  min-height: 100dvh;
   border: 1px solid var(--amp-line);
   background: var(--amp-surface);
   color: var(--amp-text);
