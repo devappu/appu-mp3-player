@@ -328,13 +328,13 @@
                 <button
                   class="appu-desktop-section-toggle"
                   type="button">
-                  Mp3 Player <span>🎵</span>
+                  Mp3 Player <span>&#8964;</span>
                 </button>
 
                 <div class="appu-desktop-submenu">
 
                   <a href="https://www.mp3.appu.uk/player">
-                    My Mp3 Player
+                   🎵 My Mp3 Player
                   </a>
 
                 </div>
@@ -1599,6 +1599,175 @@
 
 })();
 //]]>
+</script>
+
+  <script type='text/javascript'>
+//<![CDATA[
+(function () {
+  'use strict';
+
+  var currentPath = window.location.pathname;
+
+  if (
+    currentPath === 'https://www.appu.uk/p/code-block-html-preview-online-free.html' ||
+    currentPath === 'https://www.appu.uk/p/html-parser-encoder-tool-app-free.html' ||
+    currentPath === 'https://www.appu.uk/p/css-minifier-tool-app.html' ||
+    currentPath === 'https://www.appu.uk/p/css-unminifier-tool-app.html' ||
+    currentPath === 'https://www.appu.uk/p/javascript-minifier-tool-app.html' ||
+    currentPath === 'https://www.appu.uk/p/base64-to-image-img-converter-online.html'
+  ) {
+    return;
+  }
+
+  var appuMessage = 'Content protected by appu.uk.';
+
+  document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+    return false;
+  }, true);
+
+  document.addEventListener('selectstart', function (e) {
+    var tag = e.target.tagName;
+
+    if (
+      tag === 'INPUT' ||
+      tag === 'TEXTAREA' ||
+      tag === 'SELECT' ||
+      tag === 'OPTION'
+    ) {
+      return true;
+    }
+
+    e.preventDefault();
+    return false;
+  }, true);
+
+  document.addEventListener('copy', function (e) {
+    e.preventDefault();
+    return false;
+  }, true);
+
+  document.addEventListener('cut', function (e) {
+    e.preventDefault();
+    return false;
+  }, true);
+
+  document.addEventListener('dragstart', function (e) {
+    e.preventDefault();
+    return false;
+  }, true);
+
+  document.addEventListener('keydown', function (e) {
+
+    var key = String(e.key || '').toLowerCase();
+
+    if (e.ctrlKey || e.metaKey) {
+
+      if (key === 'a') {
+        e.preventDefault();
+        return false;
+      }
+
+      if (key === 'c') {
+        e.preventDefault();
+        return false;
+      }
+
+      if (key === 'x') {
+        e.preventDefault();
+        return false;
+      }
+
+      if (key === 'u') {
+        e.preventDefault();
+        return false;
+      }
+
+      if (key === 's') {
+        e.preventDefault();
+        return false;
+      }
+
+      if (key === 'p') {
+        e.preventDefault();
+        return false;
+      }
+
+      if (e.shiftKey && key === 'i') {
+        e.preventDefault();
+        return false;
+      }
+
+      if (e.shiftKey && key === 'j') {
+        e.preventDefault();
+        return false;
+      }
+
+      if (e.shiftKey && key === 'c') {
+        e.preventDefault();
+        return false;
+      }
+    }
+
+    if (e.key === 'F12' || e.keyCode === 123) {
+      e.preventDefault();
+      return false;
+    }
+
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && key === 's') {
+      e.preventDefault();
+      return false;
+    }
+
+  }, true);
+
+  document.addEventListener('dragstart', function (e) {
+    if (e.target && e.target.tagName === 'IMG') {
+      e.preventDefault();
+      return false;
+    }
+  }, true);
+
+  window.addEventListener('beforeprint', function () {
+    document.body.classList.add('appu-print-blocked');
+  });
+
+  document.addEventListener('beforecopy', function (e) {
+    e.preventDefault();
+    return false;
+  }, true);
+
+  var style = document.createElement('style');
+
+  style.type = 'text/css';
+
+  style.textContent =
+    'body, body * {' +
+      '-webkit-user-select: none !important;' +
+      '-moz-user-select: none !important;' +
+      '-ms-user-select: none !important;' +
+      'user-select: none !important;' +
+      '-webkit-touch-callout: none !important;' +
+    '}' +
+
+    'input, textarea, select, option, button, [contenteditable="true"] {' +
+      '-webkit-user-select: text !important;' +
+      '-moz-user-select: text !important;' +
+      '-ms-user-select: text !important;' +
+      'user-select: text !important;' +
+      '-webkit-touch-callout: default !important;' +
+    '}' +
+
+    'img {' +
+      '-webkit-user-drag: none !important;' +
+      'user-drag: none !important;' +
+      'pointer-events: auto;' +
+    '}';
+
+  document.head.appendChild(style);
+
+})();
+ //]]>
 </script>
 
   <script src="./app.js" defer></script>
