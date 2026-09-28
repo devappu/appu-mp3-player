@@ -1375,6 +1375,232 @@
 
   </nav>
 
+  <script type='text/javascript'>
+//<![CDATA[
+(function(){
+
+  /* =========================
+     DESKTOP NAVIGATION
+     ========================= */
+
+  function closeDesktopDropdown(){
+
+    document.querySelectorAll(
+      '.appu-desktop-dropdown.open'
+    ).forEach(function(item){
+
+      item.classList.remove('open');
+
+      var toggle =
+        item.querySelector(
+          '.appu-desktop-toggle'
+        );
+
+      if(toggle){
+
+        toggle.setAttribute(
+          'aria-expanded',
+          'false'
+        );
+
+      }
+
+    });
+
+  }
+
+
+  function initDesktopNavigation(){
+
+    /* =========================
+       MAIN DROPDOWN
+       ========================= */
+
+    document.querySelectorAll(
+      '.appu-desktop-toggle'
+    ).forEach(function(button){
+
+      button.addEventListener(
+        'click',
+        function(e){
+
+          e.preventDefault();
+          e.stopPropagation();
+
+          var parent =
+            button.closest(
+              '.appu-desktop-dropdown'
+            );
+
+          if(!parent) return;
+
+
+          /* Tutup dropdown lainnya */
+
+          document.querySelectorAll(
+            '.appu-desktop-dropdown.open'
+          ).forEach(function(item){
+
+            if(item !== parent){
+
+              item.classList.remove(
+                'open'
+              );
+
+              var otherToggle =
+                item.querySelector(
+                  '.appu-desktop-toggle'
+                );
+
+              if(otherToggle){
+
+                otherToggle.setAttribute(
+                  'aria-expanded',
+                  'false'
+                );
+
+              }
+
+            }
+
+          });
+
+
+          /* Toggle dropdown */
+
+          var isOpen =
+            parent.classList.toggle(
+              'open'
+            );
+
+
+          button.setAttribute(
+            'aria-expanded',
+            isOpen
+              ? 'true'
+              : 'false'
+          );
+
+        }
+      );
+
+    });
+
+
+    /* =========================
+       SUBMENU
+       ========================= */
+
+    document.querySelectorAll(
+      '.appu-desktop-section-toggle'
+    ).forEach(function(button){
+
+      button.addEventListener(
+        'click',
+        function(e){
+
+          e.preventDefault();
+          e.stopPropagation();
+
+          var section =
+            button.closest(
+              '.appu-desktop-section'
+            );
+
+          if(!section) return;
+
+
+          /* Tutup submenu kategori lain */
+
+          var parent =
+            section.parentElement;
+
+          parent
+            .querySelectorAll(
+              '.appu-desktop-section.open'
+            )
+            .forEach(function(otherSection){
+
+              if(otherSection !== section){
+
+                otherSection.classList.remove(
+                  'open'
+                );
+
+              }
+
+            });
+
+
+          /* Toggle submenu */
+
+          section.classList.toggle(
+            'open'
+          );
+
+        }
+      );
+
+    });
+
+
+    /* =========================
+       CLICK OUTSIDE
+       ========================= */
+
+    document.addEventListener(
+      'click',
+      function(){
+
+        closeDesktopDropdown();
+
+      }
+    );
+
+
+    /* =========================
+       ESCAPE
+       ========================= */
+
+    document.addEventListener(
+      'keydown',
+      function(e){
+
+        if(e.key === 'Escape'){
+
+          closeDesktopDropdown();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* =========================
+     BOOT
+     ========================= */
+
+  if(
+    document.readyState === 'loading'
+  ){
+
+    document.addEventListener(
+      'DOMContentLoaded',
+      initDesktopNavigation
+    );
+
+  }else{
+
+    initDesktopNavigation();
+
+  }
+
+})();
+//]]>
+</script>
+
   <script src="./app.js" defer></script>
 
 </body>
