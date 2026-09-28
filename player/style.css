@@ -77,9 +77,9 @@ html[data-theme='dark'] #appu-music-player {
   color: var(--amp-text);
   box-shadow: var(--amp-shadow);
   transition:
-    background-color .2s ease,
-    border-color .2s ease,
-    color .2s ease;
+    background-color 2s ease,
+    border-color 2s ease,
+    color 2s ease;
 }
 
 .appu-mp3-header {
@@ -112,6 +112,7 @@ html[data-theme='dark'] #appu-music-player {
   white-space: nowrap;
   color: var(--amp-muted);
   font-size: 13px;
+  text-align:center;
   line-height: 1.4;
 }
 
@@ -151,9 +152,9 @@ html[data-theme='dark'] #appu-music-player {
   cursor: pointer;
   white-space: nowrap;
   transition:
-    background-color .2s ease,
-    color .2s ease,
-    transform .15s ease;
+    background-color 2s ease,
+    color 2s ease,
+    transform 2s ease;
 }
 
 .appu-mp3-header-button:hover {
@@ -189,14 +190,14 @@ html[data-theme='dark'] #appu-music-player {
   font: inherit;
   line-height: 1;
   transition:
-    background-color .2s ease,
-    border-color .2s ease,
-    color .2s ease,
-    transform .15s ease;
+    background-color 2s ease,
+    border-color 2s ease,
+    color 2s ease,
+    transform 2s ease;
 }
 
 .appu-mp3-header-right .appu-mp3-theme-toggle:hover {
-  background: var(--amp-surface2);
+  background: va--amp-accent);
 }
 
 .appu-mp3-header-right .appu-mp3-theme-toggle:active {
@@ -1074,7 +1075,7 @@ html[data-theme='dark'] #appu-music-player {
   }
 }
 
-@media (max-width:390px) {
+@media (max-width:480px) {
   .appu-mp3-header-actions {
     align-items: stretch;
   }
