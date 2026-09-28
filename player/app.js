@@ -340,26 +340,141 @@
     );
 
     try {
+var THEME_STORAGE_KEY =
+  'appu-mp3-player-theme';
 
-      localStorage.setItem(
-        THEME_STORAGE_KEY,
-        newTheme
-      );
+var themeToggle =
+  document.getElementById(
+    'appu-mp3-theme-toggle'
+  );
 
-    } catch (error) {}
+var themeIcon =
+  document.getElementById(
+    'appu-mp3-theme-icon'
+  );
+
+var eqBands = [
+  60,
+  170,
+  310,
+  600,
+  1000,
+  3000,
+  6000,
+  12000,
+  14000
+];
+
+function applyTheme(theme) {
+
+  if (
+    theme !== 'light' &&
+    theme !== 'dark'
+  ) {
+
+    theme = 'dark';
+
+  }
+
+  document.documentElement.setAttribute(
+    'data-theme',
+    theme
+  );
+
+  if (themeIcon) {
+
+    themeIcon.textContent =
+      theme === 'dark'
+        ? '☀'
+        : '☾';
 
   }
 
   if (themeToggle) {
 
-    themeToggle.addEventListener(
-      'click',
-      toggleTheme
+    themeToggle.setAttribute(
+      'aria-label',
+      theme === 'dark'
+        ? 'Change to light theme'
+        : 'Change to dark theme'
+    );
+
+    themeToggle.setAttribute(
+      'title',
+      theme === 'dark'
+        ? 'Change to light theme'
+        : 'Change to dark theme'
     );
 
   }
 
-  loadTheme();
+}
+
+function loadTheme() {
+
+  var savedTheme = null;
+
+  try {
+
+    savedTheme =
+      localStorage.getItem(
+        THEME_STORAGE_KEY
+      );
+
+  } catch (error) {
+
+    savedTheme = null;
+
+  }
+
+  if (
+    savedTheme !== 'light' &&
+    savedTheme !== 'dark'
+  ) {
+
+    savedTheme = 'dark';
+
+  }
+
+  applyTheme(savedTheme);
+
+}
+
+function toggleTheme() {
+
+  var currentTheme =
+    document.documentElement.getAttribute(
+      'data-theme'
+    );
+
+  var newTheme =
+    currentTheme === 'dark'
+      ? 'light'
+      : 'dark';
+
+  applyTheme(newTheme);
+
+  try {
+
+    localStorage.setItem(
+      THEME_STORAGE_KEY,
+      newTheme
+    );
+
+  } catch (error) {}
+
+}
+
+if (themeToggle) {
+
+  themeToggle.addEventListener(
+    'click',
+    toggleTheme
+  );
+
+}
+
+loadTheme();
 
   function formatTime(seconds) {
 
