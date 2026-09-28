@@ -1,12 +1,12 @@
 html {
-  margin: 0;
-  padding: -8px;
+  margin: -9px;
+  padding: 0;
   background: var(--amp-bg);
 }
 
 body {
-  margin: 0;
-  padding: -8px;
+  margin: -9px;
+  padding: 0;
   background: var(--amp-bg);
 }
 
@@ -54,8 +54,7 @@ html[data-theme='dark'] {
   width: 100%;
   min-width: 0;
   max-width: none;
-  height: 100dvh;
-  min-height: 100dvh;
+  height: auto;
   margin: 0;
   padding: 0;
   overflow: hidden;
