@@ -1827,14 +1827,38 @@ html[data-theme='dark'] #appu-music-player {
     padding-bottom: 0;
   }
 
-
   .appu-mobile-nav {
     display: none;
   }
 
-  .desktop-nav {
-   display: none!important;
+  /* ========================================
+     DESKTOP NAVIGATION
+     ======================================== */
+
+  .appu-mp3-header {
+    position: relative;
   }
+
+  .desktop-nav {
+    display: block !important;
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    z-index: 1000;
+  }
+
+  .appu-desktop-nav-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+}
 
 
   /* ==========================================
