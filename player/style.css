@@ -1,12 +1,12 @@
 html {
   margin: 0;
-  padding: 0;
+  padding: -8px;
   background: var(--amp-bg);
 }
 
 body {
   margin: 0;
-  padding: 0;
+  padding: -8px;
   background: var(--amp-bg);
 }
 
