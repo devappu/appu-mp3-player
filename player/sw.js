@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE_NAME = 'appu-mp3-player-v1';
+const CACHE_NAME = 'appu-mp3-player-v2';
 
 const APP_SHELL = [
   '/player/',
