@@ -1450,3 +1450,618 @@ html[data-theme='dark'] #appu-music-player {
     transition-duration: .01ms !important;
   }
 }
+
+/* ==========================================
+   MOBILE VERSION (0px – 480px)
+   ========================================== */
+
+@media (max-width: 480px) {
+
+  body {
+    padding-bottom: 64px;
+  }
+
+  .appu-mobile-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99999;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    box-sizing: border-box;
+
+    background: var(--amp-surface) !important;
+    border-top: 1px solid var(--amp-line) !important;
+
+    transition:
+      background 1s ease,
+      border-color 1s ease;
+  }
+
+
+  /* ==========================================
+     NAV ITEM
+     ========================================== */
+
+  .appu-nav-item {
+    position: relative;
+    flex: 1;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+  /* ==========================================
+     NAV BUTTON
+     ========================================== */
+
+  .appu-nav-button {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 2px;
+
+    border: 0;
+    outline: none;
+
+    background: transparent;
+
+    cursor: pointer;
+    text-decoration: none;
+
+    box-sizing: border-box;
+
+    -webkit-tap-highlight-color: transparent;
+
+    color: var(--amp-text) !important;
+
+    transition:
+      background 1s ease,
+      color 1s ease,
+      transform 1s ease;
+  }
+
+
+  .appu-nav-button:hover {
+    background: var(--amp-surface2) !important;
+  }
+
+
+  .appu-nav-button:active {
+    transform: scale(0.94);
+  }
+
+
+  /* ==========================================
+     NAV ICON
+     ========================================== */
+
+  .appu-nav-icon {
+    width: 34px;
+    height: 26px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+    line-height: 1;
+
+    transition: transform 1s ease;
+  }
+
+
+  /* ==========================================
+     NAV LABEL
+     ========================================== */
+
+  .appu-nav-label {
+    font-size: 13px;
+    font-weight: 700 !important;
+    line-height: 14px;
+
+    white-space: nowrap;
+    text-transform: uppercase !important;
+
+    color: var(--amp-text) !important;
+
+    transition:
+      font-weight 1s ease,
+      color 1s ease;
+  }
+
+
+  /* ==========================================
+     ACTIVE PARENT MENU
+     ========================================== */
+
+  .appu-nav-item.active .appu-nav-button {
+    color: var(--amp-accent) !important;
+    background: var(--amp-surface2) !important;
+  }
+
+
+  .appu-nav-item.active .appu-nav-label {
+    color: var(--amp-accent) !important;
+  }
+
+
+  .appu-nav-item.active .appu-nav-icon {
+    transform: translateY(-1px);
+  }
+
+
+  /* ==========================================
+     MOBILE DROPUP
+     ========================================== */
+
+  .appu-dropup {
+    position: fixed;
+
+    left: 0;
+    right: 0;
+    bottom: 64px;
+
+    width: 100vw;
+    max-width: 100vw;
+
+    transform: translateY(20px);
+
+    padding: 12px;
+
+    box-shadow: var(--amp-shadow);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    box-sizing: border-box;
+
+    max-height: min(80vh, 520px);
+
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    background: var(--amp-surface) !important;
+    border: 1px solid var(--amp-line) !important;
+
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+
+    transition:
+      background 1s ease,
+      border-color 1s ease,
+      opacity 1s cubic-bezier(0.25, 1, 0.5, 1),
+      transform 1s cubic-bezier(0.25, 1, 0.5, 1),
+      visibility 1s ease;
+  }
+
+
+  .appu-nav-item.active .appu-dropup {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: translateY(0);
+  }
+
+
+  /* ==========================================
+     MENU SECTION
+     ========================================== */
+
+  .appu-menu-section {
+    border-bottom: 1px solid var(--amp-line);
+  }
+
+
+  .appu-menu-section:last-child {
+    border-bottom: 0;
+  }
+
+
+  /* ==========================================
+     ACCORDION TOGGLE
+     ========================================== */
+
+  .appu-menu-toggle,
+  .appu-blog-toggle {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 11px 13px;
+
+    border: 0;
+
+    background: transparent;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    text-align: left;
+
+    -webkit-tap-highlight-color: transparent;
+
+    color: var(--amp-text) !important;
+
+    transition:
+      color 1s ease,
+      background 1s ease;
+  }
+
+
+  .appu-menu-toggle:hover {
+    background: var(--amp-surface2) !important;
+    color: var(--amp-accent) !important;
+  }
+
+
+  /* ==========================================
+     MENU ARROW
+     ========================================== */
+
+  .appu-menu-arrow {
+    font-size: 18px;
+
+    transition:
+      transform 1s ease;
+  }
+
+
+  .appu-menu-section.open .appu-menu-arrow {
+    transform: rotate(180deg);
+  }
+
+
+  /* ==========================================
+     SUBMENU
+     ========================================== */
+
+  .appu-submenu,
+  .appu-blog-content {
+    display: none;
+
+    padding: 2px 6px 6px 6px;
+  }
+
+
+  .appu-menu-section.open .appu-submenu,
+  .appu-blog-group.open .appu-blog-content {
+    display: block;
+  }
+
+
+  /* ==========================================
+     SUBMENU LINKS
+     ========================================== */
+
+  .appu-submenu a,
+  .appu-blog-content a,
+  .appu-theme-menu-button,
+  .theme-menu-button {
+    display: block;
+
+    width: 100%;
+
+    padding: 9px 10px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: transparent !important;
+
+    text-decoration: none;
+    text-align: left;
+
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 17px;
+
+    box-sizing: border-box;
+
+    color: var(--amp-text) !important;
+
+    transition:
+      background 1s ease,
+      color 1s ease;
+  }
+
+
+  .appu-submenu a:hover,
+  .appu-blog-content a:hover,
+  .appu-theme-menu-button:hover,
+  .theme-menu-button:hover {
+    background: var(--amp-surface2) !important;
+    color: var(--amp-accent) !important;
+  }
+
+}
+
+
+/* ==========================================
+   REDUCED MOTION
+   ========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .appu-mobile-nav *,
+  .appu-mobile-nav {
+    transition: none !important;
+  }
+
+}
+
+
+/* ==========================================
+   DESKTOP VERSION (481px ke atas)
+   ========================================== */
+
+@media (min-width: 481px) {
+
+  body {
+    padding-bottom: 0;
+  }
+
+
+  .appu-mobile-nav {
+    display: none;
+  }
+
+
+  /* ==========================================
+     DESKTOP DROPDOWN PARENT
+     ========================================== */
+
+  .appu-desktop-dropdown {
+    position: relative;
+  }
+
+
+  .appu-desktop-toggle {
+    display: flex;
+    align-items: center;
+
+    gap: 0.35rem;
+
+    min-height: 38px;
+
+    padding: 0.5rem 0.8rem;
+
+    background: transparent;
+
+    color: var(--amp-text) !important;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    border: 0;
+
+    cursor: pointer;
+    white-space: nowrap;
+
+    transition:
+      background 0.25s ease,
+      color 0.25s ease;
+  }
+
+
+  .appu-desktop-toggle:hover {
+    background: var(--amp-surface2) !important;
+    color: var(--amp-accent) !important;
+  }
+
+
+  /* ==========================================
+     DESKTOP NAV LINKS
+     ========================================== */
+
+  .desktop-nav a {
+    color: var(--amp-text) !important;
+  }
+
+
+  /* ==========================================
+     DESKTOP DROPDOWN
+     ========================================== */
+
+  .appu-desktop-menu {
+    position: absolute;
+
+    top: calc(100% + 0.45rem);
+    right: 0;
+
+    z-index: 100000;
+
+    width: 300px;
+    max-height: 70vh;
+
+    overflow: auto;
+
+    padding: 0.55rem;
+
+    border-radius: 8px;
+
+    box-shadow: var(--amp-shadow);
+
+    background: var(--amp-surface) !important;
+    border: 1px solid var(--amp-line) !important;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateY(15px);
+
+    transition:
+      background 0.25s ease,
+      border-color 0.25s ease,
+      opacity 0.28s cubic-bezier(0.25, 1, 0.5, 1),
+      transform 0.28s cubic-bezier(0.25, 1, 0.5, 1),
+      visibility 0.28s ease;
+  }
+
+
+  .appu-desktop-dropdown.open > .appu-desktop-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: translateY(0);
+  }
+
+
+  /* ==========================================
+     DESKTOP MENU SECTION
+     ========================================== */
+
+  .appu-desktop-section {
+    border-bottom: 1px solid var(--amp-line);
+  }
+
+
+  .appu-desktop-section:last-child {
+    border-bottom: 0;
+  }
+
+
+  /* ==========================================
+     DESKTOP SECTION TOGGLE
+     ========================================== */
+
+  .appu-desktop-section-toggle {
+    display: flex;
+
+    width: 100%;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0.7rem 0.75rem;
+
+    border: 0;
+
+    background: transparent;
+
+    font: inherit;
+
+    font-size: 1.2rem;
+    font-weight: 700;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    color: var(--amp-text) !important;
+
+    transition:
+      color 0.25s ease,
+      background 0.25s ease;
+  }
+
+
+  .appu-desktop-section-toggle:hover {
+    background: var(--amp-surface2) !important;
+    color: var(--amp-accent) !important;
+  }
+
+
+  /* ==========================================
+     DESKTOP SUBMENU
+     ========================================== */
+
+  .appu-desktop-submenu {
+    display: none;
+
+    padding: 0 0.35rem 0.45rem;
+  }
+
+
+  .appu-desktop-section.open > .appu-desktop-submenu {
+    display: block;
+  }
+
+
+  /* ==========================================
+     DESKTOP SUBMENU LINKS
+     ========================================== */
+
+  .appu-desktop-submenu a,
+  .appu-desktop-submenu button {
+    display: block;
+
+    width: 100%;
+
+    padding: 0.58rem 0.65rem;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: transparent;
+
+    font: inherit;
+
+    font-size: 1rem;
+
+    text-align: left;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    color: var(--amp-text) !important;
+
+    transition:
+      color 0.25s ease,
+      background 0.15s ease;
+  }
+
+
+  .appu-desktop-submenu a:hover,
+  .appu-desktop-submenu button:hover {
+    background: var(--amp-surface2) !important;
+    color: var(--amp-accent) !important;
+  }
+
+}
+
+
+/* ==========================================
+   GLOBAL THEME SYNCHRONIZATION
+   Mengikuti root --amp-* dan
+   html[data-theme='dark']
+   ========================================== */
+
+.appu-mobile-nav,
+.appu-dropup,
+.appu-desktop-menu,
+.appu-nav-button,
+.appu-menu-toggle,
+.appu-submenu a,
+.appu-blog-content a,
+.appu-desktop-toggle,
+.appu-desktop-section-toggle,
+.appu-desktop-submenu a,
+.appu-desktop-submenu button {
+  font-family: inherit;
+}
