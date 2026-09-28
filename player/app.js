@@ -435,6 +435,101 @@ function loadTheme() {
     savedTheme = 'dark';
 
   }
+var THEME_STORAGE_KEY =
+  'appu-mp3-player-theme';
+
+var themeToggle =
+  document.getElementById(
+    'appu-mp3-theme-toggle'
+  );
+
+var themeIcon =
+  document.getElementById(
+    'appu-mp3-theme-icon'
+  );
+
+var eqBands = [
+  60,
+  170,
+  310,
+  600,
+  1000,
+  3000,
+  6000,
+  12000,
+  14000
+];
+
+function applyTheme(theme) {
+
+  if (
+    theme !== 'light' &&
+    theme !== 'dark'
+  ) {
+
+    theme = 'dark';
+
+  }
+
+  document.documentElement.setAttribute(
+    'data-theme',
+    theme
+  );
+
+  if (themeIcon) {
+
+    themeIcon.textContent =
+      theme === 'dark'
+        ? '\u2600\uFE0F'
+        : '\uD83C\uDF1B';
+
+  }
+
+  if (themeToggle) {
+
+    themeToggle.setAttribute(
+      'aria-label',
+      theme === 'dark'
+        ? 'Change to light theme'
+        : 'Change to dark theme'
+    );
+
+    themeToggle.setAttribute(
+      'title',
+      theme === 'dark'
+        ? 'Change to light theme'
+        : 'Change to dark theme'
+    );
+
+  }
+
+}
+
+function loadTheme() {
+
+  var savedTheme = null;
+
+  try {
+
+    savedTheme =
+      localStorage.getItem(
+        THEME_STORAGE_KEY
+      );
+
+  } catch (error) {
+
+    savedTheme = null;
+
+  }
+
+  if (
+    savedTheme !== 'light' &&
+    savedTheme !== 'dark'
+  ) {
+
+    savedTheme = 'dark';
+
+  }
 
   applyTheme(savedTheme);
 
