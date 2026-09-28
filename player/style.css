@@ -1461,6 +1461,10 @@ html[data-theme='dark'] #appu-music-player {
     padding-bottom: 64px;
   }
 
+  .appu-desktop-nav {
+   display: none!important;
+  }
+
   .appu-mobile-nav {
     position: fixed;
     left: 0;
