@@ -1375,6 +1375,208 @@
 
   </nav>
 
+  <script type='text/javascript'>
+//<![CDATA[
+(function(){
+
+  /* =========================
+     DESKTOP NAVIGATION
+     ========================= */
+
+  function closeDesktopDropdown(){
+
+    document.querySelectorAll(
+      '.has-dropdown.open'
+    ).forEach(function(item){
+
+      item.classList.remove(
+        'open'
+      );
+
+      var toggle =
+        item.querySelector(
+          '.nav-dropdown-toggle'
+        );
+
+      if(toggle){
+
+        toggle.setAttribute(
+          'aria-expanded',
+          'false'
+        );
+
+      }
+
+    });
+
+  }
+
+
+  function initDesktopNavigation(){
+
+    /* =========================
+       DROPDOWN DESKTOP
+       ========================= */
+
+    document.querySelectorAll(
+      '.nav-dropdown-toggle'
+    ).forEach(function(button){
+
+      button.addEventListener(
+        'click',
+        function(e){
+
+          e.preventDefault();
+          e.stopPropagation();
+
+          var parent =
+            button.closest(
+              '.has-dropdown'
+            );
+
+          if(!parent) return;
+
+
+          /* Tutup dropdown lainnya */
+
+          document.querySelectorAll(
+            '.has-dropdown.open'
+          ).forEach(function(item){
+
+            if(item !== parent){
+
+              item.classList.remove(
+                'open'
+              );
+
+              var toggle =
+                item.querySelector(
+                  '.nav-dropdown-toggle'
+                );
+
+              if(toggle){
+
+                toggle.setAttribute(
+                  'aria-expanded',
+                  'false'
+                );
+
+              }
+
+            }
+
+          });
+
+
+          /* Toggle dropdown */
+
+          var isOpen =
+            parent.classList.toggle(
+              'open'
+            );
+
+
+          button.setAttribute(
+            'aria-expanded',
+            isOpen
+              ? 'true'
+              : 'false'
+          );
+
+        }
+      );
+
+    });
+
+
+    /* =========================
+       SUBMENU DESKTOP
+       ========================= */
+
+    document.querySelectorAll(
+      '.nav-submenu-toggle'
+    ).forEach(function(button){
+
+      button.addEventListener(
+        'click',
+        function(e){
+
+          e.preventDefault();
+          e.stopPropagation();
+
+          var parent =
+            button.closest(
+              '.nav-submenu'
+            );
+
+          if(!parent) return;
+
+          parent.classList.toggle(
+            'open'
+          );
+
+        }
+      );
+
+    });
+
+
+    /* =========================
+       KLIK DI LUAR MENU
+       ========================= */
+
+    document.addEventListener(
+      'click',
+      function(){
+
+        closeDesktopDropdown();
+
+      }
+    );
+
+
+    /* =========================
+       ESC
+       ========================= */
+
+    document.addEventListener(
+      'keydown',
+      function(e){
+
+        if(e.key === 'Escape'){
+
+          closeDesktopDropdown();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* =========================
+     BOOT
+     ========================= */
+
+  if(
+    document.readyState === 'loading'
+  ){
+
+    document.addEventListener(
+      'DOMContentLoaded',
+      initDesktopNavigation
+    );
+
+  }else{
+
+    initDesktopNavigation();
+
+  }
+
+})();
+//]]>
+  </script>
 
   <script src="./app.js" defer></script>
 
