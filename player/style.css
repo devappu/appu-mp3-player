@@ -83,8 +83,7 @@ html[data-theme='dark'] #appu-music-player {
 .appu-mp3-player {
   width: 100%;
   min-width: 0;
-  height: 100%;
-  min-height: 100%;
+  height: auto;
   overflow: hidden;
   border: 1px solid var(--amp-line);
   background: var(--amp-surface);
