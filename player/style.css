@@ -1411,6 +1411,7 @@ html[data-theme='dark'] #appu-music-player {
 @media (max-width:480px) {
 
   .appu-mp3-title h1,{
+    font-size: 13px;
     margin:-15px 0 -15px 0
     text-align: center !important;
   }
