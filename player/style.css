@@ -1172,6 +1172,62 @@ html[data-theme='dark'] #appu-music-player {
   outline-offset: 2px;
 }
 
+  .mp3appuplayer{
+  font-size:15px;
+  font-family:inherit;
+  line-height:1.5;
+  color:var(--amp-text);
+  background: var(--amp-surface);
+  text-align:justify;
+  padding:10px;
+  margin-bottom:10px;
+}
+
+.mp3appuplayer h2,
+.mp3appuplayer h3{
+  color: var(--amp-text);
+  line-height:1.5;
+  text-align:left;
+  background: var(--amp-bg);
+  text-transform:uppercase;
+  padding: 8px;
+  border-top: 2px solid var(--amp-accent);
+  border-bottom: 2px solid var(--amp-accent);
+}
+
+.mp3appuplayer h2{
+  font-size:16px;
+  margin:28px 0 10px;
+}
+
+.mp3appuplayer h3{
+  font-size:15px;
+  margin:20px 0 8px;
+}
+
+.mp3appuplayer p{
+  margin:0 0 15px;
+}
+
+.mp3appuplayer ul{
+  margin:0 0 18px 20px;
+  padding:0;
+}
+
+.mp3appuplayer li{
+  margin-bottom:6px;
+  font-weight: 700;
+}
+
+.mp3appuplayer a{
+  color:var(--amp-accent);
+  text-decoration:underline;
+}
+
+.mp3appuplayer a:hover{
+  text-decoration:underline;
+}
+
 @media (max-width:768px) {
   #appu-music-player {
     width: 100%;
