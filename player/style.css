@@ -101,7 +101,7 @@ html[data-theme='dark'] #appu-music-player {
   background: var(--amp-surface);
 }
 
-.appu-mp3-title {
+.appu-mp3-title h1{
   display: block;
   max-width: 100%;
   margin: 0;
