@@ -1,0 +1,47 @@
+User-agent: Mediapartners-Google
+Disallow: /search
+Disallow: /search/label/
+Allow: /
+
+User-agent: Googlebot
+Disallow: /search
+Disallow: /search/label/
+Allow: /
+
+User-agent: Bingbot
+Disallow: /search
+Disallow: /search/label/
+Allow: /
+
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: Google-Extended
+User-agent: Anthropic-ai
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: PerplexityBot
+User-agent: Applebot-Extended
+User-agent: Amazonbot
+User-agent: CoPilot
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: AhrefsBot
+User-agent: SemrushBot
+User-agent: DotBot
+User-agent: Rogerbot
+User-agent: MJ12bot
+User-agent: MegaIndex.ru
+User-agent: BlexBot
+User-agent: BSpider
+User-agent: TwengaBot
+User-agent: PetalBot
+User-agent: Spyfu
+Disallow: /
+
+User-agent: *
+Disallow: /search
+Disallow: /search/label/
+Allow: /
+
+Sitemap: https://www.mp3.appu.uk/player/sitemap.xml
