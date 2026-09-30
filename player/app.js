@@ -2375,7 +2375,7 @@ loadTheme();
 
   var equalizerPresets = {
 
-    'Flat': [
+    'Default': [
       0,0,0,0,0,0,0,0,0
     ],
 
