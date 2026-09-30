@@ -1454,14 +1454,7 @@ html[data-theme='dark'] .article-share-btn:active{
     </a>
 
 
-    <a
-      aria-label='Share to TikTok'
-      class='article-share-btn article-share-tiktok'
-      href='#'
-      rel='noopener noreferrer'
-      target='_blank'>
-      TikTok
-    </a>
+    <a aria-label='Share to Twitter' class='article-share-btn article-share-twitter' href='#' rel='noopener noreferrer' target='_blank'>Twitter</a>
 
 
     <button
@@ -1680,22 +1673,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   /* ====================================================
-     TIKTOK
+     TWITTER
   ==================================================== */
 
-  var tiktok =
-    document.querySelector(
-      '.article-share-tiktok'
-    );
+  var twitter = document.querySelector('.article-share-twitter');
 
-
-  if (tiktok) {
-
-    tiktok.href =
-      'https://www.tiktok.com/share?url=' +
-      encodeURIComponent(articleUrl);
-
-  }
+if (twitter) {
+  twitter.href =
+    'https://twitter.com/intent/tweet?text=' +
+    encodeURIComponent(articleTitle) +
+    '&url=' +
+    encodeURIComponent(articleUrl);
+}
 
 
   /* ====================================================
