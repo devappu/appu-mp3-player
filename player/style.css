@@ -48,7 +48,7 @@ html[data-theme='dark'] {
 html, body {
   width: 100%;
   height: auto;
-  background: var(--amp-bg) !important;
+  background: var(--amp-surface) !important;
   margin: 0;
   padding: 0;
 }
