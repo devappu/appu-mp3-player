@@ -35,6 +35,390 @@
     rel="stylesheet"
     href="./style.css">
 
+  <meta
+  property='og:type'
+  content='website'
+/>
+
+<meta
+  property='og:url'
+  content='https://www.mp3.appu.uk/player'
+/>
+
+<meta
+  property='og:title'
+  content='My MP3 Player'
+/>
+
+<meta
+  property='og:description'
+  content='Free MP3 music player app for playing local music and audio files directly from your device.'
+/>
+
+<meta
+  property='og:image'
+  content='https://www.mp3.appu.uk/assets/My%20Mp3%20Player%20App%20by%20appu.uk.webp'
+/>
+
+<meta
+  property='og:image:alt'
+  content='My MP3 Player'
+/>
+
+<meta
+  property='og:site_name'
+  content='My Mp3 Player'
+/>
+
+<meta
+  property='og:locale'
+  content='en_US'
+/>
+
+<meta
+  name='twitter:card'
+  content='summary_large_image'
+/>
+
+<meta
+  name='twitter:url'
+  content='https://www.mp3.appu.uk/player'
+/>
+
+<meta
+  name='twitter:title'
+  content='My MP3 Player'
+/>
+
+<meta
+  name='twitter:description'
+  content='Free MP3 music player app for playing local music and audio files directly from your device.'
+/>
+
+<meta
+  name='twitter:image'
+  content='https://www.mp3.appu.uk/assets/My%20Mp3%20Player%20App%20by%20appu.uk.webp'
+/>
+
+<meta
+  name='twitter:image:alt'
+  content='My MP3 Player'
+/>
+
+  <style type='text/css'>
+/*<![CDATA[*/
+
+.article-share-section{
+  display:block;
+  position:relative;
+  clear:both;
+  width:100%;
+  max-width:100%;
+  margin:15px 0 0;
+  padding:10px;
+  box-sizing:border-box;
+  background:var(--amp-surface);
+  color:var(--amp-text);
+  border:1px solid var(--amp-line);
+  border-radius:12px;
+  box-shadow:var(--amp-shadow);
+  float:none;
+}
+
+.article-share-heading{
+  display:block;
+  margin:0 0 20px 0;
+  padding:0;
+  color:var(--amp-text);
+  font-size:15px;
+  font-weight:700;
+  text-transform:uppercase;
+  line-height:1;
+  border-top:2.5px solid var(--amp-accent);
+  border-bottom:2.5px solid var(--amp-accent);
+}
+
+.article-share-heading h3{
+  display:block;
+  margin:0;
+  padding:8px 0;
+  color:var(--amp-text);
+  font-size:15px;
+  font-weight:700;
+  line-height:1.3;
+}
+
+.article-share-preview{
+  display:block;
+  position:relative;
+  width:100%;
+  max-width:100%;
+  margin:0 0 16px;
+  padding:0;
+  overflow:hidden;
+  box-sizing:border-box;
+  background:var(--amp-surface2);
+  border:1px solid var(--amp-line);
+  border-radius:12px;
+  box-shadow:var(--amp-shadow);
+}
+
+.article-share-image{
+  display:block;
+  width:100%;
+  height:auto;
+  max-width:100%;
+  margin:0;
+  padding:0;
+  object-fit:cover;
+}
+
+.article-share-content{
+  display:block;
+  width:100%;
+  margin:0;
+  padding:14px 16px;
+  box-sizing:border-box;
+  background:var(--amp-surface);
+}
+
+.article-share-title{
+  display:block;
+  margin:0;
+  padding:0;
+  color:var(--amp-text);
+  font-size:16px;
+  font-weight:700;
+  line-height:1.4;
+}
+
+.article-share-description{
+  display:-webkit-box;
+  margin:6px 0 0;
+  padding:0;
+  overflow:hidden;
+  color:var(--amp-muted);
+  font-size:14px;
+  line-height:1.5;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+}
+
+.article-share-url{
+  display:block;
+  margin:8px 0 0;
+  padding:0;
+  overflow:hidden;
+  color:var(--amp-muted);
+  font-size:13px;
+  line-height:1.2;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+
+/* ====================================================
+   SHARE BUTTONS
+==================================================== */
+
+.article-share-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  width:100%;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+.article-share-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:0;
+  min-height:40px;
+  margin:0;
+  padding:0 14px;
+  box-sizing:border-box;
+
+  background:var(--amp-accent);
+  color:var(--amp-accent-text) !important;
+
+  border:1px solid var(--amp-accent);
+  border-radius:9px;
+
+  font-family:inherit;
+  font-size:14px;
+  font-weight:600;
+  text-transform:uppercase;
+  line-height:1;
+  text-decoration:none !important;
+
+  cursor:pointer;
+
+  box-shadow:var(--amp-play-shadow);
+
+  transition:
+    background .25s ease,
+    color .25s ease,
+    border-color .25s ease,
+    transform .2s ease,
+    box-shadow .25s ease;
+}
+
+
+/* ====================================================
+   SHARE BUTTON HOVER
+==================================================== */
+
+.article-share-btn:hover{
+  background:var(--amp-gradient-end);
+  color:#ffffff !important;
+  border-color:var(--amp-gradient-end);
+  box-shadow:var(--amp-play-shadow);
+}
+
+
+/* ====================================================
+   SHARE BUTTON ACTIVE
+==================================================== */
+
+.article-share-btn:active{
+  transform:scale(.97);
+  box-shadow:none;
+}
+
+
+/* ====================================================
+   FOCUS
+==================================================== */
+
+.article-share-btn:focus-visible{
+  outline:2px solid var(--amp-accent);
+  outline-offset:2px;
+}
+
+
+/* ====================================================
+   DARK THEME
+==================================================== */
+
+html[data-theme='dark'] .article-share-section{
+  background:var(--amp-surface);
+  color:var(--amp-text);
+  border-color:var(--amp-line);
+  box-shadow:var(--amp-shadow);
+}
+
+html[data-theme='dark'] .article-share-heading{
+  color:var(--amp-text);
+  border-top-color:var(--amp-accent);
+  border-bottom-color:var(--amp-accent);
+}
+
+html[data-theme='dark'] .article-share-heading h3{
+  color:var(--amp-text);
+}
+
+html[data-theme='dark'] .article-share-preview{
+  background:var(--amp-surface2);
+  border-color:var(--amp-line);
+  box-shadow:var(--amp-shadow);
+}
+
+html[data-theme='dark'] .article-share-content{
+  background:var(--amp-surface);
+}
+
+html[data-theme='dark'] .article-share-title{
+  color:var(--amp-text);
+}
+
+html[data-theme='dark'] .article-share-description{
+  color:var(--amp-muted);
+}
+
+html[data-theme='dark'] .article-share-url{
+  color:var(--amp-muted);
+}
+
+html[data-theme='dark'] .article-share-btn{
+  background:var(--amp-accent);
+  color:var(--amp-accent-text) !important;
+  border-color:var(--amp-accent);
+}
+
+html[data-theme='dark'] .article-share-btn:hover{
+  background:var(--amp-gradient-end);
+  color:#ffffff !important;
+  border-color:var(--amp-gradient-end);
+}
+
+html[data-theme='dark'] .article-share-btn:active{
+  transform:scale(.97);
+}
+
+
+/* ====================================================
+   MOBILE
+==================================================== */
+
+@media (max-width:480px){
+
+  .article-share-section{
+    margin-top:24px;
+    padding:5px;
+    border-radius:10px;
+  }
+
+  .article-share-heading{
+    margin-bottom:16px;
+  }
+
+  .article-share-preview{
+    margin-bottom:14px;
+    border-radius:10px;
+  }
+
+  .article-share-image{
+    width:100%;
+    height:auto;
+  }
+
+  .article-share-content{
+    padding:13px 14px;
+  }
+
+  .article-share-title{
+    font-size:15px;
+  }
+
+  .article-share-description{
+    font-size:13px;
+  }
+
+  .article-share-url{
+    font-size:12px;
+  }
+
+  .article-share-buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+
+  .article-share-btn{
+    width:100%;
+    min-height:40px;
+    padding:0 10px;
+    font-size:13px;
+  }
+
+}
+
+/*]]>*/
+</style>
+
 </head>
 
 <body>
@@ -1008,8 +1392,419 @@
 
   </div>
 
-  
+    <!-- MP3 PLAYER SHARE SECTION -->
 
+<div class='article-share-section'>
+
+  <div class='article-share-heading'>
+    <h3>Share: My MP3 Player</h3>
+  </div>
+
+
+  <div class='article-share-preview'>
+
+    <!-- Full OG Image -->
+
+    <img
+  class='article-share-image'
+  alt='My MP3 Player'
+  src='./assets/My Mp3 Player App by appu.uk.webp'
+  loading='lazy'
+/>
+
+
+    <div class='article-share-content'>
+
+      <div class='article-share-title'>
+        My MP3 Player
+      </div>
+
+
+      <div class='article-share-description'>
+        Listen to your favorite MP3 music with My MP3 Player.
+      </div>
+
+
+      <div class='article-share-url'>
+        https://www.mp3.appu.uk/player
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class='article-share-buttons'>
+
+    <a
+      aria-label='Share to Facebook'
+      class='article-share-btn article-share-facebook'
+      href='#'
+      rel='noopener noreferrer'
+      target='_blank'>
+      Facebook
+    </a>
+
+
+    <a
+      aria-label='Share to WhatsApp'
+      class='article-share-btn article-share-whatsapp'
+      href='#'
+      rel='noopener noreferrer'
+      target='_blank'>
+      WhatsApp
+    </a>
+
+
+    <a
+      aria-label='Share to TikTok'
+      class='article-share-btn article-share-tiktok'
+      href='#'
+      rel='noopener noreferrer'
+      target='_blank'>
+      TikTok
+    </a>
+
+
+    <button
+      aria-label='Copy Link'
+      class='article-share-btn article-share-copy'
+      type='button'>
+      Copy Link
+    </button>
+
+  </div>
+
+</div>
+
+<!-- MP3 PLAYER SHARE SCRIPT -->
+
+<script type='text/javascript'>
+//<![CDATA[
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  'use strict';
+
+
+  /* ====================================================
+     SHARE URL
+  ==================================================== */
+
+  var articleUrl =
+    'https://www.mp3.appu.uk/player';
+
+
+  /* ====================================================
+     GET OG METADATA
+  ==================================================== */
+
+  var ogTitle =
+    document.querySelector(
+      'meta[property="og:title"]'
+    );
+
+  var ogDescription =
+    document.querySelector(
+      'meta[property="og:description"]'
+    );
+
+  var ogImage =
+    document.querySelector(
+      'meta[property="og:image"]'
+    );
+
+
+  /* ====================================================
+     DEFAULT DATA
+  ==================================================== */
+
+  var articleTitle =
+    'My MP3 Player';
+
+
+  var articleDescription =
+    'Listen to your favorite MP3 music with My MP3 Player.';
+
+
+  var articleImage =
+    '';
+
+
+  /* ====================================================
+     READ OG TITLE
+  ==================================================== */
+
+  if (
+    ogTitle &&
+    ogTitle.content
+  ) {
+
+    articleTitle =
+      ogTitle.content;
+
+  }
+
+
+  /* ====================================================
+     READ OG DESCRIPTION
+  ==================================================== */
+
+  if (
+    ogDescription &&
+    ogDescription.content
+  ) {
+
+    articleDescription =
+      ogDescription.content;
+
+  }
+
+
+  /* ====================================================
+     READ OG IMAGE
+  ==================================================== */
+
+  if (
+    ogImage &&
+    ogImage.content
+  ) {
+
+    articleImage =
+      ogImage.content;
+
+  }
+
+
+  /* ====================================================
+     UPDATE PREVIEW
+  ==================================================== */
+
+  var previewImage =
+    document.querySelector(
+      '.article-share-image'
+    );
+
+
+  var previewTitle =
+    document.querySelector(
+      '.article-share-title'
+    );
+
+
+  var previewDescription =
+    document.querySelector(
+      '.article-share-description'
+    );
+
+
+  var previewUrl =
+    document.querySelector(
+      '.article-share-url'
+    );
+
+
+  if (previewImage && articleImage) {
+
+    previewImage.src =
+      articleImage;
+
+    previewImage.alt =
+      articleTitle;
+
+  }
+
+
+  if (previewTitle) {
+
+    previewTitle.textContent =
+      articleTitle;
+
+  }
+
+
+  if (previewDescription) {
+
+    previewDescription.textContent =
+      articleDescription;
+
+  }
+
+
+  if (previewUrl) {
+
+    previewUrl.textContent =
+      articleUrl;
+
+  }
+
+
+  /* ====================================================
+     FACEBOOK
+  ==================================================== */
+
+  var facebook =
+    document.querySelector(
+      '.article-share-facebook'
+    );
+
+
+  if (facebook) {
+
+    facebook.href =
+      'https://www.facebook.com/sharer/sharer.php?u=' +
+      encodeURIComponent(articleUrl);
+
+  }
+
+
+  /* ====================================================
+     WHATSAPP
+  ==================================================== */
+
+  var whatsapp =
+    document.querySelector(
+      '.article-share-whatsapp'
+    );
+
+
+  if (whatsapp) {
+
+    whatsapp.href =
+      'https://api.whatsapp.com/send?text=' +
+      encodeURIComponent(
+        articleTitle +
+        '\n' +
+        articleUrl
+      );
+
+  }
+
+
+  /* ====================================================
+     TIKTOK
+  ==================================================== */
+
+  var tiktok =
+    document.querySelector(
+      '.article-share-tiktok'
+    );
+
+
+  if (tiktok) {
+
+    tiktok.href =
+      'https://www.tiktok.com/share?url=' +
+      encodeURIComponent(articleUrl);
+
+  }
+
+
+  /* ====================================================
+     COPY LINK
+  ==================================================== */
+
+  var copy =
+    document.querySelector(
+      '.article-share-copy'
+    );
+
+
+  if (copy) {
+
+    copy.addEventListener(
+      'click',
+      function () {
+
+
+        if (
+          navigator.clipboard &&
+          window.isSecureContext
+        ) {
+
+          navigator.clipboard
+            .writeText(articleUrl)
+            .then(function () {
+
+              copy.textContent =
+                'Link Copied';
+
+
+              setTimeout(function () {
+
+                copy.textContent =
+                  'Copy Link';
+
+              }, 1800);
+
+            })
+            .catch(function () {
+
+              copy.textContent =
+                'Copy the Link Manually';
+
+            });
+
+        } else {
+
+          var input =
+            document.createElement('input');
+
+
+          input.value =
+            articleUrl;
+
+
+          document.body.appendChild(
+            input
+          );
+
+
+          input.select();
+
+
+          try {
+
+            document.execCommand(
+              'copy'
+            );
+
+
+            copy.textContent =
+              'Link Copied';
+
+
+            setTimeout(function () {
+
+              copy.textContent =
+                'Copy Link';
+
+            }, 1800);
+
+          } catch (error) {
+
+            copy.textContent =
+              'Copy the Link Manually';
+
+          }
+
+
+          document.body.removeChild(
+            input
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+});
+
+//]]>
+</script>
+  
 <article class='mp3appuplayer'>
 
 <h2>My MP3 Player - Free, Fast, and Private Web Music Player</h2>
