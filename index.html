@@ -1,0 +1,720 @@
+<!doctype html>
+<html amp lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+
+  <title>Appu.uk MP3 Player | Apps for U</title>
+
+  <meta name="description" content="Discover the free Appu.uk MP3 Music Player. Play local music and audio files directly from your device without uploading files, signing up, or installing an app.">
+
+  <meta name="theme-color" content="#006b63">
+  <meta name="color-scheme" content="light dark">
+
+  <link rel="canonical" href="https://www.mp3.appu.uk/">
+
+  <link rel="icon" href="https://www.mp3.appu.uk/player/icons/icon-512.webp" type="image/webp">
+
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
+
+  <style amp-boilerplate>
+    body {
+      -webkit-animation: -amp-start 8s steps(1,end) 0s 1 normal both;
+      -moz-animation: -amp-start 8s steps(1,end) 0s 1 normal both;
+      -ms-animation: -amp-start 8s steps(1,end) 0s 1 normal both;
+      animation: -amp-start 8s steps(1,end) 0s 1 normal both;
+    }
+
+    @-webkit-keyframes -amp-start {
+      from { visibility: hidden; }
+      to { visibility: visible; }
+    }
+
+    @-moz-keyframes -amp-start {
+      from { visibility: hidden; }
+      to { visibility: visible; }
+    }
+
+    @-ms-keyframes -amp-start {
+      from { visibility: hidden; }
+      to { visibility: visible; }
+    }
+
+    @-o-keyframes -amp-start {
+      from { visibility: hidden; }
+      to { visibility: visible; }
+    }
+
+    @keyframes -amp-start {
+      from { visibility: hidden; }
+      to { visibility: visible; }
+    }
+  </style>
+
+  <noscript>
+    <style amp-boilerplate>
+      body {
+        -webkit-animation: none;
+        -moz-animation: none;
+        -ms-animation: none;
+        animation: none;
+      }
+    </style>
+  </noscript>
+
+  <style amp-custom>
+    :root {
+      --amp-bg: #f3f7fb;
+      --amp-surface: #ffffff;
+      --amp-surface2: #e8eef5;
+      --amp-text: #172033;
+      --amp-muted: #465365;
+      --amp-line: #b8c4d1;
+      --amp-accent: #006b63;
+      --amp-accent-text: #ffffff;
+      --amp-gradient-start: #00695c;
+      --amp-gradient-end: #164e63;
+      --amp-shadow: 0 10px 30px rgba(15,23,42,.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: var(--amp-bg);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      background: var(--amp-bg);
+      color: var(--amp-text);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--amp-accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .appu-site {
+      width: 100%;
+      max-width: 1100px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 0 18px 35px;
+    }
+
+    .appu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--amp-line);
+    }
+
+    .appu-brand {
+      display: inline-block;
+      min-width: 0;
+      color: var(--amp-text);
+      text-decoration: none;
+    }
+
+    .appu-brand-name {
+      display: block;
+      font-size: 23px;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -.5px;
+    }
+
+    .appu-brand-tagline {
+      display: block;
+      margin-top: 3px;
+      color: var(--amp-muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .appu-desktop-nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .appu-nav-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 8px 13px;
+      border-radius: 9px;
+      color: var(--amp-text);
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .appu-nav-link:hover {
+      background: var(--amp-surface2);
+      text-decoration: none;
+    }
+
+    .appu-nav-link-primary {
+      background: var(--amp-accent);
+      color: var(--amp-accent-text);
+    }
+
+    .appu-nav-link-primary:hover {
+      background: var(--amp-gradient-start);
+      color: var(--amp-accent-text);
+    }
+
+    .appu-main {
+      padding: 38px 0 25px;
+    }
+
+    .appu-hero {
+      position: relative;
+      overflow: hidden;
+      padding: 36px 25px;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 20px;
+      background: linear-gradient(
+        135deg,
+        var(--amp-gradient-start),
+        var(--amp-gradient-end)
+      );
+      color: #ffffff;
+      box-shadow: var(--amp-shadow);
+    }
+
+    .appu-eyebrow {
+      display: inline-block;
+      margin-bottom: 15px;
+      padding: 5px 10px;
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 999px;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .appu-hero h1 {
+      max-width: 700px;
+      margin: 0 0 15px;
+      color: #ffffff;
+      font-size: clamp(27px,5vw,43px);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -.8px;
+    }
+
+    .appu-hero p {
+      max-width: 650px;
+      margin: 0;
+      color: #e6fffb;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .appu-hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    .appu-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 11px 17px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.4;
+      text-align: center;
+      transition: background-color .2s ease;
+    }
+
+    .appu-button-primary {
+      background: #ffffff;
+      color: #064e49;
+    }
+
+    .appu-button-primary:hover {
+      background: #e6fffb;
+      text-decoration: none;
+    }
+
+    .appu-button-secondary {
+      border-color: rgba(255,255,255,.5);
+      background: transparent;
+      color: #ffffff;
+    }
+
+    .appu-button-secondary:hover {
+      background: rgba(255,255,255,.12);
+      text-decoration: none;
+    }
+
+    .appu-section {
+      margin-top: 32px;
+    }
+
+    .appu-section-heading {
+      margin: 0 0 7px;
+      color: var(--amp-text);
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .appu-section-description {
+      margin: 0 0 18px;
+      color: var(--amp-muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .appu-feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3,minmax(0,1fr));
+      gap: 14px;
+    }
+
+    .appu-feature {
+      min-width: 0;
+      padding: 19px;
+      border: 1px solid var(--amp-line);
+      border-radius: 14px;
+      background: var(--amp-surface);
+    }
+
+    .appu-feature-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 43px;
+      height: 43px;
+      margin-bottom: 13px;
+      border-radius: 12px;
+      background: var(--amp-surface2);
+      color: var(--amp-accent);
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    .appu-feature h3 {
+      margin: 0 0 7px;
+      color: var(--amp-text);
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .appu-feature p {
+      margin: 0;
+      color: var(--amp-muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .appu-player-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 23px;
+      border: 1px solid var(--amp-line);
+      border-radius: 15px;
+      background: var(--amp-surface);
+    }
+
+    .appu-player-card-content {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .appu-player-card h2 {
+      margin: 0 0 7px;
+      color: var(--amp-text);
+      font-size: 20px;
+      line-height: 1.4;
+    }
+
+    .appu-player-card p {
+      margin: 0;
+      color: var(--amp-muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .appu-player-card-action {
+      flex: 0 0 auto;
+    }
+
+    .appu-button-accent {
+      background: var(--amp-accent);
+      color: var(--amp-accent-text);
+    }
+
+    .appu-button-accent:hover {
+      background: var(--amp-gradient-start);
+      color: var(--amp-accent-text);
+      text-decoration: none;
+    }
+
+    .appu-info {
+      padding: 20px;
+      border: 1px solid var(--amp-line);
+      border-radius: 14px;
+      background: var(--amp-surface);
+    }
+
+    .appu-info h2 {
+      margin: 0 0 10px;
+      color: var(--amp-text);
+      font-size: 19px;
+      line-height: 1.5;
+    }
+
+    .appu-info p {
+      margin: 0 0 12px;
+      color: var(--amp-muted);
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    .appu-info p:last-child {
+      margin-bottom: 0;
+    }
+
+    .appu-footer {
+      margin-top: 35px;
+      padding: 22px 0 15px;
+      border-top: 1px solid var(--amp-line);
+      color: var(--amp-muted);
+      font-size: 12px;
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    .appu-footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px 18px;
+      margin-bottom: 10px;
+    }
+
+    .appu-mobile-nav {
+      display: none;
+    }
+
+    @media (max-width:768px) {
+      body {
+        padding-bottom: 68px;
+      }
+
+      .appu-site {
+        padding: 0 13px 25px;
+      }
+
+      .appu-header {
+        padding: 15px 0;
+      }
+
+      .appu-brand-name {
+        font-size: 21px;
+      }
+
+      .appu-desktop-nav {
+        display: none;
+      }
+
+      .appu-main {
+        padding-top: 20px;
+      }
+
+      .appu-hero {
+        padding: 27px 19px;
+        border-radius: 16px;
+      }
+
+      .appu-hero h1 {
+        font-size: 29px;
+      }
+
+      .appu-hero p {
+        font-size: 14px;
+      }
+
+      .appu-feature-grid {
+        grid-template-columns: 1fr;
+        gap: 11px;
+      }
+
+      .appu-feature {
+        padding: 16px;
+      }
+
+      .appu-feature-icon {
+        margin-bottom: 9px;
+      }
+
+      .appu-player-card {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 16px;
+        padding: 18px;
+      }
+
+      .appu-player-card-action {
+        width: 100%;
+      }
+
+      .appu-player-card-action .appu-button {
+        width: 100%;
+      }
+
+      .appu-mobile-nav {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        height: 64px;
+        padding-bottom: env(safe-area-inset-bottom);
+        border-top: 1px solid var(--amp-line);
+        background: var(--amp-surface);
+      }
+
+      .appu-mobile-nav a {
+        display: flex;
+        flex: 1 1 0;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 3px;
+        min-width: 0;
+        height: 100%;
+        color: var(--amp-text);
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1.3;
+        text-decoration: none;
+      }
+
+      .appu-mobile-nav a:hover {
+        background: var(--amp-surface2);
+      }
+
+      .appu-mobile-nav-icon {
+        font-size: 20px;
+        line-height: 1.2;
+      }
+
+      .appu-mobile-nav .appu-mobile-active {
+        color: var(--amp-accent);
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="appu-site">
+
+    <header class="appu-header">
+      <a class="appu-brand" href="https://www.mp3.appu.uk/" aria-label="Appu.uk MP3 Player homepage">
+        <span class="appu-brand-name">Appu.uk</span>
+        <span class="appu-brand-tagline">Apps for U</span>
+      </a>
+
+      <nav class="appu-desktop-nav" aria-label="Main navigation">
+        <a class="appu-nav-link appu-nav-link-primary" href="https://www.mp3.appu.uk/">Home</a>
+        <a class="appu-nav-link" href="https://www.mp3.appu.uk/player">MP3 Player</a>
+        <a class="appu-nav-link" href="https://www.appu.uk/">Appu.uk</a>
+      </nav>
+    </header>
+
+    <main class="appu-main">
+
+      <section class="appu-hero">
+        <span class="appu-eyebrow">Free Web Music Player</span>
+
+        <h1>My MP3 Music Player</h1>
+
+        <p>
+          Play your favorite music and audio files directly from your device.
+          Enjoy a simple music listening experience without uploading your
+          files, creating an account, or installing an application.
+        </p>
+
+        <div class="appu-hero-actions">
+          <a class="appu-button appu-button-primary"
+             href="https://www.mp3.appu.uk/player">
+            Open MP3 Player
+          </a>
+
+          <a class="appu-button appu-button-secondary"
+             href="https://www.appu.uk/">
+            Explore Appu.uk
+          </a>
+        </div>
+      </section>
+
+      <section class="appu-section" aria-labelledby="features-title">
+        <h2 class="appu-section-heading" id="features-title">
+          Music Playback Made Simple
+        </h2>
+
+        <p class="appu-section-description">
+          A lightweight web-based music player designed for listening to
+          audio files stored on your own device.
+        </p>
+
+        <div class="appu-feature-grid">
+
+          <article class="appu-feature">
+            <div class="appu-feature-icon" aria-hidden="true">♫</div>
+            <h3>Play Local Music</h3>
+            <p>
+              Select supported audio files from your device and play them
+              directly in your browser.
+            </p>
+          </article>
+
+          <article class="appu-feature">
+            <div class="appu-feature-icon" aria-hidden="true">≋</div>
+            <h3>Equalizer and Visualizer</h3>
+            <p>
+              Explore audio equalizer settings and music visualization
+              features in the full MP3 Player.
+            </p>
+          </article>
+
+          <article class="appu-feature">
+            <div class="appu-feature-icon" aria-hidden="true">◐</div>
+            <h3>Simple and Lightweight</h3>
+            <p>
+              Use the web player without a separate app installation or
+              an account registration.
+            </p>
+          </article>
+
+        </div>
+      </section>
+
+      <section class="appu-section" aria-labelledby="player-title">
+        <div class="appu-player-card">
+          <div class="appu-player-card-content">
+            <h2 id="player-title">Ready to Play Your Music?</h2>
+            <p>
+              Open the full MP3 Music Player to select audio files, manage
+              your playlist, browse your music library, and access the
+              available playback controls.
+            </p>
+          </div>
+
+          <div class="appu-player-card-action">
+            <a class="appu-button appu-button-accent"
+               href="https://www.mp3.appu.uk/player">
+              Launch Music Player
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="appu-section appu-info" aria-labelledby="about-title">
+        <h2 id="about-title">About Appu.uk MP3 Music Player</h2>
+
+        <p>
+          Appu.uk provides web-based tools and applications designed to
+          make everyday digital activities easier. The MP3 Music Player
+          is designed for playing supported audio files locally through
+          a compatible web browser.
+        </p>
+
+        <p>
+          Your selected audio files are intended for local playback rather
+          than being uploaded to a music hosting service. Actual file access
+          and playback capabilities depend on your browser, device, and the
+          audio format.
+        </p>
+
+        <p>
+          The full player includes music library features and playback
+          controls. Visit the player page to explore its available functions.
+        </p>
+      </section>
+
+    </main>
+
+    <footer class="appu-footer">
+      <nav class="appu-footer-links" aria-label="Footer navigation">
+        <a href="https://www.mp3.appu.uk/">Home</a>
+        <a href="https://www.mp3.appu.uk/player">MP3 Music Player</a>
+        <a href="https://www.appu.uk/">Main Website</a>
+      </nav>
+
+      <p>
+        Appu.uk - Apps for U
+      </p>
+
+      <p>
+        Simple web applications for your daily needs.
+      </p>
+    </footer>
+
+  </div>
+
+  <nav class="appu-mobile-nav" aria-label="Mobile navigation">
+    <a class="appu-mobile-active" href="https://www.mp3.appu.uk/">
+      <span class="appu-mobile-nav-icon" aria-hidden="true">⌂</span>
+      <span>Home</span>
+    </a>
+
+    <a href="https://www.mp3.appu.uk/player">
+      <span class="appu-mobile-nav-icon" aria-hidden="true">♫</span>
+      <span>Player</span>
+    </a>
+
+    <a href="https://www.appu.uk/">
+      <span class="appu-mobile-nav-icon" aria-hidden="true">▦</span>
+      <span>Apps</span>
+    </a>
+  </nav>
+
+</body>
+</html>
