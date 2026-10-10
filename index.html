@@ -8,14 +8,17 @@
 
   <meta name="description" content="Discover the free Appu.uk MP3 Music Player. Play local music and audio files directly from your device without uploading files, signing up, or installing an app.">
 
-  <meta name="theme-color" content="#006b63">
-  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#0f1720">
+  <meta name="color-scheme" content="dark light">
+
+  <meta name="amp-script-src" content="sha384-xlV3ZPC_SBzoZJtSv9Wi5dJPf_HG3k6IeHAAzwgFjaaxNdtWjEjHzvZ6F9vQ2JXE">
 
   <link rel="canonical" href="https://www.mp3.appu.uk/">
 
   <link rel="icon" href="https://www.mp3.appu.uk/player/icons/icon-512.webp" type="image/webp">
 
   <script async src="https://cdn.ampproject.org/v0.js"></script>
+  <script async custom-element="amp-script" src="https://cdn.ampproject.org/v0/amp-script-0.1.js"></script>
 
   <style amp-boilerplate>
     body {
@@ -64,26 +67,33 @@
 
   <style amp-custom>
     :root {
-      --amp-bg: #f3f7fb;
-      --amp-surface: #ffffff;
-      --amp-surface2: #e8eef5;
-      --amp-text: #172033;
-      --amp-muted: #465365;
-      --amp-line: #b8c4d1;
-      --amp-accent: #006b63;
-      --amp-accent-text: #ffffff;
+      color-scheme: dark;
+      --amp-bg: #0f1720;
+      --amp-surface: #17212b;
+      --amp-surface2: #24313d;
+      --amp-text: #e5edf5;
+      --amp-muted: #a7b5c5;
+      --amp-line: #354555;
+      --amp-accent: #5eead4;
+      --amp-accent-text: #062f2b;
       --amp-gradient-start: #00695c;
       --amp-gradient-end: #164e63;
-      --amp-shadow: 0 10px 30px rgba(15,23,42,.10);
+      --amp-shadow: 0 10px 30px rgba(0,0,0,.25);
     }
 
     * {
       box-sizing: border-box;
+      transition:
+        background-color 2s ease,
+        color 2s ease,
+        border-color 2s ease,
+        box-shadow 2s ease;
     }
 
     html {
       min-height: 100%;
       background: var(--amp-bg);
+      color: var(--amp-text);
       scroll-behavior: smooth;
     }
 
@@ -96,6 +106,46 @@
       font-family: Arial, Helvetica, sans-serif;
       font-size: 16px;
       line-height: 1.6;
+    }
+
+    .appu-theme-root {
+      min-height: 100vh;
+      background: var(--amp-bg);
+      color: var(--amp-text);
+    }
+
+    .appu-theme-root.appu-dark {
+      color-scheme: dark;
+      --amp-bg: #0f1720;
+      --amp-surface: #17212b;
+      --amp-surface2: #24313d;
+      --amp-text: #e5edf5;
+      --amp-muted: #a7b5c5;
+      --amp-line: #354555;
+      --amp-accent: #5eead4;
+      --amp-accent-text: #062f2b;
+      --amp-gradient-start: #00695c;
+      --amp-gradient-end: #164e63;
+      --amp-shadow: 0 10px 30px rgba(0,0,0,.25);
+      background: var(--amp-bg);
+      color: var(--amp-text);
+    }
+
+    .appu-theme-root.appu-day {
+      color-scheme: light;
+      --amp-bg: #f3f7fb;
+      --amp-surface: #ffffff;
+      --amp-surface2: #e8eef5;
+      --amp-text: #172033;
+      --amp-muted: #465365;
+      --amp-line: #b8c4d1;
+      --amp-accent: #006b63;
+      --amp-accent-text: #ffffff;
+      --amp-gradient-start: #00695c;
+      --amp-gradient-end: #164e63;
+      --amp-shadow: 0 10px 30px rgba(15,23,42,.10);
+      background: var(--amp-bg);
+      color: var(--amp-text);
     }
 
     a {
@@ -126,8 +176,13 @@
 
     .appu-brand {
       display: inline-block;
+      flex: 0 0 auto;
       min-width: 0;
       color: var(--amp-text);
+      text-decoration: none;
+    }
+
+    .appu-brand:hover {
       text-decoration: none;
     }
 
@@ -145,6 +200,16 @@
       color: var(--amp-muted);
       font-size: 12px;
       line-height: 1.4;
+    }
+
+    .appu-header-right {
+      display: flex;
+      flex: 0 1 auto;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      min-width: 0;
+      margin-left: auto;
     }
 
     .appu-desktop-nav {
@@ -179,7 +244,35 @@
 
     .appu-nav-link-primary:hover {
       background: var(--amp-gradient-start);
-      color: var(--amp-accent-text);
+      color: #ffffff;
+    }
+
+    .appu-theme-toggle {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      margin: 0;
+      padding: 0;
+      border: 1px solid var(--amp-line);
+      border-radius: 12px;
+      background: var(--amp-surface);
+      color: var(--amp-text);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .appu-theme-toggle:hover {
+      background: var(--amp-surface2);
+    }
+
+    .appu-theme-toggle:focus {
+      outline: 2px solid var(--amp-accent);
+      outline-offset: 3px;
     }
 
     .appu-main {
@@ -251,7 +344,11 @@
       font-weight: 700;
       line-height: 1.4;
       text-align: center;
-      transition: background-color .2s ease;
+      transition:
+        background-color 2s ease,
+        color 2s ease,
+        border-color 2s ease,
+        box-shadow 2s ease;
     }
 
     .appu-button-primary {
@@ -378,7 +475,7 @@
 
     .appu-button-accent:hover {
       background: var(--amp-gradient-start);
-      color: var(--amp-accent-text);
+      color: #ffffff;
       text-decoration: none;
     }
 
@@ -430,7 +527,26 @@
       display: none;
     }
 
-    @media (max-width:768px) {
+    @media (max-width: 900px) {
+      .appu-header {
+        gap: 12px;
+      }
+
+      .appu-header-right {
+        gap: 8px;
+      }
+
+      .appu-desktop-nav {
+        gap: 4px;
+      }
+
+      .appu-nav-link {
+        padding: 8px 9px;
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 768px) {
       body {
         padding-bottom: 68px;
       }
@@ -440,6 +556,8 @@
       }
 
       .appu-header {
+        justify-content: space-between;
+        gap: 12px;
         padding: 15px 0;
       }
 
@@ -447,8 +565,18 @@
         font-size: 21px;
       }
 
+      .appu-header-right {
+        flex: 0 0 auto;
+        margin-left: auto;
+      }
+
       .appu-desktop-nav {
         display: none;
+      }
+
+      .appu-theme-toggle {
+        width: 42px;
+        height: 42px;
       }
 
       .appu-main {
@@ -541,7 +669,7 @@
       }
     }
 
-    @media (prefers-reduced-motion:reduce) {
+    @media (prefers-reduced-motion: reduce) {
       *,
       *::before,
       *::after {
@@ -553,168 +681,212 @@
 </head>
 
 <body>
-  <div class="appu-site">
+  <amp-script layout="container" script="appu-theme-script">
+    <div class="appu-theme-root appu-dark" id="appu-theme-root">
 
-    <header class="appu-header">
-      <a class="appu-brand" href="https://www.mp3.appu.uk/" aria-label="Appu.uk MP3 Player homepage">
-        <span class="appu-brand-name">Appu.uk</span>
-        <span class="appu-brand-tagline">Apps for U</span>
-      </a>
+      <div class="appu-site">
 
-      <nav class="appu-desktop-nav" aria-label="Main navigation">
-        <a class="appu-nav-link appu-nav-link-primary" href="https://www.mp3.appu.uk/">Home</a>
-        <a class="appu-nav-link" href="https://www.mp3.appu.uk/player">MP3 Player</a>
-        <a class="appu-nav-link" href="https://www.appu.uk/">Appu.uk</a>
-      </nav>
-    </header>
-
-    <main class="appu-main">
-
-      <section class="appu-hero">
-        <span class="appu-eyebrow">Free Web Music Player</span>
-
-        <h1>My MP3 Music Player</h1>
-
-        <p>
-          Play your favorite music and audio files directly from your device.
-          Enjoy a simple music listening experience without uploading your
-          files, creating an account, or installing an application.
-        </p>
-
-        <div class="appu-hero-actions">
-          <a class="appu-button appu-button-primary"
-             href="https://www.mp3.appu.uk/player">
-            Open MP3 Player
+        <header class="appu-header">
+          <a class="appu-brand" href="https://www.mp3.appu.uk/" aria-label="Appu.uk MP3 Player homepage">
+            <span class="appu-brand-name">Appu.uk</span>
+            <span class="appu-brand-tagline">Apps for U</span>
           </a>
 
-          <a class="appu-button appu-button-secondary"
-             href="https://www.appu.uk/">
-            Explore Appu.uk
-          </a>
-        </div>
-      </section>
+          <div class="appu-header-right">
+            <nav class="appu-desktop-nav" aria-label="Main navigation">
+              <a class="appu-nav-link appu-nav-link-primary" href="https://www.mp3.appu.uk/">Home</a>
+              <a class="appu-nav-link" href="https://www.mp3.appu.uk/player">MP3 Player</a>
+              <a class="appu-nav-link" href="https://www.appu.uk/">Appu.uk</a>
+            </nav>
 
-      <section class="appu-section" aria-labelledby="features-title">
-        <h2 class="appu-section-heading" id="features-title">
-          Music Playback Made Simple
-        </h2>
-
-        <p class="appu-section-description">
-          A lightweight web-based music player designed for listening to
-          audio files stored on your own device.
-        </p>
-
-        <div class="appu-feature-grid">
-
-          <article class="appu-feature">
-            <div class="appu-feature-icon" aria-hidden="true">♫</div>
-            <h3>Play Local Music</h3>
-            <p>
-              Select supported audio files from your device and play them
-              directly in your browser.
-            </p>
-          </article>
-
-          <article class="appu-feature">
-            <div class="appu-feature-icon" aria-hidden="true">≋</div>
-            <h3>Equalizer and Visualizer</h3>
-            <p>
-              Explore audio equalizer settings and music visualization
-              features in the full MP3 Player.
-            </p>
-          </article>
-
-          <article class="appu-feature">
-            <div class="appu-feature-icon" aria-hidden="true">◐</div>
-            <h3>Simple and Lightweight</h3>
-            <p>
-              Use the web player without a separate app installation or
-              an account registration.
-            </p>
-          </article>
-
-        </div>
-      </section>
-
-      <section class="appu-section" aria-labelledby="player-title">
-        <div class="appu-player-card">
-          <div class="appu-player-card-content">
-            <h2 id="player-title">Ready to Play Your Music?</h2>
-            <p>
-              Open the full MP3 Music Player to select audio files, manage
-              your playlist, browse your music library, and access the
-              available playback controls.
-            </p>
+            <button
+              class="appu-theme-toggle"
+              id="appu-theme-toggle"
+              type="button"
+              aria-label="Switch to day theme"
+              title="Switch to day theme">
+              ☀️
+            </button>
           </div>
+        </header>
 
-          <div class="appu-player-card-action">
-            <a class="appu-button appu-button-accent"
-               href="https://www.mp3.appu.uk/player">
-              Launch Music Player
-            </a>
-          </div>
-        </div>
-      </section>
+        <main class="appu-main">
 
-      <section class="appu-section appu-info" aria-labelledby="about-title">
-        <h2 id="about-title">About Appu.uk MP3 Music Player</h2>
+          <section class="appu-hero">
+            <span class="appu-eyebrow">Free Web Music Player</span>
 
-        <p>
-          Appu.uk provides web-based tools and applications designed to
-          make everyday digital activities easier. The MP3 Music Player
-          is designed for playing supported audio files locally through
-          a compatible web browser.
-        </p>
+            <h1>My MP3 Music Player</h1>
 
-        <p>
-          Your selected audio files are intended for local playback rather
-          than being uploaded to a music hosting service. Actual file access
-          and playback capabilities depend on your browser, device, and the
-          audio format.
-        </p>
+            <p>
+              Play your favorite music and audio files directly from your device.
+              Enjoy a simple music listening experience without uploading your
+              files, creating an account, or installing an application.
+            </p>
 
-        <p>
-          The full player includes music library features and playback
-          controls. Visit the player page to explore its available functions.
-        </p>
-      </section>
+            <div class="appu-hero-actions">
+              <a class="appu-button appu-button-primary"
+                 href="https://www.mp3.appu.uk/player">
+                Open MP3 Player
+              </a>
 
-    </main>
+              <a class="appu-button appu-button-secondary"
+                 href="https://www.appu.uk/">
+                Explore Appu.uk
+              </a>
+            </div>
+          </section>
 
-    <footer class="appu-footer">
-      <nav class="appu-footer-links" aria-label="Footer navigation">
-        <a href="https://www.mp3.appu.uk/">Home</a>
-        <a href="https://www.mp3.appu.uk/player">MP3 Music Player</a>
-        <a href="https://www.appu.uk/">Main Website</a>
+          <section class="appu-section" aria-labelledby="features-title">
+            <h2 class="appu-section-heading" id="features-title">
+              Music Playback Made Simple
+            </h2>
+
+            <p class="appu-section-description">
+              A lightweight web-based music player designed for listening to
+              audio files stored on your own device.
+            </p>
+
+            <div class="appu-feature-grid">
+
+              <article class="appu-feature">
+                <div class="appu-feature-icon" aria-hidden="true">♫</div>
+                <h3>Play Local Music</h3>
+                <p>
+                  Select supported audio files from your device and play them
+                  directly in your browser.
+                </p>
+              </article>
+
+              <article class="appu-feature">
+                <div class="appu-feature-icon" aria-hidden="true">≋</div>
+                <h3>Equalizer and Visualizer</h3>
+                <p>
+                  Explore audio equalizer settings and music visualization
+                  features in the full MP3 Player.
+                </p>
+              </article>
+
+              <article class="appu-feature">
+                <div class="appu-feature-icon" aria-hidden="true">◐</div>
+                <h3>Simple and Lightweight</h3>
+                <p>
+                  Use the web player without a separate app installation or
+                  an account registration.
+                </p>
+              </article>
+
+            </div>
+          </section>
+
+          <section class="appu-section" aria-labelledby="player-title">
+            <div class="appu-player-card">
+              <div class="appu-player-card-content">
+                <h2 id="player-title">Ready to Play Your Music?</h2>
+                <p>
+                  Open the full MP3 Music Player to select audio files, manage
+                  your playlist, browse your music library, and access the
+                  available playback controls.
+                </p>
+              </div>
+
+              <div class="appu-player-card-action">
+                <a class="appu-button appu-button-accent"
+                   href="https://www.mp3.appu.uk/player">
+                  Launch Music Player
+                </a>
+              </div>
+            </div>
+          </section>
+
+          <section class="appu-section appu-info" aria-labelledby="about-title">
+            <h2 id="about-title">About Appu.uk MP3 Music Player</h2>
+
+            <p>
+              Appu.uk provides web-based tools and applications designed to
+              make everyday digital activities easier. The MP3 Music Player
+              is designed for playing supported audio files locally through
+              a compatible web browser.
+            </p>
+
+            <p>
+              Your selected audio files are intended for local playback rather
+              than being uploaded to a music hosting service. Actual file access
+              and playback capabilities depend on your browser, device, and the
+              audio format.
+            </p>
+
+            <p>
+              The full player includes music library features and playback
+              controls. Visit the player page to explore its available functions.
+            </p>
+          </section>
+
+        </main>
+
+        <footer class="appu-footer">
+          <nav class="appu-footer-links" aria-label="Footer navigation">
+            <a href="https://www.mp3.appu.uk/">Home</a>
+            <a href="https://www.mp3.appu.uk/player">MP3 Music Player</a>
+            <a href="https://www.appu.uk/">Main Website</a>
+          </nav>
+
+          <p>Appu.uk - Apps for U</p>
+          <p>Simple web applications for your daily needs.</p>
+        </footer>
+
+      </div>
+
+      <nav class="appu-mobile-nav" aria-label="Mobile navigation">
+        <a class="appu-mobile-active" href="https://www.mp3.appu.uk/">
+          <span class="appu-mobile-nav-icon" aria-hidden="true">⌂</span>
+          <span>Home</span>
+        </a>
+
+        <a href="https://www.mp3.appu.uk/player">
+          <span class="appu-mobile-nav-icon" aria-hidden="true">♫</span>
+          <span>Player</span>
+        </a>
+
+        <a href="https://www.appu.uk/">
+          <span class="appu-mobile-nav-icon" aria-hidden="true">▦</span>
+          <span>Apps</span>
+        </a>
       </nav>
 
-      <p>
-        Appu.uk - Apps for U
-      </p>
+    </div>
+  </amp-script>
 
-      <p>
-        Simple web applications for your daily needs.
-      </p>
-    </footer>
+<script id="appu-theme-script" type="text/plain" target="amp-script">const root = document.getElementById('appu-theme-root');
+const toggle = document.getElementById('appu-theme-toggle');
+const storageKey = 'appu-mp3-home-theme';
 
-  </div>
+function applyTheme(theme) {
+  const isDark = theme !== 'day';
+  root.classList.toggle('appu-dark', isDark);
+  root.classList.toggle('appu-day', !isDark);
+  toggle.textContent = isDark ? '☀️' : '🌙';
+  toggle.setAttribute('aria-label', isDark ? 'Switch to day theme' : 'Switch to dark theme');
+  toggle.setAttribute('title', isDark ? 'Switch to day theme' : 'Switch to dark theme');
+}
 
-  <nav class="appu-mobile-nav" aria-label="Mobile navigation">
-    <a class="appu-mobile-active" href="https://www.mp3.appu.uk/">
-      <span class="appu-mobile-nav-icon" aria-hidden="true">⌂</span>
-      <span>Home</span>
-    </a>
+let savedTheme = 'dark';
+try {
+  const storedTheme = localStorage.getItem(storageKey);
+  if (storedTheme === 'day' || storedTheme === 'dark') {
+    savedTheme = storedTheme;
+  }
+} catch (error) {}
 
-    <a href="https://www.mp3.appu.uk/player">
-      <span class="appu-mobile-nav-icon" aria-hidden="true">♫</span>
-      <span>Player</span>
-    </a>
+applyTheme(savedTheme);
 
-    <a href="https://www.appu.uk/">
-      <span class="appu-mobile-nav-icon" aria-hidden="true">▦</span>
-      <span>Apps</span>
-    </a>
-  </nav>
+toggle.addEventListener('click', function () {
+  const isCurrentlyDark = root.classList.contains('appu-dark');
+  const nextTheme = isCurrentlyDark ? 'day' : 'dark';
+  applyTheme(nextTheme);
+  try {
+    localStorage.setItem(storageKey, nextTheme);
+  } catch (error) {}
+});</script>
 
 </body>
 </html>
