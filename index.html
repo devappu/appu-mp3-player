@@ -11,7 +11,7 @@
   <meta name="theme-color" content="#0f1720">
   <meta name="color-scheme" content="dark light">
 
-  <meta name="amp-script-src" content="sha384-n2eDhU6s3iNMAmEURU85A-zxqZsNtaeBC_9KCTGx2QKl4oGYKEbEnIFMVx2Wlmgm">
+  <meta name="amp-script-src" content="sha384-FHvRJmvMbiM9NxgLc3WDT9purPqZrFBvGcdInFUu4BcC5mbGl9uQOqUu2HgyRcTk">
 
   <link rel="canonical" href="https://www.mp3.appu.uk/">
 
@@ -148,6 +148,23 @@
       color: var(--amp-text);
     }
 
+    /* Toggle icon: show only the icon matching the current theme. */
+    .appu-theme-toggle .appu-icon-day,
+    .appu-theme-toggle .appu-icon-night {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .appu-theme-root.appu-dark .appu-theme-toggle .appu-icon-day {
+      display: inline-flex;
+    }
+
+    .appu-theme-root.appu-day .appu-theme-toggle .appu-icon-night {
+      display: inline-flex;
+    }
+
     a {
       color: var(--amp-accent);
       text-decoration: none;
@@ -273,24 +290,6 @@
     .appu-theme-toggle:focus {
       outline: 2px solid var(--amp-accent);
       outline-offset: 3px;
-    }
-
-    /* Tampilkan hanya ikon yang sesuai dengan tema aktif. */
-    .appu-theme-icon {
-      display: inline-block;
-      line-height: 1;
-    }
-
-    .appu-theme-icon-day {
-      display: none;
-    }
-
-    .appu-theme-root.appu-day .appu-theme-icon-dark {
-      display: none;
-    }
-
-    .appu-theme-root.appu-day .appu-theme-icon-day {
-      display: inline-block;
     }
 
     .appu-main {
@@ -723,10 +722,8 @@
               type="button"
               aria-label="Switch to day theme"
               title="Switch to day theme">
-
-              <span class="appu-theme-icon appu-theme-icon-dark" aria-hidden="true">☀️</span>
-              <span class="appu-theme-icon appu-theme-icon-day" aria-hidden="true">🌙</span>
-
+              <span class="appu-icon-day" aria-hidden="true">☀️</span>
+              <span class="appu-icon-night" aria-hidden="true">🌙</span>
             </button>
           </div>
         </header>
@@ -880,42 +877,37 @@
   <script id="appu-theme-script" type="text/plain" target="amp-script">const root = document.getElementById('appu-theme-root');
 const toggle = document.getElementById('appu-theme-toggle');
 const storageKey = 'appu-mp3-home-theme';
+let userChangedTheme = false;
 
 function applyTheme(theme) {
   const isDark = theme !== 'day';
-
   root.classList.toggle('appu-dark', isDark);
   root.classList.toggle('appu-day', !isDark);
-
-  toggle.setAttribute(
-    'aria-label',
-    isDark ? 'Switch to day theme' : 'Switch to dark theme'
-  );
-
-  toggle.setAttribute(
-    'title',
-    isDark ? 'Switch to day theme' : 'Switch to dark theme'
-  );
+  toggle.setAttribute('aria-label', isDark ? 'Switch to day theme' : 'Switch to dark theme');
+  toggle.setAttribute('title', isDark ? 'Switch to day theme' : 'Switch to dark theme');
 }
 
 let savedTheme = 'dark';
-
 try {
   const storedTheme = localStorage.getItem(storageKey);
-
   if (storedTheme === 'day' || storedTheme === 'dark') {
     savedTheme = storedTheme;
   }
 } catch (error) {}
 
-applyTheme(savedTheme);
+fetch('/player/icons/icon-512.webp', { method: 'HEAD', cache: 'force-cache' })
+  .catch(function () {})
+  .then(function () {
+    if (!userChangedTheme) {
+      applyTheme(savedTheme);
+    }
+  });
 
 toggle.addEventListener('click', function () {
+  userChangedTheme = true;
   const isCurrentlyDark = root.classList.contains('appu-dark');
   const nextTheme = isCurrentlyDark ? 'day' : 'dark';
-
   applyTheme(nextTheme);
-
   try {
     localStorage.setItem(storageKey, nextTheme);
   } catch (error) {}
